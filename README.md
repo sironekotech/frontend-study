@@ -2,213 +2,119 @@
 
 React と Next.js を学ぶための公開学習リポジトリです。
 
-このリポジトリでは、React の基礎、TypeScript / TSX の読み方、Next.js App Router、React Hooks、Server Component / Client Component、SSR / CSR、Route Handler を画面で確認できる教材サイトを作っていきます。
+このリポジトリでは、Next.js App Router を使って React の基礎、TypeScript / TSX、Hooks、Server Component / Client Component、SSR / CSR、Route Handler を順番に学びます。
 
-## このリポジトリで学ぶこと
-
-- React の基本
-- TypeScript と TSX の基本
-- Next.js App Router の基本
-- React Hooks の使い方
-- React Hooks の全体像
-- Server Component と Client Component の違い
-- SSR / CSR / Static Rendering / Streaming の違い
-- `app/api` の Route Handler
-- 実務で迷いやすいディレクトリ構成
-
-## 方針
-
-- 新規開発の前提として App Router を使う
-- Pages Router は扱わない
-- API は `app/api` の Route Handler で作る
-- SSR / CSR の違いを同じUIで比較できるようにする
-- 学習ページは `app/(pages)` にまとめる
-- 再利用する custom hooks は `src/hooks` に置く
-- ページ専用の部品はページの近くに `_components` や `_hooks` として置く
-- `'use client'` は必要な場所だけに置く
-
-## 前提環境
+## 前提
 
 - macOS
 - nvm
-- Node.js
-- npm
+- Node.js `25.8.2`
+- npm `11`
 - Git
-- インターネット接続
 
-このリポジトリでは、macOSでnvmを使ってNode.jsをインストールする前提にします。
-
-Next.js の必要な Node.js バージョンは変わることがあります。2026年5月時点のNext.js公式ドキュメントでは、Node.js `20.9` 以上が必要です。
-
-nvmでNode.jsを入れます。
-
-```bash
-nvm install 22
-nvm use 22
-```
-
-バージョンを確認します。
-
-```bash
-node -v
-npm -v
-git --version
-```
-
-`nvm` が入っていない場合は、先にnvmをインストールします。
-
-参考: https://github.com/nvm-sh/nvm
+Node.js のバージョンは `.nvmrc` に固定しています。`latest` は時期によって変わるため、このリポジトリでは `.nvmrc` の値を正とします。
 
 ## セットアップ
-
-このリポジトリは、まずREADMEから作り始めています。そのため、最初の段階では `package.json` や `src` ディレクトリがまだありません。
-
-最初にこのリポジトリ直下へNext.jsを展開します。
-
-### 1. リポジトリをcloneする
 
 ```bash
 git clone https://github.com/sironekotech/frontend-study.git
 cd frontend-study
-```
-
-### 2. Node.jsを有効にする
-
-```bash
-nvm use 22
-```
-
-### 3. Next.js をリポジトリ直下に展開する
-
-このリポジトリでは、`frontend-study` 配下にさらに `frontend-study` や `my-app` のようなフォルダを作りません。
-
-プロジェクト名に `.` を指定して、現在のディレクトリに Next.js のファイルを展開します。
-
-```bash
-npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --turbopack --import-alias "@/*" --use-npm --disable-git --no-react-compiler --no-agents-md
-```
-
-`--disable-git` は、このリポジトリがすでに Git 管理されているため指定しています。Next.js の初期化時に別の Git 初期化を走らせないための指定です。
-
-`--no-react-compiler` は、まずReactの再レンダーや `useMemo` / `useCallback` の意味を手で観察しやすくするために指定しています。
-
-`--no-agents-md` は、この学習リポジトリではまずReact / Next.js本体の理解を優先するために指定しています。
-
-`create-next-app@latest` は時期によって生成されるファイルや質問内容が変わることがあります。このREADMEでは、App Router を使う学習リポジトリとしての推奨選択を書いています。
-
-### 4. READMEの衝突を避ける
-
-すでに `README.md` がある状態で `create-next-app` を実行すると、READMEの衝突で止まることがあります。その場合は、READMEを一時退避してから展開し、あとで戻します。
-
-```bash
-mv README.md README.frontend-study.md
-npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --turbopack --import-alias "@/*" --use-npm --disable-git --no-react-compiler --no-agents-md
-mv README.frontend-study.md README.md
-```
-
-### 5. 開発サーバーを起動する
-
-```bash
+nvm install
+nvm use
+npm ci
 npm run dev
 ```
 
-ブラウザで次のURLを開きます。
+ブラウザで開きます。
 
 ```text
 http://localhost:3000
 ```
 
-### 6. ビルド確認
+## Dockerで起動する場合
+
+Docker 環境は参加者に作らせず、リポジトリ側で用意します。
+
+事前に Docker Desktop などを起動し、`docker compose` が使える状態にします。
 
 ```bash
+docker compose up --build
+```
+
+ブラウザで開きます。
+
+```text
+http://localhost:3000
+```
+
+止める場合は `Ctrl + C` を押します。
+
+## よく使うコマンド
+
+| コマンド               | 目的                       |
+| ---------------------- | -------------------------- |
+| `npm run dev`          | 開発サーバーを起動する     |
+| `npm run build`        | 本番ビルドが通るか確認する |
+| `npm run lint`         | ESLintでコードを確認する   |
+| `npm run format`       | Prettierで整形する         |
+| `npm run format:check` | 整形済みか確認する         |
+
+## 品質チェック
+
+このリポジトリでは次を使います。
+
+- Formatter: Prettier
+- Linter: ESLint
+- CI: GitHub Actions
+- Package manager: npm
+- Runtime: Node.js `25.8.2`
+
+Pull Request では GitHub Actions が次を実行します。
+
+```bash
+npm ci
+npm run format:check
+npm run lint
 npm run build
 ```
 
-## Next.js展開後の通常利用
+CI が安定したら、GitHub ruleset で required status checks に追加します。
 
-Next.js のファイルがリポジトリに入ったあとは、cloneして依存関係をインストールします。
+## 学習対象
 
-```bash
-git clone https://github.com/sironekotech/frontend-study.git
-cd frontend-study
-nvm use 22
-npm install
-npm run dev
-```
+- React の基本
+- TypeScript と TSX の基本
+- JSX
+- props / children
+- state
+- event
+- form
+- list / key
+- React Hooks
+- custom hooks
+- App Router
+- dynamic routes
+- Server Component
+- Client Component
+- SSR / CSR
+- Route Handler
+- `app/api`
 
-## create-next-app の選択肢
+## スコープ外
 
-対話形式で実行すると、いくつか質問されます。このリポジトリでは次の選択にします。
+このリポジトリは React / Next.js の初学者向け教材です。次は最初のスコープから外します。
 
-| 質問 | 選択 | 理由 |
-| --- | --- | --- |
-| What is your project named? | `.` | 現在の `frontend-study` 直下に展開するため |
-| Would you like to use TypeScript? | Yes | React / Next.js の props、API、Hooks の型を学べるため |
-| Which linter would you like to use? | ESLint | Next.js / React の基本的な書き方をチェックできるため |
-| Would you like to use React Compiler? | No | まずは再レンダーやメモ化の挙動を手で観察しやすくするため |
-| Would you like to use Tailwind CSS? | Yes | UIを素早く作り、Hooks の動きを見える化しやすいため |
-| Would you like your code inside a `src/` directory? | Yes | アプリケーションコードと設定ファイルを分けやすいため |
-| Would you like to use App Router? | Yes | 新規Next.js開発の基本として学ぶため |
-| Would you like to customize the import alias? | No | デフォルトの `@/*` で十分わかりやすいため |
-| Would you like to include AGENTS.md? | No | 初学者向けには、まずReact / Next.js本体の理解を優先するため |
+- Tailwind CSS の詳細学習
+- デザインシステム構築
+- 認証
+- DB
+- 決済
+- 本番デプロイ設計
+- Dockerそのものの構築レッスン
 
-バージョンによっては、次のような質問や選択肢が追加されることがあります。
+Tailwind CSS と Docker は、学習を進めやすくするための土台として用意します。
 
-| 質問・選択肢 | このリポジトリでの考え方 |
-| --- | --- |
-| Turbopack | まずは有効で始める。開発サーバーを高速に起動・更新しやすいため |
-| Biome | まずは ESLint を選ぶ。Next.js / React の一般的な学習資料と合わせやすいため |
-| Webpack | まずは Turbopack を選ぶ。古い構成との差分を学ぶ段階になったら比較する |
-| package manager | npm を使う。最初の学習では前提を増やさないため |
-
-## ファイル拡張子の基本
-
-React / Next.js / TypeScript では、ファイル拡張子を見るだけで、そのファイルの役割をある程度判断できます。
-
-| 拡張子 | 使いどころ |
-| --- | --- |
-| `.ts` | TypeScriptファイル。関数、型定義、設定、hooks、ユーティリティなど |
-| `.tsx` | JSXを書けるTypeScriptファイル。ReactコンポーネントやNext.jsのページなど |
-| `.js` | JavaScriptファイル。TypeScriptを使わない場合の通常ファイル |
-| `.jsx` | JSXを書けるJavaScriptファイル。TypeScriptを使わないReactコンポーネント |
-| `.css` | CSSファイル。グローバルCSSやスタイル定義 |
-| `.json` | 設定やデータを表すファイル |
-
-このリポジトリでは TypeScript を使うため、基本は `.ts` と `.tsx` を使います。
-
-### `.ts` を使う例
-
-画面を返さないファイルは `.ts` にします。
-
-```text
-src/hooks/useCounter.ts
-src/lib/formatDate.ts
-src/app/api/hello/route.ts
-```
-
-### `.tsx` を使う例
-
-JSXを書くファイルは `.tsx` にします。
-
-```text
-src/app/page.tsx
-src/app/(pages)/hooks/use-state/page.tsx
-src/app/(pages)/hooks/use-state/_components/UseStateDemo.tsx
-```
-
-### JSXとは
-
-JSXは、JavaScript / TypeScript の中にHTMLのような見た目でUIを書ける構文です。
-
-```tsx
-export function Greeting({ name }: { name: string }) {
-  return <p>Hello, {name}</p>;
-}
-```
-
-`{name}` のように波かっこを書くと、JavaScript / TypeScript の値を画面に埋め込めます。
-
-## 推奨ディレクトリ構成
+## ディレクトリ方針
 
 ```text
 src/
@@ -217,62 +123,28 @@ src/
     page.tsx
     (pages)/
       react-basics/
-        jsx/
-          page.tsx
-        props/
-          page.tsx
-        events/
-          page.tsx
-        forms/
-          page.tsx
-        list-key/
-          page.tsx
       hooks/
-        use-state/
-          page.tsx
-          _components/
-            UseStateDemo.tsx
-        use-ref/
-          page.tsx
-          _components/
-            UseRefDemo.tsx
-      client-server/
-        page.tsx
-        _components/
-          ClientCounter.tsx
-      navigation/
-        page.tsx
-        _components/
-          NavigationDemo.tsx
       rendering/
-        ssr/
-          page.tsx
-        csr/
-          page.tsx
-          _components/
-            CsrDataDemo.tsx
+      users/
     api/
       hello/
         route.ts
   components/
-    ui/
   hooks/
-    useCounter.ts
   lib/
-    formatDate.ts
 ```
 
 ### `src/app/(pages)`
 
 学習ページをまとめる場所です。
 
-`(pages)` は Route Group です。URLには出ません。たとえば次のファイルは、URLでは `/hooks/use-state` になります。
+`(pages)` は Route Group です。URLには出ません。
 
 ```text
 src/app/(pages)/hooks/use-state/page.tsx
 ```
 
-`(pages)` はこのリポジトリの整理ルールです。Next.jsが必ず要求する名前ではありません。
+このファイルは URL では `/hooks/use-state` になります。
 
 ### `src/app/api`
 
@@ -284,254 +156,34 @@ App Router では `app/api/**/route.ts` に Route Handler を作ります。
 src/app/api/hello/route.ts
 ```
 
-Route Handler では、HTTPメソッドに対応する関数をexportします。
+### 動的ルーティング
 
-```ts
-export function GET() {
-  return Response.json({ message: 'Hello from Route Handler' });
-}
-```
-
-Route Handler はWeb標準の `Request` / `Response` を使います。必要に応じて、Next.jsが用意している `NextRequest` / `NextResponse` も使えます。
-
-同じURL階層に `page.tsx` と `route.ts` を同時に置くことはできません。画面を作る場所とAPIを作る場所は分けます。
-
-### 画面遷移
-
-App Router では、通常のページ遷移には `next/link` の `Link` を使います。
-
-```tsx
-import Link from 'next/link';
-
-export function NavigationLink() {
-  return <Link href="/hooks/use-state">useStateを学ぶ</Link>;
-}
-```
-
-ボタンクリック後に移動したい場合など、コードから遷移させたいときは `useRouter` を使います。`useRouter`、`usePathname`、`useSearchParams` はClient Componentで使います。
-
-### `src/hooks`
-
-複数のページやコンポーネントから再利用する custom hooks を置く場所です。
+Next.js では `:user_id` ではなく、角かっこで動的な値を表します。
 
 ```text
-src/hooks/useCounter.ts
+src/app/(pages)/users/[userId]/page.tsx
 ```
 
-1つのページでしか使わない hooks は、無理に `src/hooks` へ出さず、ページの近くに置きます。
+このページは `/users/1` や `/users/taro` のような URL に対応します。
 
-```text
-src/app/(pages)/hooks/use-counter/_hooks/useCounterDemo.ts
-```
+## ファイル拡張子
 
-### `_components` と `_hooks`
+| 拡張子  | 使いどころ                                                      |
+| ------- | --------------------------------------------------------------- |
+| `.ts`   | TypeScript。関数、型、hooks、Route Handler、ユーティリティなど  |
+| `.tsx`  | JSXを書けるTypeScript。Reactコンポーネント、Next.jsのページなど |
+| `.js`   | JavaScript                                                      |
+| `.jsx`  | JSXを書けるJavaScript                                           |
+| `.css`  | CSS                                                             |
+| `.json` | 設定やデータ                                                    |
 
-`_components` や `_hooks` は、そのルート専用の実装を置くための private folder として使います。
-
-`app` 配下に置いたファイルがすべてURLになるわけではありません。URLになるのは主に `page.tsx` や `route.ts` などの特別なファイルです。
-
-それでも `_components` や `_hooks` を使うと、ページ専用のコードだと分かりやすくなります。
-
-## 学習ロードマップ
-
-### 1. React基礎
-
-- JSX
-- コンポーネント
-- props
-- children
-- 条件分岐
-- list と `key`
-- イベント処理
-- フォーム入力
-- controlled component
-- stateの基本
-- 配列とオブジェクトのstate更新
-
-### 2. TypeScript / TSX基礎
-
-- `.ts` と `.tsx` の違い
-- propsの型
-- eventの型
-- stateの型推論
-- 配列・オブジェクトの型
-- 関数の引数と戻り値の型
-
-### 3. Hooks基礎
-
-- `useState`
-- `useEffect`
-- `useRef`
-- custom hooks
-
-### 4. Hooks応用
-
-- `useReducer`
-- `useContext`
-- `useMemo`
-- `useCallback`
-- `useId`
-- `useTransition`
-- `useDeferredValue`
-
-### 5. Hooks発展
-
-- `useLayoutEffect`
-- `useInsertionEffect`
-- `useImperativeHandle`
-- `useSyncExternalStore`
-- `useDebugValue`
-- `useEffectEvent`
-- `useOptimistic`
-- `useActionState`
-- `useFormStatus`
-
-### 6. Next.js App Router基礎
-
-- `layout.tsx`
-- `page.tsx`
-- Route Group
-- nested routes
-- dynamic routes
-- `Link`
-- `useRouter`
-- `usePathname`
-- `useSearchParams`
-- `loading.tsx`
-- `error.tsx`
-- `not-found.tsx`
-- `generateMetadata`
-
-### 7. Server / Client / Rendering
-
-- Server Component
-- Client Component
-- SSR
-- CSR
-- Static Rendering
-- Streaming
-- Suspense
-
-### 8. APIとデータ取得
-
-- Route Handler
-- `GET`
-- `POST`
-- Server Componentでのデータ取得
-- Client Componentでのデータ取得
-- `use`
-- Server Actions
-- `'use server'`
-
-## React Hooks の全体像
-
-React Hooks は、初学者が最初からすべて覚える必要はありません。
-
-まずは `useState`、`useEffect`、`useRef` を使って、画面がどう更新されるかを理解します。その後、状態管理、Context、メモ化、非同期UI、外部ストア連携の順で広げます。
-
-| 分類 | Hooks |
-| --- | --- |
-| State | `useState`, `useReducer`, `useActionState`, `useOptimistic` |
-| Context | `useContext` |
-| Ref | `useRef`, `useImperativeHandle` |
-| Effect | `useEffect`, `useLayoutEffect`, `useInsertionEffect`, `useEffectEvent` |
-| Performance | `useMemo`, `useCallback`, `useTransition`, `useDeferredValue` |
-| Other | `useId`, `useSyncExternalStore`, `useDebugValue` |
-| React DOM | `useFormStatus` |
-| Special API | `use` |
-
-このリポジトリでは、基礎Hooksは必ず画面で動かして確認します。発展Hooksは、実アプリで使う場面が分かる小さい例を用意します。
-
-`use` はReactのAPIですが、通常のHooksとはルールが少し違う特別なAPIです。PromiseやContextの値を読む用途で使います。初学者向けには、SuspenseやServer Componentの学習に入ってから扱います。
-
-## Hookのルール
-
-Hooksには重要なルールがあります。
-
-- Hooksはコンポーネントのトップレベルで呼ぶ
-- Hooksはcustom hookのトップレベルで呼ぶ
-- `if`、`for`、イベントハンドラ、普通の関数の中でHooksを呼ばない
-- custom hookの名前は `use` で始める
-
-```tsx
-import { useState } from 'react';
-
-export function Counter() {
-  const [count, setCount] = useState(0);
-
-  if (count > 10) {
-    return <p>count is large</p>;
-  }
-
-  return (
-    <button type="button" onClick={() => setCount((prevCount) => prevCount + 1)}>
-      {count}
-    </button>
-  );
-}
-```
-
-この例では、`useState` を `if` より前のトップレベルで呼んでいます。
-
-次のように条件分岐の中でHooksを呼ぶのは避けます。
-
-```tsx
-if (enabled) {
-  const [count, setCount] = useState(0);
-}
-```
-
-## React基礎で大事なこと
-
-Hooksを覚える前に、まずはReactの基本を押さえます。
-
-### props
-
-propsは、親コンポーネントから子コンポーネントへ渡す値です。
-
-```tsx
-type UserNameProps = {
-  name: string;
-};
-
-export function UserName({ name }: UserNameProps) {
-  return <p>{name}</p>;
-}
-```
-
-### children
-
-childrenは、コンポーネントの中に書いた要素を受け取るためのpropsです。
-
-```tsx
-type CardProps = {
-  children: React.ReactNode;
-};
-
-export function Card({ children }: CardProps) {
-  return <section>{children}</section>;
-}
-```
-
-### state更新
-
-前のstateを使って更新する場合は、関数で更新します。
-
-```tsx
-setCount((prevCount) => prevCount + 1);
-```
-
-配列やオブジェクトのstateは直接変更せず、新しい値を作って更新します。
-
-```tsx
-setItems((prevItems) => [...prevItems, newItem]);
-```
+このリポジトリでは TypeScript を使うため、基本は `.ts` と `.tsx` を使います。
 
 ## Client Component の考え方
 
 App Router では、コンポーネントはデフォルトで Server Component です。
 
-`useState`、`useEffect`、`useRef`、イベントハンドラ、ブラウザAPIを使うコンポーネントは Client Component にする必要があります。
+`useState`、`useEffect`、`useRef`、イベントハンドラ、ブラウザAPIを使うコンポーネントは Client Component にします。
 
 ```tsx
 'use client';
@@ -549,9 +201,7 @@ export function UseStateDemo() {
 }
 ```
 
-`'use client'` は、そのファイルを Client Component の入口にする指定です。必要以上に大きなファイルへ付けず、動きが必要な小さいコンポーネントに付けます。
-
-学習ページでは、`page.tsx` はできるだけ Server Component のままにして、動きが必要な部分だけを `_components` の Client Component に分けます。
+`'use client'` は、動きが必要な小さいコンポーネントに付けます。学習ページの `page.tsx` はできるだけ Server Component のままにして、動く部分だけ `_components` に分けます。
 
 ```text
 src/app/(pages)/hooks/use-state/
@@ -560,133 +210,83 @@ src/app/(pages)/hooks/use-state/
     UseStateDemo.tsx
 ```
 
-Server Component から Client Component に渡すpropsは、JSONとして表現できる値にします。関数やクラスインスタンスは基本的に渡せません。
+## Server Component / SSR / CSR
 
-## Server Component / SSR / CSR の考え方
+Server Component、SSR、CSRは似ていますが、同じ意味ではありません。
 
-Server Component、SSR、CSRは関連していますが、同じ意味ではありません。
+| 用語             | 意味                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| Server Component | サーバー側で実行されるコンポーネント                         |
+| Client Component | ブラウザ側で操作や状態を扱えるコンポーネント                 |
+| SSR              | リクエスト時にサーバーでHTMLを生成する rendering             |
+| CSR              | ブラウザ側のJavaScriptでデータ取得や画面更新をする rendering |
+| Static Rendering | ビルド時などにHTMLを事前生成する rendering                   |
+| Streaming        | UIを分割して、準備できた部分から順に送る rendering           |
 
-| 用語 | 意味 |
-| --- | --- |
-| Server Component | サーバー側で実行されるコンポーネント |
-| Client Component | ブラウザ側で操作や状態を扱えるコンポーネント |
-| SSR | リクエスト時にサーバーでHTMLを生成する rendering |
-| CSR | ブラウザ側のJavaScriptでデータ取得や画面更新をする rendering |
-| Static Rendering | ビルド時などにHTMLを事前生成する rendering |
-| Streaming | UIを分割して、準備できた部分から順に送る rendering |
+SSR / CSR は、同じ表示結果を別の実装で比較できるページを作ります。
 
-App Routerでは、Server Componentを使っていても、必ず毎回SSRになるわけではありません。データ取得のキャッシュ設定やDynamic APIの利用によって、static rendering、dynamic rendering、streaming などに分かれます。
+## レッスン運用
 
-Client Componentも、初回表示ではサーバーでHTMLが事前生成され、その後ブラウザでhydrateされます。このREADMEでいうCSRは、主に `useEffect` でブラウザ側からデータ取得するパターンを指します。
-
-## SSR と CSR の比較
-
-このリポジトリでは、SSR と CSR を別ページで比較します。
+参加者の作業ブランチは次の形にします。
 
 ```text
-src/app/(pages)/rendering/ssr/page.tsx
-src/app/(pages)/rendering/csr/page.tsx
+<username>/<lesson>
 ```
 
-### SSR
+例:
 
-SSR はサーバー側でデータを取得し、HTMLを生成してからブラウザへ返す考え方です。
-
-学習用の比較として、Server Component の `page.tsx` で Route Handler を呼ぶ例を作ります。
-
-```tsx
-export default async function SsrPage() {
-  const response = await fetch('http://localhost:3000/api/hello', {
-    cache: 'no-store',
-  });
-  const data = await response.json();
-
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
-}
+```text
+taro/002-react-jsx
 ```
 
-この例は、SSR と Route Handler の動きを見比べるための学習用です。実アプリで同じサーバー内の処理を使う場合は、HTTP経由で自分自身のAPIを呼ぶより、`src/lib` の関数を Server Component と Route Handler から共有するほうが自然です。
+レッスンの開始地点と完成地点は tag で管理します。
 
-### CSR
-
-CSR はブラウザ側で JavaScript を実行してからデータを取得し、画面を更新する考え方です。
-
-App Router では、`'use client'` を付けた Client Component の中で `useEffect` を使う例を作ります。
-
-```tsx
-'use client';
-
-import { useEffect, useState } from 'react';
-
-export function CsrDataDemo() {
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then((response) => response.json())
-      .then((data) => setMessage(data.message));
-  }, []);
-
-  return <p>{message}</p>;
-}
+```text
+start/002-react-jsx
+end/002-react-jsx
 ```
 
-SSR / CSR のページでは、表示される結果だけでなく、どこでデータ取得が起きているかも画面上で分かるようにします。
+参加者の Pull Request は学習ログとして扱います。基本的に main へ merge せず、label で状態を管理します。
 
-## よくある失敗
+使う label:
 
-### `my-app` フォルダができてしまった
+- `learning`
+- `needs-review`
+- `needs-fix`
+- `reviewed`
+- `done`
 
-`create-next-app` のプロジェクト名に `my-app` を指定すると、現在の場所に `my-app` フォルダが作られます。
+main に merge するのは、管理者が作る教材・土台・修正用の Pull Request だけにします。
 
-このリポジトリでは、現在のディレクトリに展開したいので `.` を指定します。
+## 初期生成メモ
 
-### 違うディレクトリでコマンドを実行した
-
-`npx create-next-app@latest .` は、今いるディレクトリにファイルを展開します。実行前に `pwd` で場所を確認します。
+このリポジトリの Next.js 土台は、リポジトリ直下で次のコマンドを実行して作りました。
 
 ```bash
-pwd
+npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --turbopack --import-alias "@/*" --use-npm --disable-git --no-react-compiler --no-agents-md
 ```
 
-### port 3000 が使われている
+通常の参加者はこのコマンドを実行しません。参加者は `git clone` 後に `npm ci` します。
 
-すでに別のアプリが `3000` 番ポートを使っている場合、Next.js が別のポートを提案することがあります。
+### create-next-app の選択肢
 
-### Node.js のバージョンが古い
-
-Next.js の起動やインストールでエラーが出る場合、Node.js のバージョンを確認します。
-
-```bash
-node -v
-```
-
-このリポジトリではnvmでNode.js 22を使います。
-
-```bash
-nvm install 22
-nvm use 22
-```
-
-### nvm が見つからない
-
-`nvm: command not found` と表示される場合は、nvmがまだインストールされていないか、shellの設定が読み込まれていません。
-
-macOSでは、nvmをインストールしたあとに新しいターミナルを開き直してから、もう一度確認します。
-
-```bash
-nvm --version
-```
+| 質問                                                | 選択   | 理由                                                   |
+| --------------------------------------------------- | ------ | ------------------------------------------------------ |
+| What is your project named?                         | `.`    | 現在の `frontend-study` 直下に展開するため             |
+| Would you like to use TypeScript?                   | Yes    | props、API、Hooks の型を学べるため                     |
+| Which linter would you like to use?                 | ESLint | Next.js / React の基本的な書き方を確認できるため       |
+| Would you like to use React Compiler?               | No     | まず再レンダーやメモ化の挙動を手で観察しやすくするため |
+| Would you like to use Tailwind CSS?                 | Yes    | UIを素早く作り、Hooks の動きを見える化しやすいため     |
+| Would you like your code inside a `src/` directory? | Yes    | アプリケーションコードと設定ファイルを分けやすいため   |
+| Would you like to use App Router?                   | Yes    | 新規Next.js開発の基本として学ぶため                    |
+| Would you like to customize the import alias?       | No     | デフォルトの `@/*` で十分わかりやすいため              |
+| Would you like to include AGENTS.md?                | No     | 初学者向けにはReact / Next.js本体の理解を優先するため  |
 
 ## 参考
 
 - nvm: https://github.com/nvm-sh/nvm
 - React Learn: https://react.dev/learn
-- React Built-in Hooks: https://react.dev/reference/react/hooks
-- React Rules of Hooks: https://react.dev/reference/rules/rules-of-hooks
-- Next.js Project Structure: https://nextjs.org/docs/app/getting-started/project-structure
-- Next.js Server and Client Components: https://nextjs.org/docs/app/getting-started/server-and-client-components
+- React Hooks: https://react.dev/reference/react/hooks
+- Next.js App Router: https://nextjs.org/docs/app
 - Next.js Route Handlers: https://nextjs.org/docs/app/getting-started/route-handlers
-- Next.js Linking and Navigating: https://nextjs.org/docs/app/getting-started/linking-and-navigating
-- Next.js create-next-app CLI: https://nextjs.org/docs/app/api-reference/cli/create-next-app
-- Next.js Installation: https://nextjs.org/docs/app/getting-started/installation
+- Next.js create-next-app: https://nextjs.org/docs/app/api-reference/cli/create-next-app
