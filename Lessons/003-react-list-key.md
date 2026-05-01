@@ -37,16 +37,22 @@ start/003-react-list-key-v2
 end/003-react-list-key-v2
 ```
 
-`start/003-react-list-key-v2` は、この問題文が `main` に入ったあとで管理者が付けます。
+`start/003-react-list-key-v2` は、この問題文とスターターコードが `main` に入ったあとで管理者が付けます。
 
 `end/003-react-list-key-v2` は、完成見本の実装が `main` に入ったあとで管理者が付けます。
 
 ## Build
 
-次のページを作ります。
+`start/003-react-list-key-v2` には、次のスターターページが入っています。
 
 ```text
 src/app/(pages)/react-basics/list-key/page.tsx
+```
+
+トップページからスターターページへ移動する導線も入っています。
+
+```text
+src/app/page.tsx
 ```
 
 URLは次です。
@@ -55,7 +61,11 @@ URLは次です。
 /react-basics/list-key
 ```
 
-トップページからも、この学習ページへ移動できるようにします。
+トップページからも、この学習ページへ移動できます。
+
+このスターターページは未完成です。
+
+受講者は、TODOや仮表示を置き換えながら完成させます。
 
 ## Before You Start
 
@@ -79,7 +89,7 @@ git switch -c taro/003-react-list-key start/003-react-list-key-v2
 
 ## What You Will Build
 
-受講者は、このレッスンで次を作ります。
+受講者は、このレッスンでスターターページを編集して、次を作ります。
 
 ```text
 React topics board
@@ -102,15 +112,15 @@ React topics board
 
 ## Steps
 
-### 1. 学習ページのファイルを作る
+### 1. スターターページを開く
 
-App Routerでは、`page.tsx` がURLに対応するページになります。
-
-今回は次の場所に作ります。
+まず、次のファイルを開きます。
 
 ```text
 src/app/(pages)/react-basics/list-key/page.tsx
 ```
+
+App Routerでは、`page.tsx` がURLに対応するページになります。
 
 `(pages)` はURLには出ません。
 
@@ -119,6 +129,17 @@ src/app/(pages)/react-basics/list-key/page.tsx
 ```text
 /react-basics/list-key
 ```
+
+このファイルには、最初から次が入っています。
+
+```text
+手書きカードの例
+TODO付きの topics 配列
+TODO付きのカード一覧エリア
+TODO付きの learning 一覧エリア
+```
+
+このレッスンでは、ファイルを新規作成するのではなく、スターターコードを編集します。
 
 ### 2. まずはカードを手で書いてみる
 
@@ -138,11 +159,17 @@ src/app/(pages)/react-basics/list-key/page.tsx
 
 ただし、このままだと項目が増えるたびに同じ形のJSXをコピーします。
 
+スターターコードには、この手書きカードの例が表示されています。
+
 このレッスンでは、この手書きの繰り返しを配列と `map` に置き換えます。
 
 ### 3. 表示したい内容を配列にする
 
-表示したい情報を、先にデータとして用意します。
+スターターコードの `topics` 配列を探します。
+
+最初は空の配列か、TODOだけが入っています。
+
+そこに、表示したい情報をデータとして追加します。
 
 ```tsx
 const topics = [
@@ -187,6 +214,8 @@ const topics = [
 
 ここでは、`topic` 1件を `article` 1枚に変えます。
 
+スターターコードにある仮表示を、次のような `topics.map(...)` に置き換えます。
+
 ```tsx
 return (
   <div>
@@ -225,6 +254,12 @@ Reactが「どの項目がどの項目なのか」を見分けるための目印
 ### 6. `filter` で学習中だけに絞る
 
 `filter` は、条件に合うデータだけを残す書き方です。
+
+スターターコードにある `learningTopics` を探します。
+
+最初は空の配列です。
+
+それを、次のように `filter` へ置き換えます。
 
 ```tsx
 const learningTopics = topics.filter((topic) => topic.status === 'learning');
@@ -279,15 +314,13 @@ status: 'learning',
 
 `key` が画面に表示されていないことも確認します。
 
-### 8. トップページから移動できるようにする
+### 8. トップページから移動する
 
-トップページ `src/app/page.tsx` に、Lesson 3 のページへのリンクを追加します。
+スターターコードには、トップページから Lesson 3 のページへ移動するリンクも入っています。
 
-```tsx
-<a href="/react-basics/list-key">ページを開く</a>
-```
+まずトップページを開いて、Lesson 3 のページへ移動できることを確認します。
 
-このレッスンでは、前回と同じく通常の `a` タグでページへ移動できればOKです。
+このレッスンでは、前回と同じく通常の `a` タグで移動できればOKです。
 
 ## Check
 

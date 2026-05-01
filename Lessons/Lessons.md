@@ -91,7 +91,7 @@ main
 
 start/<lesson>
   そのレッスンを始める地点
-  問題文のmdはあるが、完成実装はまだない
+  問題文のmdとスターターコードはあるが、完成実装はまだない
 
 end/<lesson>
   そのレッスンの完成見本
@@ -116,7 +116,7 @@ end/001-project-foundation-v2
 
 `start/...` は、前のレッスンの完成直後ではありません。
 
-`start/...` は、そのレッスンの問題文が `main` に入ったあとに付けます。
+`start/...` は、そのレッスンの問題文とスターターコードが `main` に入ったあとに付けます。
 
 つまり、参加者が `start/...` からブランチを作った時点で、次のファイルを読める必要があります。
 
@@ -124,13 +124,23 @@ end/001-project-foundation-v2
 Lessons/<lesson>.md
 ```
 
+また、受講者が編集するためのスターターコードも入っている必要があります。
+
+例:
+
+```text
+src/app/(pages)/react-basics/list-key/page.tsx
+src/app/page.tsx
+```
+
 一方で、`start/...` には完成実装を入れません。
 
-参加者が自分で作る対象は、`start/...` にはまだ存在しないか、未完成の状態にします。
+参加者が自分で作る対象は、TODOや仮表示を含む未完成の状態にします。
 
 ```text
 start/<lesson>
   Lessons/<lesson>.md はある
+  スターターコードはある
   完成実装はまだない
 
 end/<lesson>
@@ -146,10 +156,10 @@ end/<lesson>
 
 ```text
 start/003-react-list-key
-  旧タグ。問題文がないため今後は使わない。
+  旧タグ。問題文とスターターコードがないため今後は使わない。
 
 start/003-react-list-key-v2
-  修正版。問題文が入った開始地点。
+  修正版。問題文とスターターコードが入った開始地点。
 ```
 
 ## 名前のルール
@@ -207,7 +217,9 @@ git switch -c taro/001-project-foundation start/001-project-foundation
 Lessons/001-project-foundation.md
 ```
 
-mdには、作るもの、手順、練習問題、確認方法を書きます。
+mdには、作るもの、編集するファイル、手順、練習問題、確認方法を書きます。
+
+スターターコードには、完成実装ではなく、受講者が編集するためのTODOや仮表示を残します。
 
 作業後は、自分のブランチをpushします。
 
@@ -271,7 +283,7 @@ done
 
 ### 1. 問題文を用意する
 
-まず、問題文だけを入れるPRを作ります。
+まず、問題文とスターターコードを入れるPRを作ります。
 
 ```bash
 git switch main
@@ -279,17 +291,26 @@ git pull
 git switch -c prepare/001-project-foundation
 ```
 
-このPRでは、原則として次だけを変更します。
+このPRでは、原則として次を変更します。
 
 ```text
 Lessons/<lesson>.md
+src/app/(pages)/.../<lesson>/page.tsx
 ```
 
-必要に応じて、`Lessons/Lessons.md` や README.md の運用説明も更新します。
+必要に応じて、トップページからスターターページへ移動する導線、`Lessons/Lessons.md`、README.md の運用説明も更新します。
 
-完成実装のページやコンポーネントは、このPRでは作りません。
+このPRに入れるページやコンポーネントは、完成実装ではなくスターターコードにします。
 
-問題文PRを `main` にmergeしたあと、開始タグを付けます。
+スターターコードには、次を残します。
+
+```text
+TODO
+仮表示
+受講者が編集する配列や関数
+```
+
+問題文とスターターコードのPRを `main` にmergeしたあと、開始タグを付けます。
 
 ```bash
 git switch main
@@ -307,6 +328,8 @@ git switch -c lesson/001-project-foundation start/001-project-foundation
 ```
 
 このPRでは、問題文に対応する完成実装を作ります。
+
+スターターコードのTODOや仮表示を、完成見本の実装に置き換えます。
 
 例:
 
@@ -333,12 +356,14 @@ git push origin end/001-project-foundation
 ```text
 prepare PR merge後
   start/<lesson>
+  問題文とスターターコードが入っている
 
 完成見本PR merge後
   end/<lesson>
+  問題文と完成実装が入っている
 ```
 
-`start/...` を、問題文がないコミットに付けてはいけません。
+`start/...` を、問題文やスターターコードがないコミットに付けてはいけません。
 
 `end/...` を、完成実装がないコミットに付けてはいけません。
 
