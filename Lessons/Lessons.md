@@ -1,0 +1,808 @@
+# Lessons
+
+このドキュメントは、`frontend-study` のレッスン全体計画です。
+
+README.md は、リポジトリの目的、セットアップ、日常的に使うコマンドを書く場所です。
+
+`Lessons.md` は、教材をどの順番で進めるか、各レッスンの開始地点と完成地点をどう管理するか、参加者の作業ブランチやPRをどう扱うかを整理する場所です。
+
+## 現在の前提
+
+このリポジトリでは、参加者がReact / Next.jsの学習に集中できるように、開発環境と品質チェックの基盤は管理者が先に用意します。
+
+すでに `main` に入っている前提:
+
+- Next.js App Router 初期構成
+- React
+- TypeScript
+- `src` ディレクトリ
+- Tailwind CSS
+- ESLint
+- Prettier
+- `.gitignore`
+- Dockerfile
+- `compose.yaml`
+- `.dockerignore`
+- GitHub Actions
+- GitHub labels
+- GitHub ruleset
+- required status check
+
+参加者に、Dockerfile、GitHub Actions、formatter設定、ignore設定を作らせるレッスンは作りません。
+
+## 実行環境
+
+標準の実行環境は、macOS + nvm + npm です。
+
+```text
+macOS
+nvm
+Node.js 25.8.2
+npm 11
+```
+
+Node.js のバージョンは `.nvmrc` を正とします。
+
+```bash
+nvm install
+nvm use
+npm ci
+npm run dev
+```
+
+Dockerは任意の実行環境です。Dockerを使いたい参加者は、管理者が用意した `Dockerfile` と `compose.yaml` を使います。
+
+```bash
+docker compose up --build
+```
+
+Docker自体の構築や詳しい解説は、このカリキュラムのスコープ外です。
+
+## 品質チェック
+
+このリポジトリでは、次のコマンドを標準の確認コマンドにします。
+
+```bash
+npm run format:check
+npm run lint
+npm run build
+```
+
+GitHub Actions では、Pull Request 作成時に次を実行します。
+
+```bash
+npm ci
+npm run format:check
+npm run lint
+npm run build
+```
+
+`main` の ruleset では、`Format, lint, and build` を required status check にします。
+
+## レッスン運用
+
+このリポジトリでは、管理者が教材を `main` に少しずつ積み上げます。
+
+各レッスンには、開始地点と完成地点のタグを用意します。
+
+```text
+main
+  最新の完成版
+
+start/<lesson>
+  そのレッスンを始める地点
+
+end/<lesson>
+  そのレッスンの完成見本
+
+<username>/<lesson>
+  参加者ごとの作業ブランチ
+```
+
+タグはブランチではありません。特定のコミットに付ける固定の目印です。
+
+公開済みのタグは動かしません。タグは参加者が学習開始地点や完成見本として使うためです。
+
+レッスン内容を大きく変える場合は、既存タグを上書きせず、`-v2` のタグを作ります。
+
+```text
+start/001-project-foundation-v2
+end/001-project-foundation-v2
+```
+
+## 名前のルール
+
+### タグ
+
+```text
+start/001-project-foundation
+end/001-project-foundation
+```
+
+`start/...` は開始地点です。
+
+`end/...` は完成見本です。
+
+### 参加者ブランチ
+
+```text
+<username>/<lesson>
+```
+
+例:
+
+```text
+sirotyuke/001-project-foundation
+taro/002-react-jsx
+hanako/006-hooks-use-state
+```
+
+参加者は、必ず自分の名前を先頭に付けたブランチで作業します。
+
+## 参加者の進め方
+
+まず、タグを取得します。
+
+```bash
+git fetch --all --tags
+```
+
+次に、レッスンの開始タグから自分用ブランチを作ります。
+
+```bash
+git switch -c <username>/001-project-foundation start/001-project-foundation
+```
+
+例:
+
+```bash
+git switch -c taro/001-project-foundation start/001-project-foundation
+```
+
+作業後は、自分のブランチをpushします。
+
+```bash
+git push -u origin taro/001-project-foundation
+```
+
+完成見本を見たい場合は、`end/...` タグを確認します。
+
+```bash
+git switch --detach end/001-project-foundation
+```
+
+自分の作業と完成見本を比べたい場合は、作業ブランチに戻ってからdiffを見ます。
+
+```bash
+git switch taro/001-project-foundation
+git diff end/001-project-foundation
+```
+
+参加者のPRはレビュー用です。原則として `main` にはmergeしません。
+
+PRはcloseせず、学習ログとして残します。
+
+```text
+taro/001-project-foundation
+  mainへPRを作る
+  レビューを受ける
+  必要なら修正する
+  学習が終わったらdoneラベルを付ける
+```
+
+`main` にmergeするのは、管理者が作る教材PRだけです。
+
+## 参加者PRラベル
+
+参加者PRは、ラベルで状態を管理します。
+
+```text
+learning
+  参加者の学習PR
+
+needs-review
+  レビュー待ち
+
+needs-fix
+  修正待ち
+
+reviewed
+  レビュー済み
+
+done
+  学習完了
+```
+
+ラベルは管理者が付けます。参加者が付けても問題ありませんが、最終的な状態管理は管理者が確認します。
+
+## 管理者の進め方
+
+管理者は、レッスンを作る前に開始タグを付けます。
+
+```bash
+git switch main
+git pull
+git tag start/001-project-foundation
+git push origin start/001-project-foundation
+```
+
+その後、作業ブランチを作ってレッスンを実装します。
+
+```bash
+git switch -c lesson/001-project-foundation
+```
+
+レッスンが完成したらPRを作成し、GitHub Actions と review を通して、`main` に squash merge します。
+
+merge後の `main` に完成タグを付けます。
+
+```bash
+git switch main
+git pull
+git tag end/001-project-foundation
+git push origin end/001-project-foundation
+```
+
+## 個別レッスンファイル
+
+`Lessons.md` は全体計画です。各レッスンの詳しい手順は、別ファイルに書きます。
+
+```text
+Lessons/
+  Lessons.md
+  001-project-foundation.md
+  002-react-jsx.md
+  003-react-list-key.md
+```
+
+個別レッスンファイルには、次の内容を書きます。
+
+```text
+# 001-project-foundation
+
+## Goal
+このレッスンで学ぶこと
+
+## Start
+開始タグ
+
+## End
+完成タグ
+
+## Build
+作るもの
+
+## Steps
+作業手順
+
+## Check
+確認コマンド
+```
+
+## レッスン設計の考え方
+
+初学者向けなので、1レッスンで学ぶことを詰め込みすぎません。
+
+TypeScript / TSX は独立した巨大レッスンにはせず、各レッスンの中で少しずつ扱います。
+
+例:
+
+- 001で生成済みのNext.js構成と `.ts` / `.tsx` の違いを見る
+- 004でpropsの型を書く
+- 005でeventの型を書く
+- 006以降でstateやhooksの型を確認する
+
+Hooks は、最初に `useState` / `useEffect` / `useRef` をしっかり画面で確認します。
+
+その後、全てのReact Hooksを「実務でよく使うもの」「使いどころを知るもの」「ライブラリ寄り・発展寄りのもの」に分けて扱います。
+
+## レッスン一覧
+
+### 001-project-foundation
+
+管理者が用意したNext.js App Routerの初期構成を読みます。
+
+参加者は `create-next-app` を実行しません。生成済みのプロジェクトをcloneして、構成を読み、起動します。
+
+学ぶこと:
+
+- `.nvmrc`
+- `package.json`
+- `package-lock.json`
+- `src` ディレクトリ
+- `src/app/layout.tsx`
+- `src/app/page.tsx`
+- `next.config.ts`
+- `tsconfig.json`
+- `.ts` と `.tsx` の違い
+- `npm ci`
+- `npm run dev`
+- `npm run build`
+- `npm run lint`
+- `npm run format:check`
+
+タグ:
+
+```text
+start/001-project-foundation
+end/001-project-foundation
+```
+
+### 002-react-jsx
+
+ReactのJSXを学ぶページを作ります。
+
+学ぶこと:
+
+- JSX
+- `{}` による値の埋め込み
+- `className`
+- 条件分岐
+- コンポーネントとしてUIを返す感覚
+
+タグ:
+
+```text
+start/002-react-jsx
+end/002-react-jsx
+```
+
+### 003-react-list-key
+
+配列の表示と `key` を学ぶページを作ります。
+
+学ぶこと:
+
+- 配列を `map` で表示する
+- `key` の役割
+- 条件分岐とリスト表示を組み合わせる
+- 表示用データとUIの分離
+
+タグ:
+
+```text
+start/003-react-list-key
+end/003-react-list-key
+```
+
+### 004-react-props-children
+
+props と children を学ぶページを作ります。
+
+学ぶこと:
+
+- props
+- propsの型
+- children
+- 親コンポーネントから子コンポーネントへ値を渡す
+
+タグ:
+
+```text
+start/004-react-props-children
+end/004-react-props-children
+```
+
+### 005-react-events
+
+イベント処理を学ぶページを作ります。
+
+学ぶこと:
+
+- `onClick`
+- `onChange`
+- eventの型
+- event handler
+- buttonやselectの操作
+
+タグ:
+
+```text
+start/005-react-events
+end/005-react-events
+```
+
+### 006-hooks-use-state
+
+`useState` を学ぶページを作ります。
+
+学ぶこと:
+
+- `useState`
+- stateによる再レンダー
+- 前のstateを使った更新
+- 配列やオブジェクトのstate更新
+- stateの型推論
+
+タグ:
+
+```text
+start/006-hooks-use-state
+end/006-hooks-use-state
+```
+
+### 007-react-forms-controlled-component
+
+フォーム入力と controlled component を学ぶページを作ります。
+
+学ぶこと:
+
+- inputの値をstateで管理する
+- controlled component
+- `onChange`
+- form submit
+- eventの型
+
+タグ:
+
+```text
+start/007-react-forms-controlled-component
+end/007-react-forms-controlled-component
+```
+
+### 008-next-app-router-routing
+
+Next.js App Router の基本ルーティングを学びます。
+
+Route Handler や SSR / CSR より前に、まず画面の置き場所とURLの関係を理解します。
+
+学ぶこと:
+
+- `src/app`
+- `layout.tsx`
+- `page.tsx`
+- Route Group
+- nested routes
+- dynamic routes
+- `src/app/(pages)/users/[userId]/page.tsx`
+- `:user_id` ではなく `[userId]` で書くこと
+
+タグ:
+
+```text
+start/008-next-app-router-routing
+end/008-next-app-router-routing
+```
+
+### 009-hooks-use-effect
+
+`useEffect` を学ぶページを作ります。
+
+学ぶこと:
+
+- `useEffect`
+- 依存配列
+- cleanup
+- ブラウザ側でのデータ取得
+- 使いすぎないための考え方
+
+タグ:
+
+```text
+start/009-hooks-use-effect
+end/009-hooks-use-effect
+```
+
+### 010-hooks-use-ref
+
+`useRef` を学ぶページを作ります。
+
+学ぶこと:
+
+- `useRef`
+- DOM参照
+- 再レンダーされない値
+- inputへのfocus
+
+タグ:
+
+```text
+start/010-hooks-use-ref
+end/010-hooks-use-ref
+```
+
+### 011-hooks-rules
+
+Hookのルールを学ぶページを作ります。
+
+学ぶこと:
+
+- Hooksはトップレベルで呼ぶ
+- 条件分岐やループの中でHooksを呼ばない
+- Reactコンポーネントかcustom hookからHooksを呼ぶ
+- custom hookは `use` で始める
+- ESLintがHookのルール違反を検出する理由
+
+タグ:
+
+```text
+start/011-hooks-rules
+end/011-hooks-rules
+```
+
+### 012-custom-hooks
+
+custom hooks を学ぶページを作ります。
+
+学ぶこと:
+
+- custom hook
+- `use` で始まる命名
+- ロジックの再利用
+- `src/hooks` に置くケース
+- ページ近くの `_hooks` に置くケース
+
+タグ:
+
+```text
+start/012-custom-hooks
+end/012-custom-hooks
+```
+
+### 013-hooks-reducer-context
+
+状態管理と共有値を学びます。
+
+学ぶこと:
+
+- `useReducer`
+- reducer
+- action
+- `useContext`
+- `createContext`
+- props drillingとの違い
+
+タグ:
+
+```text
+start/013-hooks-reducer-context
+end/013-hooks-reducer-context
+```
+
+### 014-hooks-memo-callback
+
+メモ化の基本を学びます。
+
+React Compiler は最初の教材では無効にしています。まずは手動のメモ化が何をしているかを観察します。
+
+学ぶこと:
+
+- `useMemo`
+- `useCallback`
+- 再計算を避ける
+- 子コンポーネントへ渡す関数
+- 使いすぎないための考え方
+
+タグ:
+
+```text
+start/014-hooks-memo-callback
+end/014-hooks-memo-callback
+```
+
+### 015-hooks-transition-deferred-id
+
+入力や重いUI更新を見ながら、非同期UIに近いHooksを学びます。
+
+学ぶこと:
+
+- `useTransition`
+- `useDeferredValue`
+- `useId`
+- pending表示
+- accessibility用のid
+
+タグ:
+
+```text
+start/015-hooks-transition-deferred-id
+end/015-hooks-transition-deferred-id
+```
+
+### 016-hooks-escape-hatches
+
+発展的なHooksを、使いどころがわかる小さい例で確認します。
+
+学ぶこと:
+
+- `useLayoutEffect`
+- `useImperativeHandle`
+- `useSyncExternalStore`
+- `useDebugValue`
+- `useInsertionEffect`
+- `useEffectEvent`
+
+タグ:
+
+```text
+start/016-hooks-escape-hatches
+end/016-hooks-escape-hatches
+```
+
+### 017-server-client-components
+
+Server Component と Client Component を比較するページを作ります。
+
+学ぶこと:
+
+- Server Component
+- Client Component
+- `'use client'`
+- propsの受け渡し
+- Client Componentの境界を小さくする考え方
+
+タグ:
+
+```text
+start/017-server-client-components
+end/017-server-client-components
+```
+
+### 018-route-handler
+
+App Router の Route Handler を使ってAPIを作ります。
+
+学ぶこと:
+
+- `app/api/**/route.ts`
+- `GET`
+- `POST`
+- `Request`
+- `Response`
+- `NextRequest`
+- `NextResponse`
+
+タグ:
+
+```text
+start/018-route-handler
+end/018-route-handler
+```
+
+### 019-rendering-static-dynamic-ssr-csr
+
+Next.js App Router の rendering を比較します。
+
+SSR / CSR だけでなく、App Router で混乱しやすい Static Rendering、Dynamic Rendering、fetch cache も一緒に扱います。
+
+学ぶこと:
+
+- SSR
+- CSR
+- Static Rendering
+- Dynamic Rendering
+- Streaming
+- Server Componentでのデータ取得
+- Client Componentでのデータ取得
+- `fetch` cache
+- `cache: 'no-store'`
+- `revalidate`
+
+タグ:
+
+```text
+start/019-rendering-static-dynamic-ssr-csr
+end/019-rendering-static-dynamic-ssr-csr
+```
+
+### 020-next-navigation
+
+App Router の画面遷移を学ぶページを作ります。
+
+学ぶこと:
+
+- `Link`
+- `useRouter`
+- `usePathname`
+- `useSearchParams`
+- dynamic routes
+- query string
+
+タグ:
+
+```text
+start/020-next-navigation
+end/020-next-navigation
+```
+
+### 021-forms-actions-optimistic-ui
+
+React 19 と Next.js のフォーム周りを学びます。
+
+学ぶこと:
+
+- `useActionState`
+- `useOptimistic`
+- `useFormStatus`
+- form action
+- pending表示
+- optimistic UI
+- Server Actions
+- `'use server'`
+
+タグ:
+
+```text
+start/021-forms-actions-optimistic-ui
+end/021-forms-actions-optimistic-ui
+```
+
+### 022-suspense-use-loading-error
+
+非同期UIとエラー境界の基本を学びます。
+
+`use` はReactのAPIですが、通常のHooksとはルールが少し違う特別なAPIとして扱います。
+
+学ぶこと:
+
+- Suspense
+- `use`
+- `loading.tsx`
+- `error.tsx`
+- `not-found.tsx`
+- Server Componentと非同期データ
+
+タグ:
+
+```text
+start/022-suspense-use-loading-error
+end/022-suspense-use-loading-error
+```
+
+## Hooksカバー範囲
+
+React 19.2 / React DOM 19.2 のHooksを、次のレッスンで扱います。
+
+| Hook                   | 扱うレッスン |
+| ---------------------- | ------------ |
+| `useState`             | 006          |
+| `useEffect`            | 009          |
+| `useRef`               | 010          |
+| `useReducer`           | 013          |
+| `useContext`           | 013          |
+| `useMemo`              | 014          |
+| `useCallback`          | 014          |
+| `useTransition`        | 015          |
+| `useDeferredValue`     | 015          |
+| `useId`                | 015          |
+| `useLayoutEffect`      | 016          |
+| `useImperativeHandle`  | 016          |
+| `useSyncExternalStore` | 016          |
+| `useDebugValue`        | 016          |
+| `useInsertionEffect`   | 016          |
+| `useEffectEvent`       | 016          |
+| `useActionState`       | 021          |
+| `useOptimistic`        | 021          |
+| `useFormStatus`        | 021          |
+
+`use` はHooks一覧とは別に、022で特別なReact APIとして扱います。
+
+## スコープ外
+
+このカリキュラムでは、React / Next.js App Router の基礎理解を優先します。
+
+次の内容は、必要になったタイミングで使いますが、詳しい解説はメインのレッスン対象にしません。
+
+- Tailwind CSSの詳しい書き方
+- デザインシステム
+- CSS設計
+- バックエンド実装
+- DB設計
+- 認証
+- 決済
+- 本番デプロイ運用
+- Dockerそのものの構築
+
+Tailwind CSS は UI を見やすくするために使いますが、Tailwind CSS自体の詳しい書き方は扱いません。
+
+## 後続候補
+
+基本レッスンが終わったあとに、必要に応じて追加します。
+
+- `generateMetadata`
+- metadata設計
+- 画像最適化
+- フォームバリデーション
+- テスト
+- アクセシビリティ
+- パフォーマンス計測
