@@ -47,7 +47,7 @@ function ClassNameExample() {
 }
 
 function ConditionalExample() {
-  const hasUnderstoodJsx = false;
+  const isReady = false;
 
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
@@ -58,11 +58,11 @@ function ConditionalExample() {
       <div className="mt-4 rounded-md bg-[#f7f7f2] p-4">
         <p className="text-sm text-[#425466]">今の表示</p>
         <p className="mt-2 text-lg font-semibold text-[#15191f]">
-          {hasUnderstoodJsx ? 'JSXの基本はOKです。' : 'まずはJSXの形に慣れましょう。'}
+          {isReady ? '準備OK' : 'まだ準備中'}
         </p>
       </div>
       <pre className="mt-4 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
-        <code>{"{isReady ? '準備OK' : 'まだ準備中'}"}</code>
+        <code>{"const isReady = false;\n\n<p>{isReady ? '準備OK' : 'まだ準備中'}</p>"}</code>
       </pre>
     </section>
   );
