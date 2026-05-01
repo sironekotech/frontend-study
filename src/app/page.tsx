@@ -1,3 +1,18 @@
+const lessonLinks = [
+  {
+    id: '002-react-jsx',
+    title: '002-react-jsx',
+    href: '/react-basics/jsx',
+    description: 'JSX、波かっこ、className、条件分岐を画面で確認します。',
+  },
+  {
+    id: '003-react-list-key',
+    title: '003-react-list-key',
+    href: '/react-basics/list-key',
+    description: 'スターターコードを編集して、配列、map、key、filterを学びます。',
+  },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#f7f7f2] px-6 py-10 text-[#1f2933] sm:px-10">
@@ -50,17 +65,21 @@ export default function Home() {
         </section>
 
         <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-          <p className="text-sm font-semibold text-[#3f7d58]">Current Lesson</p>
-          <h2 className="mt-3 text-2xl font-semibold text-[#15191f]">002-react-jsx</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#425466]">
-            JSX、波かっこ、className、条件分岐を画面で確認します。
-          </p>
-          <a
-            href="/react-basics/jsx"
-            className="mt-5 inline-flex rounded-md bg-[#15191f] px-4 py-2 text-sm font-semibold text-white"
-          >
-            JSXページを開く
-          </a>
+          <p className="text-sm font-semibold text-[#3f7d58]">Lesson Pages</p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            {lessonLinks.map((lesson) => (
+              <article key={lesson.id} className="rounded-md border border-[#d8d6c8] p-4">
+                <h2 className="text-xl font-semibold text-[#15191f]">{lesson.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-[#425466]">{lesson.description}</p>
+                <a
+                  href={lesson.href}
+                  className="mt-5 inline-flex rounded-md bg-[#15191f] px-4 py-2 text-sm font-semibold text-white"
+                >
+                  ページを開く
+                </a>
+              </article>
+            ))}
+          </div>
         </section>
       </div>
     </main>
