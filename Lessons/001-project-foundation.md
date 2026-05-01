@@ -20,13 +20,19 @@ start/001-project-foundation
 
 このタグは、Lesson 1 を始めるためのコード状態です。
 
+Lesson 1 は、アプリ機能を実装するレッスンではありません。
+
+そのため、`start/001-project-foundation` にはこの教材ファイルと確認対象のプロジェクト一式が入っています。
+
 ## End
 
 ```text
 end/001-project-foundation
 ```
 
-このタグは、Lesson 1 の教材ファイルが `main` に入ったあとで管理者が付けます。
+このタグは、Lesson 1 の確認が終わった完成見本の位置です。
+
+Lesson 1 はコード差分を作るレッスンではないため、`start/001-project-foundation` と `end/001-project-foundation` は同じコミットを指します。
 
 ## Build
 
@@ -67,9 +73,9 @@ JSX は Lesson 2 で学びます。
 
 ## Before You Start
 
-この教材ファイルは、GitHub上の `main` や別ウィンドウで開いたまま進めます。
+開始タグから作った作業ブランチには、この教材ファイルが含まれています。
 
-開始タグから作った作業ブランチには、この教材ファイル自体が含まれない場合があります。
+まずこのファイルを読みながら進めます。
 
 タグを取得します。
 
