@@ -28,22 +28,22 @@
 ## Start
 
 ```text
-start/003-react-list-key-v2
+start/003-react-list-key
 ```
 
 ## End
 
 ```text
-end/003-react-list-key-v2
+end/003-react-list-key
 ```
 
-`start/003-react-list-key-v2` は、この問題文とスターターコードが `main` に入ったあとで管理者が付けます。
+`start/003-react-list-key` は、この問題文とスターターコードが `main` に入ったあとで管理者が付けます。
 
-`end/003-react-list-key-v2` は、完成見本の実装が `main` に入ったあとで管理者が付けます。
+`end/003-react-list-key` は、完成見本の実装が `main` に入ったあとで管理者が付けます。
 
 ## Build
 
-`start/003-react-list-key-v2` には、次のスターターページが入っています。
+`start/003-react-list-key` には、次のスターターページが入っています。
 
 ```text
 src/app/(pages)/react-basics/list-key/page.tsx
@@ -78,13 +78,13 @@ git fetch --all --tags
 Lesson 3 の開始タグから、自分用のブランチを作ります。
 
 ```bash
-git switch -c <username>/003-react-list-key start/003-react-list-key-v2
+git switch -c <username>/003-react-list-key start/003-react-list-key
 ```
 
 例:
 
 ```bash
-git switch -c taro/003-react-list-key start/003-react-list-key-v2
+git switch -c taro/003-react-list-key start/003-react-list-key
 ```
 
 ## What You Will Build
