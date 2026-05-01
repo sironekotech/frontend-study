@@ -134,7 +134,7 @@ end/001-project-foundation
 ```text
 sirotyuke/001-project-foundation
 taro/002-react-jsx
-hanako/007-hooks-use-state
+hanako/006-hooks-use-state
 ```
 
 参加者は、必ず自分の名前を先頭に付けたブランチで作業します。
@@ -290,7 +290,7 @@ TypeScript / TSX は独立した巨大レッスンにはせず、各レッスン
 - 001で生成済みのNext.js構成と `.ts` / `.tsx` の違いを見る
 - 004でpropsの型を書く
 - 005でeventの型を書く
-- 007以降でstateやhooksの型を確認する
+- 006以降でstateやhooksの型を確認する
 
 Hooks は、最初に `useState` / `useEffect` / `useRef` をしっかり画面で確認します。
 
@@ -383,26 +383,64 @@ start/004-react-props-children
 end/004-react-props-children
 ```
 
-### 005-react-events-forms
+### 005-react-events
 
-イベント処理とフォーム入力を学ぶページを作ります。
+イベント処理を学ぶページを作ります。
 
 学ぶこと:
 
 - `onClick`
 - `onChange`
-- controlled component
+- eventの型
+- event handler
+- buttonやselectの操作
+
+タグ:
+
+```text
+start/005-react-events
+end/005-react-events
+```
+
+### 006-hooks-use-state
+
+`useState` を学ぶページを作ります。
+
+学ぶこと:
+
+- `useState`
+- stateによる再レンダー
+- 前のstateを使った更新
+- 配列やオブジェクトのstate更新
+- stateの型推論
+
+タグ:
+
+```text
+start/006-hooks-use-state
+end/006-hooks-use-state
+```
+
+### 007-react-forms-controlled-component
+
+フォーム入力と controlled component を学ぶページを作ります。
+
+学ぶこと:
+
 - inputの値をstateで管理する
+- controlled component
+- `onChange`
+- form submit
 - eventの型
 
 タグ:
 
 ```text
-start/005-react-events-forms
-end/005-react-events-forms
+start/007-react-forms-controlled-component
+end/007-react-forms-controlled-component
 ```
 
-### 006-next-app-router-routing
+### 008-next-app-router-routing
 
 Next.js App Router の基本ルーティングを学びます。
 
@@ -422,30 +460,11 @@ Route Handler や SSR / CSR より前に、まず画面の置き場所とURLの�
 タグ:
 
 ```text
-start/006-next-app-router-routing
-end/006-next-app-router-routing
+start/008-next-app-router-routing
+end/008-next-app-router-routing
 ```
 
-### 007-hooks-use-state
-
-`useState` を学ぶページを作ります。
-
-学ぶこと:
-
-- `useState`
-- stateによる再レンダー
-- 前のstateを使った更新
-- 配列やオブジェクトのstate更新
-- stateの型推論
-
-タグ:
-
-```text
-start/007-hooks-use-state
-end/007-hooks-use-state
-```
-
-### 008-hooks-use-effect
+### 009-hooks-use-effect
 
 `useEffect` を学ぶページを作ります。
 
@@ -460,11 +479,11 @@ end/007-hooks-use-state
 タグ:
 
 ```text
-start/008-hooks-use-effect
-end/008-hooks-use-effect
+start/009-hooks-use-effect
+end/009-hooks-use-effect
 ```
 
-### 009-hooks-use-ref
+### 010-hooks-use-ref
 
 `useRef` を学ぶページを作ります。
 
@@ -478,11 +497,11 @@ end/008-hooks-use-effect
 タグ:
 
 ```text
-start/009-hooks-use-ref
-end/009-hooks-use-ref
+start/010-hooks-use-ref
+end/010-hooks-use-ref
 ```
 
-### 010-hooks-rules
+### 011-hooks-rules
 
 Hookのルールを学ぶページを作ります。
 
@@ -497,11 +516,11 @@ Hookのルールを学ぶページを作ります。
 タグ:
 
 ```text
-start/010-hooks-rules
-end/010-hooks-rules
+start/011-hooks-rules
+end/011-hooks-rules
 ```
 
-### 011-custom-hooks
+### 012-custom-hooks
 
 custom hooks を学ぶページを作ります。
 
@@ -516,11 +535,11 @@ custom hooks を学ぶページを作ります。
 タグ:
 
 ```text
-start/011-custom-hooks
-end/011-custom-hooks
+start/012-custom-hooks
+end/012-custom-hooks
 ```
 
-### 012-hooks-reducer-context
+### 013-hooks-reducer-context
 
 状態管理と共有値を学びます。
 
@@ -536,11 +555,11 @@ end/011-custom-hooks
 タグ:
 
 ```text
-start/012-hooks-reducer-context
-end/012-hooks-reducer-context
+start/013-hooks-reducer-context
+end/013-hooks-reducer-context
 ```
 
-### 013-hooks-memo-callback
+### 014-hooks-memo-callback
 
 メモ化の基本を学びます。
 
@@ -557,11 +576,11 @@ React Compiler は最初の教材では無効にしています。まずは手�
 タグ:
 
 ```text
-start/013-hooks-memo-callback
-end/013-hooks-memo-callback
+start/014-hooks-memo-callback
+end/014-hooks-memo-callback
 ```
 
-### 014-hooks-transition-deferred-id
+### 015-hooks-transition-deferred-id
 
 入力や重いUI更新を見ながら、非同期UIに近いHooksを学びます。
 
@@ -576,11 +595,11 @@ end/013-hooks-memo-callback
 タグ:
 
 ```text
-start/014-hooks-transition-deferred-id
-end/014-hooks-transition-deferred-id
+start/015-hooks-transition-deferred-id
+end/015-hooks-transition-deferred-id
 ```
 
-### 015-hooks-escape-hatches
+### 016-hooks-escape-hatches
 
 発展的なHooksを、使いどころがわかる小さい例で確認します。
 
@@ -596,11 +615,11 @@ end/014-hooks-transition-deferred-id
 タグ:
 
 ```text
-start/015-hooks-escape-hatches
-end/015-hooks-escape-hatches
+start/016-hooks-escape-hatches
+end/016-hooks-escape-hatches
 ```
 
-### 016-server-client-components
+### 017-server-client-components
 
 Server Component と Client Component を比較するページを作ります。
 
@@ -615,11 +634,11 @@ Server Component と Client Component を比較するページを作ります。
 タグ:
 
 ```text
-start/016-server-client-components
-end/016-server-client-components
+start/017-server-client-components
+end/017-server-client-components
 ```
 
-### 017-route-handler
+### 018-route-handler
 
 App Router の Route Handler を使ってAPIを作ります。
 
@@ -636,11 +655,11 @@ App Router の Route Handler を使ってAPIを作ります。
 タグ:
 
 ```text
-start/017-route-handler
-end/017-route-handler
+start/018-route-handler
+end/018-route-handler
 ```
 
-### 018-rendering-static-dynamic-ssr-csr
+### 019-rendering-static-dynamic-ssr-csr
 
 Next.js App Router の rendering を比較します。
 
@@ -662,11 +681,11 @@ SSR / CSR だけでなく、App Router で混乱しやすい Static Rendering、
 タグ:
 
 ```text
-start/018-rendering-static-dynamic-ssr-csr
-end/018-rendering-static-dynamic-ssr-csr
+start/019-rendering-static-dynamic-ssr-csr
+end/019-rendering-static-dynamic-ssr-csr
 ```
 
-### 019-next-navigation
+### 020-next-navigation
 
 App Router の画面遷移を学ぶページを作ります。
 
@@ -682,11 +701,11 @@ App Router の画面遷移を学ぶページを作ります。
 タグ:
 
 ```text
-start/019-next-navigation
-end/019-next-navigation
+start/020-next-navigation
+end/020-next-navigation
 ```
 
-### 020-forms-actions-optimistic-ui
+### 021-forms-actions-optimistic-ui
 
 React 19 と Next.js のフォーム周りを学びます。
 
@@ -704,11 +723,11 @@ React 19 と Next.js のフォーム周りを学びます。
 タグ:
 
 ```text
-start/020-forms-actions-optimistic-ui
-end/020-forms-actions-optimistic-ui
+start/021-forms-actions-optimistic-ui
+end/021-forms-actions-optimistic-ui
 ```
 
-### 021-suspense-use-loading-error
+### 022-suspense-use-loading-error
 
 非同期UIとエラー境界の基本を学びます。
 
@@ -726,8 +745,8 @@ end/020-forms-actions-optimistic-ui
 タグ:
 
 ```text
-start/021-suspense-use-loading-error
-end/021-suspense-use-loading-error
+start/022-suspense-use-loading-error
+end/022-suspense-use-loading-error
 ```
 
 ## Hooksカバー範囲
@@ -736,27 +755,27 @@ React 19.2 / React DOM 19.2 のHooksを、次のレッスンで扱います。
 
 | Hook                   | 扱うレッスン |
 | ---------------------- | ------------ |
-| `useState`             | 007          |
-| `useEffect`            | 008          |
-| `useRef`               | 009          |
-| `useReducer`           | 012          |
-| `useContext`           | 012          |
-| `useMemo`              | 013          |
-| `useCallback`          | 013          |
-| `useTransition`        | 014          |
-| `useDeferredValue`     | 014          |
-| `useId`                | 014          |
-| `useLayoutEffect`      | 015          |
-| `useImperativeHandle`  | 015          |
-| `useSyncExternalStore` | 015          |
-| `useDebugValue`        | 015          |
-| `useInsertionEffect`   | 015          |
-| `useEffectEvent`       | 015          |
-| `useActionState`       | 020          |
-| `useOptimistic`        | 020          |
-| `useFormStatus`        | 020          |
+| `useState`             | 006          |
+| `useEffect`            | 009          |
+| `useRef`               | 010          |
+| `useReducer`           | 013          |
+| `useContext`           | 013          |
+| `useMemo`              | 014          |
+| `useCallback`          | 014          |
+| `useTransition`        | 015          |
+| `useDeferredValue`     | 015          |
+| `useId`                | 015          |
+| `useLayoutEffect`      | 016          |
+| `useImperativeHandle`  | 016          |
+| `useSyncExternalStore` | 016          |
+| `useDebugValue`        | 016          |
+| `useInsertionEffect`   | 016          |
+| `useEffectEvent`       | 016          |
+| `useActionState`       | 021          |
+| `useOptimistic`        | 021          |
+| `useFormStatus`        | 021          |
 
-`use` はHooks一覧とは別に、021で特別なReact APIとして扱います。
+`use` はHooks一覧とは別に、022で特別なReact APIとして扱います。
 
 ## スコープ外
 
