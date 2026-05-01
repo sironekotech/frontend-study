@@ -91,9 +91,11 @@ main
 
 start/<lesson>
   そのレッスンを始める地点
+  問題文のmdはあるが、完成実装はまだない
 
 end/<lesson>
   そのレッスンの完成見本
+  問題文のmdと完成実装が両方ある
 
 <username>/<lesson>
   参加者ごとの作業ブランチ
@@ -103,11 +105,51 @@ end/<lesson>
 
 公開済みのタグは動かしません。タグは参加者が学習開始地点や完成見本として使うためです。
 
-レッスン内容を大きく変える場合は、既存タグを上書きせず、`-v2` のタグを作ります。
+レッスン内容を大きく変える場合や、開始タグを誤った位置に付けた場合は、既存タグを上書きせず、`-v2` のタグを作ります。
 
 ```text
 start/001-project-foundation-v2
 end/001-project-foundation-v2
+```
+
+## レッスンタグの前提
+
+`start/...` は、前のレッスンの完成直後ではありません。
+
+`start/...` は、そのレッスンの問題文が `main` に入ったあとに付けます。
+
+つまり、参加者が `start/...` からブランチを作った時点で、次のファイルを読める必要があります。
+
+```text
+Lessons/<lesson>.md
+```
+
+一方で、`start/...` には完成実装を入れません。
+
+参加者が自分で作る対象は、`start/...` にはまだ存在しないか、未完成の状態にします。
+
+```text
+start/<lesson>
+  Lessons/<lesson>.md はある
+  完成実装はまだない
+
+end/<lesson>
+  Lessons/<lesson>.md がある
+  完成実装がある
+```
+
+既に公開済みの `start/...` に問題文が入っていない場合は、そのタグを動かしません。
+
+修正版として `-v2` タグを作ります。
+
+例:
+
+```text
+start/003-react-list-key
+  旧タグ。問題文がないため今後は使わない。
+
+start/003-react-list-key-v2
+  修正版。問題文が入った開始地点。
 ```
 
 ## 名前のルール
@@ -158,6 +200,14 @@ git switch -c <username>/001-project-foundation start/001-project-foundation
 ```bash
 git switch -c taro/001-project-foundation start/001-project-foundation
 ```
+
+ブランチを作ったら、最初にそのレッスンのmdを読みます。
+
+```text
+Lessons/001-project-foundation.md
+```
+
+mdには、作るもの、手順、練習問題、確認方法を書きます。
 
 作業後は、自分のブランチをpushします。
 
@@ -217,7 +267,29 @@ done
 
 ## 管理者の進め方
 
-管理者は、レッスンを作る前に開始タグを付けます。
+管理者は、レッスンを2段階で作ります。
+
+### 1. 問題文を用意する
+
+まず、問題文だけを入れるPRを作ります。
+
+```bash
+git switch main
+git pull
+git switch -c prepare/001-project-foundation
+```
+
+このPRでは、原則として次だけを変更します。
+
+```text
+Lessons/<lesson>.md
+```
+
+必要に応じて、`Lessons/Lessons.md` や README.md の運用説明も更新します。
+
+完成実装のページやコンポーネントは、このPRでは作りません。
+
+問題文PRを `main` にmergeしたあと、開始タグを付けます。
 
 ```bash
 git switch main
@@ -226,13 +298,24 @@ git tag start/001-project-foundation
 git push origin start/001-project-foundation
 ```
 
-その後、作業ブランチを作ってレッスンを実装します。
+### 2. 完成見本を作る
+
+開始タグから、完成見本用の作業ブランチを作ります。
 
 ```bash
-git switch -c lesson/001-project-foundation
+git switch -c lesson/001-project-foundation start/001-project-foundation
 ```
 
-レッスンが完成したらPRを作成し、GitHub Actions と review を通して、`main` に squash merge します。
+このPRでは、問題文に対応する完成実装を作ります。
+
+例:
+
+```text
+src/app/(pages)/react-basics/list-key/page.tsx
+src/app/page.tsx
+```
+
+完成見本PRを作成し、GitHub Actions と review を通して、`main` に squash merge します。
 
 merge後の `main` に完成タグを付けます。
 
@@ -242,6 +325,22 @@ git pull
 git tag end/001-project-foundation
 git push origin end/001-project-foundation
 ```
+
+### タグを付けるタイミング
+
+タグを付けるタイミングは次で固定します。
+
+```text
+prepare PR merge後
+  start/<lesson>
+
+完成見本PR merge後
+  end/<lesson>
+```
+
+`start/...` を、問題文がないコミットに付けてはいけません。
+
+`end/...` を、完成実装がないコミットに付けてはいけません。
 
 ## 個別レッスンファイル
 
@@ -361,8 +460,8 @@ end/002-react-jsx
 タグ:
 
 ```text
-start/003-react-list-key
-end/003-react-list-key
+start/003-react-list-key-v2
+end/003-react-list-key-v2
 ```
 
 ### 004-react-props-children
