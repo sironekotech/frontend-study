@@ -20,17 +20,21 @@ JSXはHTMLそのものではありません。TypeScriptの中で、HTMLに近�
 start/002-react-jsx
 ```
 
+このタグには、Lesson 2 の問題文とスターターページが入っています。
+
+スターターページにはTODOと仮表示が残っています。
+
 ## End
 
 ```text
 end/002-react-jsx
 ```
 
-このタグは、Lesson 2 の教材と実装が `main` に入ったあとで管理者が付けます。
+このタグは、Lesson 2 の完成見本です。
 
 ## Build
 
-次のページを作ります。
+`start/002-react-jsx` には、次のスターターページが入っています。
 
 ```text
 src/app/(pages)/react-basics/jsx/page.tsx
@@ -43,6 +47,8 @@ URLは次です。
 ```
 
 トップページからも、この学習ページへ移動できるようにします。
+
+このレッスンでは、ファイルを新規作成するのではなく、スターターページのTODOや仮表示を置き換えます。
 
 ## Before You Start
 
@@ -66,11 +72,11 @@ git switch -c taro/002-react-jsx start/002-react-jsx
 
 ## Steps
 
-### 1. 学習ページのファイルを作る
+### 1. スターターページを開く
 
 App Routerでは、`page.tsx` がURLに対応するページになります。
 
-今回は次の場所に作ります。
+今回は次の場所を開きます。
 
 ```text
 src/app/(pages)/react-basics/jsx/page.tsx
