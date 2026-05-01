@@ -29,12 +29,25 @@ React と Next.js を学ぶための公開学習リポジトリです。
 
 ## 前提環境
 
+- macOS
+- nvm
 - Node.js
 - npm
 - Git
 - インターネット接続
 
-バージョン確認:
+このリポジトリでは、macOSでnvmを使ってNode.jsをインストールする前提にします。
+
+Next.js の必要な Node.js バージョンは変わることがあります。2026年5月時点のNext.js公式ドキュメントでは、Node.js `20.9` 以上が必要です。
+
+nvmでNode.jsを入れます。
+
+```bash
+nvm install 22
+nvm use 22
+```
+
+バージョンを確認します。
 
 ```bash
 node -v
@@ -42,11 +55,15 @@ npm -v
 git --version
 ```
 
-Next.js の必要な Node.js バージョンは変わることがあります。エラーが出た場合は、Next.js の公式ドキュメントで現在の必要バージョンを確認します。
+`nvm` が入っていない場合は、先にnvmをインストールします。
+
+参考: https://github.com/nvm-sh/nvm
 
 ## セットアップ
 
-Next.js を展開したあとの通常利用では、cloneして依存関係をインストールします。
+このリポジトリは、まずREADMEから作り始めています。そのため、最初の段階では `package.json` や `src` ディレクトリがまだありません。
+
+最初にこのリポジトリ直下へNext.jsを展開します。
 
 ### 1. リポジトリをcloneする
 
@@ -55,31 +72,13 @@ git clone https://github.com/sironekotech/frontend-study.git
 cd frontend-study
 ```
 
-### 2. 依存関係をインストールする
+### 2. Node.jsを有効にする
 
 ```bash
-npm install
+nvm use 22
 ```
 
-### 3. 開発サーバーを起動する
-
-```bash
-npm run dev
-```
-
-ブラウザで次のURLを開きます。
-
-```text
-http://localhost:3000
-```
-
-### 4. ビルド確認
-
-```bash
-npm run build
-```
-
-## 初回だけ: Next.js をリポジトリ直下に展開する
+### 3. Next.js をリポジトリ直下に展開する
 
 このリポジトリでは、`frontend-study` 配下にさらに `frontend-study` や `my-app` のようなフォルダを作りません。
 
@@ -97,12 +96,44 @@ npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --
 
 `create-next-app@latest` は時期によって生成されるファイルや質問内容が変わることがあります。このREADMEでは、App Router を使う学習リポジトリとしての推奨選択を書いています。
 
+### 4. READMEの衝突を避ける
+
 すでに `README.md` がある状態で `create-next-app` を実行すると、READMEの衝突で止まることがあります。その場合は、READMEを一時退避してから展開し、あとで戻します。
 
 ```bash
 mv README.md README.frontend-study.md
 npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --turbopack --import-alias "@/*" --use-npm --disable-git --no-react-compiler --no-agents-md
 mv README.frontend-study.md README.md
+```
+
+### 5. 開発サーバーを起動する
+
+```bash
+npm run dev
+```
+
+ブラウザで次のURLを開きます。
+
+```text
+http://localhost:3000
+```
+
+### 6. ビルド確認
+
+```bash
+npm run build
+```
+
+## Next.js展開後の通常利用
+
+Next.js のファイルがリポジトリに入ったあとは、cloneして依存関係をインストールします。
+
+```bash
+git clone https://github.com/sironekotech/frontend-study.git
+cd frontend-study
+nvm use 22
+npm install
+npm run dev
 ```
 
 ## create-next-app の選択肢
@@ -118,7 +149,6 @@ mv README.frontend-study.md README.md
 | Would you like to use Tailwind CSS? | Yes | UIを素早く作り、Hooks の動きを見える化しやすいため |
 | Would you like your code inside a `src/` directory? | Yes | アプリケーションコードと設定ファイルを分けやすいため |
 | Would you like to use App Router? | Yes | 新規Next.js開発の基本として学ぶため |
-| Would you like to use Turbopack? | Yes | 開発サーバーを高速に起動・更新しやすいため |
 | Would you like to customize the import alias? | No | デフォルトの `@/*` で十分わかりやすいため |
 | Would you like to include AGENTS.md? | No | 初学者向けには、まずReact / Next.js本体の理解を優先するため |
 
@@ -126,6 +156,7 @@ mv README.frontend-study.md README.md
 
 | 質問・選択肢 | このリポジトリでの考え方 |
 | --- | --- |
+| Turbopack | まずは有効で始める。開発サーバーを高速に起動・更新しやすいため |
 | Biome | まずは ESLint を選ぶ。Next.js / React の一般的な学習資料と合わせやすいため |
 | Webpack | まずは Turbopack を選ぶ。古い構成との差分を学ぶ段階になったら比較する |
 | package manager | npm を使う。最初の学習では前提を増やさないため |
@@ -209,6 +240,10 @@ src/
         page.tsx
         _components/
           ClientCounter.tsx
+      navigation/
+        page.tsx
+        _components/
+          NavigationDemo.tsx
       rendering/
         ssr/
           page.tsx
@@ -256,6 +291,24 @@ export function GET() {
   return Response.json({ message: 'Hello from Route Handler' });
 }
 ```
+
+Route Handler はWeb標準の `Request` / `Response` を使います。必要に応じて、Next.jsが用意している `NextRequest` / `NextResponse` も使えます。
+
+同じURL階層に `page.tsx` と `route.ts` を同時に置くことはできません。画面を作る場所とAPIを作る場所は分けます。
+
+### 画面遷移
+
+App Router では、通常のページ遷移には `next/link` の `Link` を使います。
+
+```tsx
+import Link from 'next/link';
+
+export function NavigationLink() {
+  return <Link href="/hooks/use-state">useStateを学ぶ</Link>;
+}
+```
+
+ボタンクリック後に移動したい場合など、コードから遷移させたいときは `useRouter` を使います。`useRouter`、`usePathname`、`useSearchParams` はClient Componentで使います。
 
 ### `src/hooks`
 
@@ -340,6 +393,10 @@ src/app/(pages)/hooks/use-counter/_hooks/useCounterDemo.ts
 - Route Group
 - nested routes
 - dynamic routes
+- `Link`
+- `useRouter`
+- `usePathname`
+- `useSearchParams`
 - `loading.tsx`
 - `error.tsx`
 - `not-found.tsx`
@@ -362,6 +419,7 @@ src/app/(pages)/hooks/use-counter/_hooks/useCounterDemo.ts
 - `POST`
 - Server Componentでのデータ取得
 - Client Componentでのデータ取得
+- `use`
 - Server Actions
 - `'use server'`
 
@@ -380,8 +438,48 @@ React Hooks は、初学者が最初からすべて覚える必要はありま�
 | Performance | `useMemo`, `useCallback`, `useTransition`, `useDeferredValue` |
 | Other | `useId`, `useSyncExternalStore`, `useDebugValue` |
 | React DOM | `useFormStatus` |
+| Special API | `use` |
 
 このリポジトリでは、基礎Hooksは必ず画面で動かして確認します。発展Hooksは、実アプリで使う場面が分かる小さい例を用意します。
+
+`use` はReactのAPIですが、通常のHooksとはルールが少し違う特別なAPIです。PromiseやContextの値を読む用途で使います。初学者向けには、SuspenseやServer Componentの学習に入ってから扱います。
+
+## Hookのルール
+
+Hooksには重要なルールがあります。
+
+- Hooksはコンポーネントのトップレベルで呼ぶ
+- Hooksはcustom hookのトップレベルで呼ぶ
+- `if`、`for`、イベントハンドラ、普通の関数の中でHooksを呼ばない
+- custom hookの名前は `use` で始める
+
+```tsx
+import { useState } from 'react';
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  if (count > 10) {
+    return <p>count is large</p>;
+  }
+
+  return (
+    <button type="button" onClick={() => setCount((prevCount) => prevCount + 1)}>
+      {count}
+    </button>
+  );
+}
+```
+
+この例では、`useState` を `if` より前のトップレベルで呼んでいます。
+
+次のように条件分岐の中でHooksを呼ぶのは避けます。
+
+```tsx
+if (enabled) {
+  const [count, setCount] = useState(0);
+}
+```
 
 ## React基礎で大事なこと
 
@@ -563,12 +661,32 @@ Next.js の起動やインストールでエラーが出る場合、Node.js の�
 node -v
 ```
 
+このリポジトリではnvmでNode.js 22を使います。
+
+```bash
+nvm install 22
+nvm use 22
+```
+
+### nvm が見つからない
+
+`nvm: command not found` と表示される場合は、nvmがまだインストールされていないか、shellの設定が読み込まれていません。
+
+macOSでは、nvmをインストールしたあとに新しいターミナルを開き直してから、もう一度確認します。
+
+```bash
+nvm --version
+```
+
 ## 参考
 
+- nvm: https://github.com/nvm-sh/nvm
 - React Learn: https://react.dev/learn
 - React Built-in Hooks: https://react.dev/reference/react/hooks
+- React Rules of Hooks: https://react.dev/reference/rules/rules-of-hooks
 - Next.js Project Structure: https://nextjs.org/docs/app/getting-started/project-structure
 - Next.js Server and Client Components: https://nextjs.org/docs/app/getting-started/server-and-client-components
 - Next.js Route Handlers: https://nextjs.org/docs/app/getting-started/route-handlers
+- Next.js Linking and Navigating: https://nextjs.org/docs/app/getting-started/linking-and-navigating
 - Next.js create-next-app CLI: https://nextjs.org/docs/app/api-reference/cli/create-next-app
 - Next.js Installation: https://nextjs.org/docs/app/getting-started/installation
