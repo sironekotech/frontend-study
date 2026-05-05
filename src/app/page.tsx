@@ -11,6 +11,12 @@ const lessonLinks = [
     href: '/react-basics/list-key',
     description: '配列、map、key、filterを画面で確認します。',
   },
+  {
+    id: '004-react-props-children',
+    title: '004-react-props-children',
+    href: '/react-basics/props-children',
+    description: 'props、propsの型、childrenをスターターコードで学びます。',
+  },
 ];
 
 export default function Home() {

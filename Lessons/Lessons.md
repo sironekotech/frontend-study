@@ -376,6 +376,7 @@ Lessons/
   001-project-foundation.md
   002-react-jsx.md
   003-react-list-key.md
+  004-react-props-children.md
 ```
 
 個別レッスンファイルには、次の内容を書きます。
