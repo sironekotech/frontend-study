@@ -9,7 +9,7 @@ const lessonLinks = [
     id: '003-react-list-key',
     title: '003-react-list-key',
     href: '/react-basics/list-key',
-    description: 'スターターコードを編集して、配列、map、key、filterを学びます。',
+    description: '配列、map、key、filterを画面で確認します。',
   },
 ];
 
