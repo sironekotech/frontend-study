@@ -1,7 +1,7 @@
 type LessonStatus = 'done' | 'learning' | 'next';
 
 type LessonCardProps = {
-  // TODO 1: Lessons/004-react-props-children.md を読み、propsの型が何を表すか確認する。
+  // TODO 1: 下の「propsの型」セクションを見て、この型が何を表すか確認する。
   title: string;
   description: string;
   status: LessonStatus;
@@ -20,14 +20,41 @@ function LessonBadge() {
   );
 }
 
-function ReadTheMdFirst() {
+function PageGuide() {
   return (
     <section className="rounded-md border border-[#c8b26a] bg-[#fff8df] p-5 text-[#6f5615]">
-      <h2 className="text-xl font-semibold">まずmdを読む</h2>
+      <h2 className="text-xl font-semibold">このページの順番に進める</h2>
       <p className="mt-3 leading-7">
-        このページだけを見ても、何を直すかは分かりません。先に{' '}
-        <code>Lessons/004-react-props-children.md</code> を読み、TODOの順番を確認します。
+        このレッスンからは、ページを見ながら進めます。画面の説明を読んで、表示されているTODOを上から順番に直します。
       </p>
+    </section>
+  );
+}
+
+function ConceptOverview() {
+  return (
+    <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
+      <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで出てくる言葉</h2>
+      <div className="mt-4 grid gap-3 md:grid-cols-3">
+        <article className="rounded-md bg-[#f7f7f2] p-4">
+          <h3 className="text-lg font-semibold text-[#15191f]">map</h3>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            配列の1件ずつを、カードなどの画面表示に変える書き方です。
+          </p>
+        </article>
+        <article className="rounded-md bg-[#f7f7f2] p-4">
+          <h3 className="text-lg font-semibold text-[#15191f]">props</h3>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            親コンポーネントから子コンポーネントへ渡す値です。
+          </p>
+        </article>
+        <article className="rounded-md bg-[#f7f7f2] p-4">
+          <h3 className="text-lg font-semibold text-[#15191f]">children</h3>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            コンポーネントのタグの内側に書いた表示内容です。
+          </p>
+        </article>
+      </div>
     </section>
   );
 }
@@ -51,6 +78,25 @@ function ManualCardsExample() {
           <p className="mt-2 text-sm leading-6 text-[#425466]">配列の1件ずつをJSXに変える書き方</p>
         </article>
       </div>
+    </section>
+  );
+}
+
+function PropsTypeGuide() {
+  return (
+    <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
+      <h2 className="text-xl font-semibold text-[#15191f]">propsの型を見る</h2>
+      <p className="mt-3 leading-7 text-[#425466]">
+        <code>LessonCard</code> は、<code>title</code>、<code>description</code>、{' '}
+        <code>status</code> を受け取ります。TypeScriptでは、受け取るpropsの形を型で書きます。
+      </p>
+      <pre className="mt-4 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
+        <code>{`type LessonCardProps = {
+  title: string;
+  description: string;
+  status: 'done' | 'learning' | 'next';
+};`}</code>
+      </pre>
     </section>
   );
 }
@@ -131,7 +177,9 @@ function PracticeStarter() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで直すTODO</h2>
       <ol className="mt-4 grid gap-3 text-sm leading-6 text-[#425466]">
-        <li className="rounded-md bg-[#f7f7f2] p-3">1. propsの型を読んで意味を確認する</li>
+        <li className="rounded-md bg-[#f7f7f2] p-3">
+          1. このページで props と children の意味を見る
+        </li>
         <li className="rounded-md bg-[#f7f7f2] p-3">2. LessonCardでpropsの値を表示する</li>
         <li className="rounded-md bg-[#f7f7f2] p-3">3. propsのLessonCardを1枚追加する</li>
         <li className="rounded-md bg-[#f7f7f2] p-3">4. NoteBoxでprops.childrenを表示する</li>
@@ -151,13 +199,14 @@ export default function ReactPropsChildrenPage() {
             propsとchildrenを使ってUIを分ける
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-8 text-[#425466]">
-            このページはスターターコードです。<code>Lessons/004-react-props-children.md</code>{' '}
-            を読みながら、TODOを1つずつ完成させます。
+            このページはスターターコードです。説明を上から読みながら、画面に出ているTODOを1つずつ完成させます。
           </p>
         </header>
 
-        <ReadTheMdFirst />
+        <PageGuide />
+        <ConceptOverview />
         <ManualCardsExample />
+        <PropsTypeGuide />
         <PropsPracticeStarter />
         <ChildrenPracticeStarter />
         <PracticeStarter />

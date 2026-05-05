@@ -22,9 +22,13 @@ Lesson 4 では、そのカードの形を小さなコンポーネントに分�
 start/004-react-props-children
 ```
 
-このタグには、Lesson 4 の問題文とスターターページが入っています。
+このタグには、Lesson 4 の補足mdとスターターページが入っています。
 
 スターターページにはTODOと仮表示が残っています。
+
+Lesson 4 からは、学習ページを主教材にします。
+
+このmdは、タグ、開始方法、補足説明、復習用チェックリストを確認するための資料です。
 
 ## End
 
@@ -72,13 +76,15 @@ git switch -c <username>/004-react-props-children start/004-react-props-children
 git switch -c taro/004-react-props-children start/004-react-props-children
 ```
 
-ブランチを作ったら、最初にこのmdを読みます。
+ブランチを作ったら、まず学習ページをブラウザで開きます。
 
 ```text
-Lessons/004-react-props-children.md
+/react-basics/props-children
 ```
 
-このレッスンは、mdを読みながらスターターコードのTODOを順番に直す前提です。
+このレッスンは、ページを見ながらスターターコードのTODOを順番に直す前提です。
+
+このmdは補足として使います。
 
 ## What You Will Build
 
@@ -126,9 +132,10 @@ App Routerでは、`page.tsx` がURLに対応するページになります。
 /react-basics/props-children
 ```
 
-このファイルには、最初から次が入っています。
+このページには、最初から次が入っています。
 
 ```text
+このレッスンで出てくる言葉
 手書きカードの例
 TODO付きの LessonCardProps 型
 TODO付きの LessonCard コンポーネント
