@@ -15,7 +15,7 @@ const lessonLinks = [
     id: '004-react-props-children',
     title: '004-react-props-children',
     href: '/react-basics/props-children',
-    description: 'props、propsの型、childrenをスターターコードで学びます。',
+    description: 'props、propsの型、childrenを画面で確認します。',
   },
 ];
 
