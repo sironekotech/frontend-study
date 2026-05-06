@@ -435,6 +435,7 @@ Lessons/
   002-react-jsx.md
   003-react-list-key.md
   004-react-props-children.md
+  005-react-use-state-event.md
 ```
 
 個別レッスンファイルには、次の内容を書きます。
@@ -565,33 +566,37 @@ start/004-react-props-children
 end/004-react-props-children
 ```
 
-### 005-react-events
+### 005-react-use-state-event
 
-イベント処理を学ぶページを作ります。
+`useState` とイベント処理を学ぶページを作ります。
 
-学ぶこと:
+Lesson 4 では、propsで外から値を渡しました。
 
-- `onClick`
-- `onChange`
-- eventの型
-- event handler
-- buttonやselectの操作
-
-タグ:
-
-```text
-start/005-react-events
-end/005-react-events
-```
-
-### 006-hooks-use-state
-
-`useState` を学ぶページを作ります。
+Lesson 5 では、ユーザーの操作でstateを更新し、画面が変わる流れを確認します。
 
 学ぶこと:
 
 - `useState`
+- `onClick`
+- `onChange`
+- event handler
 - stateによる再レンダー
+- inputの値をstateで管理する最初の形
+- stateを直接書き換えないこと
+
+タグ:
+
+```text
+start/005-react-use-state-event
+end/005-react-use-state-event
+```
+
+### 006-hooks-use-state
+
+Lesson 5で触れた `useState` を、さらに詳しく学ぶページを作ります。
+
+学ぶこと:
+
 - 前のstateを使った更新
 - 配列やオブジェクトのstate更新
 - stateの型推論
