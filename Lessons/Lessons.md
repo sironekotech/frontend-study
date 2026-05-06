@@ -439,6 +439,7 @@ Lessons/
   006-hooks-use-state.md
   007-react-forms-controlled-component.md
   008-next-app-router-routing.md
+  009-hooks-use-effect.md
 ```
 
 個別レッスンファイルには、次の内容を書きます。
