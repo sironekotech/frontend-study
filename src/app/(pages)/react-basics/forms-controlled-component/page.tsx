@@ -1,6 +1,6 @@
 'use client';
 
-import type { ChangeEvent, FormEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { HomeLink } from '@/app/_components/HomeLink';
 import { ControlledInputExample } from './_components/ControlledInputExample';
 
@@ -189,8 +189,7 @@ function TodoOrder() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このstartページは、まだ固定値と空の関数が残っています。フォームをcontrolled
-        componentに置き換えます。
+        完成版では、次のTODOがすべて実装済みです。スターターと見比べると、入力欄がどこでstateにつながったか確認できます。
       </p>
       <div className="mt-4 grid gap-3">
         {[
@@ -217,39 +216,61 @@ function TodoOrder() {
   );
 }
 
-function FormStarter() {
-  // TODO: draftをuseState<FormDraft>で持ちます。
-  const draft = starterDraft;
-  const submittedMessage = 'まだ送信されていません';
+function ControlledFormExample() {
+  const [draft, setDraft] = useState<FormDraft>(starterDraft);
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+  const [submittedMessage, setSubmittedMessage] = useState<string>('まだ送信されていません');
 
   function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
-    // TODO: event.target.valueを使ってdraft.nameを更新します。
-    void event;
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      name: event.target.value,
+    }));
   }
 
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
-    // TODO: event.target.valueを使ってdraft.emailを更新します。
-    void event;
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      email: event.target.value,
+    }));
   }
 
   function handleCategoryChange(event: ChangeEvent<HTMLSelectElement>) {
-    // TODO: event.target.valueをContactCategoryとして扱い、draft.categoryを更新します。
-    void event;
+    const nextCategory = event.target.value as ContactCategory;
+
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      category: nextCategory,
+    }));
   }
 
   function handleMessageChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    // TODO: event.target.valueを使ってdraft.messageを更新します。
-    void event;
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      message: event.target.value,
+    }));
   }
 
   function handleLevelChange(event: ChangeEvent<HTMLSelectElement>) {
-    // TODO: event.target.valueをLearningLevelとして扱い、draft.levelを更新します。
-    void event;
+    const nextLevel = event.target.value as LearningLevel;
+
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      level: nextLevel,
+    }));
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    // TODO: preventDefaultを呼び、送信した内容を画面に表示します。
-    void event;
+    event.preventDefault();
+
+    const senderName = draft.name || '名前未入力';
+    const replyTo = draft.email || 'メール未入力';
+    const messageBody = draft.message || 'メッセージ未入力';
+
+    setHasSubmitted(true);
+    setSubmittedMessage(
+      `${senderName}さんから「${categoryLabels[draft.category]}」として送信されました。返信先は ${replyTo}、今の状態は「${levelLabels[draft.level]}」です。メッセージ: ${messageBody}`,
+    );
   }
 
   return (
@@ -260,13 +281,12 @@ function FormStarter() {
             フォームをcontrolled componentにする
           </h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            今は <code>draft</code> が固定値なので、入力しても値は保存されません。
-            <code>useState&lt;FormDraft&gt;</code> に置き換えて、入力欄の値をReact
-            stateで管理します。
+            <code>draft</code> を <code>useState&lt;FormDraft&gt;</code> で持ち、入力欄の変更をReact
+            stateに保存します。送信時はページ遷移を止め、送信内容を画面に表示します。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成見本
         </p>
       </div>
 
@@ -365,7 +385,7 @@ function FormStarter() {
 
           <div className="flex flex-col gap-3 border-t border-[#d8d6c8] pt-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm leading-6 text-[#425466]">
-              start状態では、送信してもまだstateは更新されません。
+              入力した内容は右側のプレビューに反映され、送信すると結果メッセージが更新されます。
             </p>
             <button
               type="submit"
@@ -407,9 +427,9 @@ function FormStarter() {
 
           <div className="rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-[#6f5615]">送信結果の見本</p>
+              <p className="text-sm font-semibold text-[#6f5615]">送信結果</p>
               <span className="rounded-sm bg-white px-2 py-1 text-xs font-semibold text-[#6f5615]">
-                未送信
+                {hasSubmitted ? '送信済み' : '未送信'}
               </span>
             </div>
             <p className="mt-3 text-sm leading-6 text-[#6f5615]">
@@ -429,10 +449,12 @@ function CodeHint() {
       <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで目指すコードの形</h2>
       <p className="mt-3 leading-7 text-[#425466]">
         完成版では、入力欄の <code>value</code> とstateをつなぎ、<code>onChange</code>{' '}
-        でstateを更新します。
+        でstateを更新します。送信時は <code>preventDefault</code>{' '}
+        でページ遷移を止め、送信結果用のstateを更新します。
       </p>
       <pre className="mt-5 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
         <code>{`const [draft, setDraft] = useState<FormDraft>(starterDraft);
+const [submittedMessage, setSubmittedMessage] = useState<string>('まだ送信されていません');
 
 function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
   setDraft((currentDraft) => ({
@@ -443,6 +465,9 @@ function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
 
 function handleSubmit(event: FormEvent<HTMLFormElement>) {
   event.preventDefault();
+  setSubmittedMessage(
+    \`\${draft.name}さんから送信されました。\`,
+  );
 }
 
 <input value={draft.name} onChange={handleNameChange} />`}</code>
@@ -490,7 +515,7 @@ export default function ReactFormsControlledComponentPage() {
         <EventTypeGuide />
         <ControlledInputExample />
         <TodoOrder />
-        <FormStarter />
+        <ControlledFormExample />
         <CodeHint />
         <CompletionCheck />
       </div>
