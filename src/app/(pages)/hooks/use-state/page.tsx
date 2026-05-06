@@ -110,7 +110,7 @@ function LessonFlow() {
         <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
           <p className="text-sm font-semibold text-[#6f5615]">2. オブジェクト</p>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
-            名前やレベルをまとめたprofileを、新しいprofileとして更新します。
+            オブジェクトは、関係する値を1つにまとめたものです。profileは名前、レベル、目標をまとめたものです。
           </p>
         </article>
         <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
