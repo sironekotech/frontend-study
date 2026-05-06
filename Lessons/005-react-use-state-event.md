@@ -38,6 +38,8 @@ end/005-react-use-state-event
 
 このタグは、Lesson 5 の完成見本です。
 
+完成見本では、スターターページにあったTODOと仮表示が、すべて動く実装に置き換わっています。
+
 ## Build
 
 `start/005-react-use-state-event` には、次のスターターページが入っています。
