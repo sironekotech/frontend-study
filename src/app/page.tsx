@@ -43,6 +43,12 @@ const lessonLinks = [
     href: '/react-basics/forms-controlled-component',
     description: 'フォーム、controlled component、onSubmit、eventの型を確認します。',
   },
+  {
+    id: '008-next-app-router-routing',
+    title: '008-next-app-router-routing',
+    href: '/next-basics/app-router-routing',
+    description: 'App Routerのpage.tsx、Route Group、nested route、dynamic routeを確認します。',
+  },
 ];
 
 export default function Home() {
