@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { HomeLink } from '@/app/_components/HomeLink';
 
-type RouteStatus = 'current' | 'ready' | 'todo';
+type RouteStatus = 'ready' | 'todo';
 
 type RouteExample = {
   id: string;
@@ -15,13 +15,13 @@ type RouteExample = {
 
 const routeExamples: RouteExample[] = [
   {
-    id: 'lesson-page',
-    title: 'このレッスンページ',
-    filePath: 'src/app/(pages)/next-basics/app-router-routing/page.tsx',
-    url: '/next-basics/app-router-routing',
+    id: 'sample-page',
+    title: '遷移サンプルページ',
+    filePath: 'src/app/(pages)/next-basics/app-router-routing/sample/page.tsx',
+    url: '/next-basics/app-router-routing/sample',
     concept: 'page.tsx',
-    status: 'current',
-    description: 'page.tsx があるフォルダが、ブラウザで開けるURLになります。',
+    status: 'ready',
+    description: '開けるリンクで実際に別ページへ移動し、戻るボタンでこのページへ戻ります。',
   },
   {
     id: 'nested-profile',
@@ -121,7 +121,7 @@ function RouteMap() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">ルート対応表</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            startでは、このレッスンページだけが作成済みです。TODOの2つは、このレッスンで実際のページに置き換えます。
+            startでは、遷移サンプルページだけが作成済みです。TODOの2つは、このレッスンで実際のページに置き換えます。
           </p>
         </div>
         <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
@@ -157,11 +157,7 @@ function RouteMap() {
             </dl>
 
             <div className="flex items-center lg:justify-end">
-              {route.status === 'current' ? (
-                <span className="inline-flex w-full justify-center rounded-md bg-[#e3f0e8] px-4 py-2 text-sm font-semibold text-[#2f6848] sm:w-fit">
-                  表示中
-                </span>
-              ) : route.status === 'ready' ? (
+              {route.status === 'ready' ? (
                 <Link
                   href={route.url}
                   className="inline-flex w-full justify-center rounded-md bg-[#15191f] px-4 py-2 text-sm font-semibold text-white sm:w-fit"

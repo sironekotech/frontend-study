@@ -48,6 +48,7 @@ end/008-next-app-router-routing
 
 ```text
 src/app/(pages)/next-basics/app-router-routing/page.tsx
+src/app/(pages)/next-basics/app-router-routing/sample/page.tsx
 ```
 
 URLは次です。
@@ -101,8 +102,9 @@ git switch -c taro/008-next-app-router-routing start/008-next-app-router-routing
 
 ```text
 app router routing lab
-  current page
-    /next-basics/app-router-routing が開けることを確認する
+  navigation sample
+    /next-basics/app-router-routing/sample へ移動する
+    戻るボタンで /next-basics/app-router-routing へ戻る
 
   nested route
     /next-basics/app-router-routing/profile を作る
@@ -115,7 +117,7 @@ app router routing lab
     未作成の表示を、開けるリンクに置き換える
 ```
 
-最初は、このレッスンページだけが作成済みです。
+最初は、このレッスンページと遷移サンプルページだけが作成済みです。
 
 `profile/page.tsx` と `users/[userId]/page.tsx` は、このレッスンで作成します。
 
@@ -219,6 +221,8 @@ npm run build
 
 ```text
 /next-basics/app-router-routing が開ける
+/next-basics/app-router-routing/sample が開ける
+/next-basics/app-router-routing/sample からLesson 8ページに戻れる
 /next-basics/app-router-routing/profile が開ける
 /users/taro が開ける
 /users/hanako が開ける
