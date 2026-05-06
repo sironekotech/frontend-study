@@ -4,8 +4,8 @@ import { useEffect, useState, type ChangeEvent } from 'react';
 
 const titleLabels = {
   basic: 'useEffectの基本',
-  dependency: '依存配列',
-  cleanup: 'cleanup',
+  dependency: 'いつやるかリスト',
+  cleanup: '片付け',
 };
 
 type TitleKey = keyof typeof titleLabels;
@@ -29,7 +29,7 @@ export function EffectTitleExample() {
           <h2 className="text-xl font-semibold text-[#15191f]">完成例を1つだけ見る</h2>
           <p className="mt-3 leading-7 text-[#425466]">
             selectの値が変わるとstateが変わり、その後に <code>useEffect</code>{' '}
-            が動いてブラウザのタブタイトルを変更します。
+            が動いてブラウザのタブタイトルを変更します。画面を出したあとにやることの小さい例です。
           </p>
         </div>
         <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">

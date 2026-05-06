@@ -6,14 +6,14 @@
 
 Lesson 8 では、Next.js App Routerでファイルの場所とURLの関係を確認しました。
 
-Lesson 9 では、画面が表示された後やstateが変わった後に、ブラウザの機能や外部のデータとつなぐ方法を確認します。
+Lesson 9 では、画面を出したあとやstateが変わったあとに、追加で処理を動かす方法を確認します。
 
 このレッスンでは、次を学びます。
 
 - `useEffect`
-- 依存配列
-- cleanup
-- ブラウザ側でのデータ取得
+- 「いつやるかリスト」
+- 片付け
+- 表示後のデータ読み込み
 - `useEffect` を使いすぎない考え方
 
 ## Start
@@ -99,14 +99,12 @@ useEffect lab
     selectedTopicに合わせてdocument.titleを更新する
 
   resize
-    windowWidthLabelのsetterを受け取る
-    最初の表示後にwindow.innerWidthをstateへ保存する
-    resizeイベントを登録する
-    cleanupでresizeイベントを解除する
+    最初に画面を出したあとにwindow.innerWidthをstateへ保存する
+    画面幅の監視を始める
+    片付けで画面幅の監視を止める
 
   client fetch sample
-    fetchStatusとloadedLessonsのsetterを受け取る
-    最初の表示後にlessonItemsを読み込んだ想定でstateへ保存する
+    最初に画面を出したあとにlessonItemsを読み込んだ想定でstateへ保存する
     読み込み状態をidle / loading / successで表示する
 ```
 
@@ -114,7 +112,7 @@ useEffect lab
 
 ページの上部には、1つだけ動く `useEffect` の完成例を置いています。
 
-完成例で、stateが変わった後にeffectが動く流れを見てから、下のTODO付きスターターを直します。
+完成例で、stateが変わった後にuseEffectが動く流れを見てから、下のTODO付きスターターを直します。
 
 ## Steps
 
@@ -136,11 +134,11 @@ App Routerでは、`page.tsx` がURLに対応するページになります。
 /hooks/use-effect
 ```
 
-### 2. useEffectのタイミングを確認する
+### 2. useEffectは「あとでやること」だと考える
 
 `useEffect` は、画面を作るための処理ではありません。
 
-画面が表示された後や、指定したstateが変わった後に動く処理です。
+画面を出したあとや、指定したstateが変わったあとに動く処理です。
 
 ```tsx
 useEffect(() => {
@@ -157,9 +155,11 @@ selectedTopic が変わる
   document.titleを更新する
 ```
 
-### 3. 依存配列を見る
+### 3. 「いつやるかリスト」を見る
 
-useEffectの最後に書く配列を、依存配列と呼びます。
+useEffectの最後に書く配列は、「いつやるかリスト」です。
+
+正式には、依存配列と呼びます。
 
 ```tsx
 useEffect(() => {
@@ -167,15 +167,17 @@ useEffect(() => {
 }, [selectedTopic]);
 ```
 
-`[selectedTopic]` と書くと、`selectedTopic` が変わった後にeffectが動き直します。
+`[selectedTopic]` と書くと、`selectedTopic` が変わったあとにuseEffectが動き直します。
 
-`[]` と書くと、最初に表示された後だけ動きます。
+`[]` と書くと、最初に画面を出したあとだけ動きます。
 
-配列を書かない形は、表示のたびに動くため、最初は避けます。
+配列を書かない形は、画面が表示し直されるたびに動くため、最初は避けます。
 
-### 4. cleanupを見る
+### 4. 片付けを見る
 
-イベント監視やタイマーを登録した場合は、片付けが必要です。
+画面幅の監視やタイマーを始めた場合は、片付けが必要です。
+
+英語では、この片付けを cleanup と呼びます。
 
 ```tsx
 useEffect(() => {
@@ -194,7 +196,7 @@ useEffect(() => {
 }, []);
 ```
 
-`return` している関数が cleanup です。
+`return` している関数が片付けの処理です。
 
 この例では、登録した `resize` イベントを解除しています。
 
@@ -208,6 +210,12 @@ useEffect(() => {
 inputのonChangeでそのままstate更新できること
 ```
 
+例えば、今あるstateからすぐ作れる値は、そのまま変数にします。
+
+```tsx
+const selectedLabel = topicLabels[selectedTopic];
+```
+
 `useEffect` は、Reactの外側にあるものとつなぐときに使います。
 
 例:
@@ -215,7 +223,7 @@ inputのonChangeでそのままstate更新できること
 ```text
 document.title
 window.addEventListener
-ブラウザ側でのデータ取得
+表示後のデータ読み込み
 ```
 
 ## Check
@@ -232,10 +240,10 @@ npm run build
 
 ```text
 selectedTopicを変えるとタブタイトルが変わる
-最初の表示後に画面幅が表示される
+最初に画面を出したあと、画面幅が表示される
 ブラウザ幅を変えると画面幅の表示が変わる
-resizeイベントをcleanupで解除している
-最初の表示後にlessonItemsが表示される
+resizeイベントを片付けで解除している
+最初に画面を出したあと、lessonItemsが表示される
 ```
 
 ## Review
@@ -243,9 +251,9 @@ resizeイベントをcleanupで解除している
 このレッスンの復習では、次を説明できるか確認します。
 
 - `useEffect` はいつ動くか
-- 依存配列は何のために書くか
+- 「いつやるかリスト」は何のために書くか
 - `[]` と `[selectedTopic]` の違い
-- cleanup は何のために使うか
-- `window.addEventListener` を使うときにcleanupが必要な理由
-- ブラウザ側でのデータ取得とは何か
+- 片付けは何のために使うか
+- `window.addEventListener` を使うときに片付けが必要な理由
+- 表示後のデータ読み込みとは何か
 - `useEffect` に入れない方がよい処理の例
