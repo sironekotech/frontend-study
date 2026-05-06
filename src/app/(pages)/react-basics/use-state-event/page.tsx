@@ -1,9 +1,8 @@
 'use client';
 
 import { WorkingCounterExample } from './_components/WorkingCounterExample';
+import { ChangeEvent, useState } from 'react';
 import { HomeLink } from '@/app/_components/HomeLink';
-
-// TODO 1: Reactから useState をimportします。
 
 type StarterTodo = {
   id: string;
@@ -73,9 +72,9 @@ function ConceptOverview() {
 function BeforeAfterFlow() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-      <h2 className="text-xl font-semibold text-[#15191f]">今のスターター状態</h2>
+      <h2 className="text-xl font-semibold text-[#15191f]">完成版の流れ</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このページにはボタンや入力欄がありますが、まだ値は固定されています。ボタンを押しても、入力しても、画面は変わりません。
+        このページでは、ボタンや入力欄の操作でstateが変わります。stateが変わると、Reactが新しい値で画面を表示し直します。
       </p>
       <div className="mt-4 grid gap-3 md:grid-cols-3">
         <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
@@ -102,14 +101,14 @@ function BeforeAfterFlow() {
 }
 
 function CounterStarter() {
-  const count = 0;
+  const [count, setCount] = useState(0);
 
   function handleIncrease() {
-    // TODO 2: countをuseStateで持ち、setCountで1増やします。
+    setCount(count + 1);
   }
 
   function handleReset() {
-    // TODO 3: countを0に戻します。
+    setCount(0);
   }
 
   return (
@@ -118,11 +117,11 @@ function CounterStarter() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">onClickでカウントを変える</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            今は <code>count</code> が固定値なので、ボタンを押しても数字は変わりません。
+            <code>count</code> をstateにしたので、ボタンを押すたびに数字が変わります。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO 2-3
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -151,10 +150,10 @@ function CounterStarter() {
 }
 
 function ToggleStarter() {
-  const isHintOpen = false;
+  const [isHintOpen, setIsHintOpen] = useState(false);
 
   function handleToggleHint() {
-    // TODO 4: isHintOpenをuseStateで持ち、true / falseを切り替えます。
+    setIsHintOpen((current) => !current);
   }
 
   return (
@@ -163,11 +162,11 @@ function ToggleStarter() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">true / falseで表示を切り替える</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            表示するかどうかもstateで持てます。今は固定値なので、ヒントはまだ開きません。
+            表示するかどうかもstateで持てます。ボタンを押すたびに、ヒントの表示状態が切り替わります。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO 4
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -196,10 +195,10 @@ function ToggleStarter() {
 }
 
 function InputStarter() {
-  const learnerName = '';
+  const [learnerName, setLearnerName] = useState('');
 
-  function handleNameChange() {
-    // TODO 5: eventから入力値を取り出し、learnerNameのstateを更新します。
+  function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
+    setLearnerName(event.target.value);
   }
 
   return (
@@ -208,11 +207,11 @@ function InputStarter() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">onChangeで入力値を受け取る</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            入力欄の値もstateで管理できます。今は固定値なので、文字を入力しても表示に残りません。
+            入力欄の値もstateで管理できます。入力した文字がstateに保存され、下の表示に反映されます。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO 5
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -238,11 +237,19 @@ function InputStarter() {
 }
 
 function TodoStarter() {
-  const todos = starterTodos;
+  const [todos, setTodos] = useState(starterTodos);
 
-  function handleToggleTodo() {
-    // TODO 6: クリックしたtodoだけdoneを切り替えます。
-    // 配列を直接書き換えず、新しい配列を作ってsetTodosに渡します。
+  function handleToggleTodo(targetId: string) {
+    setTodos((currentTodos) =>
+      currentTodos.map((todo) =>
+        todo.id === targetId
+          ? {
+              ...todo,
+              done: !todo.done,
+            }
+          : todo,
+      ),
+    );
   }
 
   return (
@@ -251,11 +258,11 @@ function TodoStarter() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">配列のstateを更新する準備</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            配列やオブジェクトをstateにするときは、元の配列を直接書き換えません。このスターターではTODOだけ確認します。
+            配列やオブジェクトをstateにするときは、元の配列を直接書き換えません。クリックした項目だけ、新しい配列で更新します。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO 6
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -264,7 +271,7 @@ function TodoStarter() {
           <li key={todo.id}>
             <button
               type="button"
-              onClick={handleToggleTodo}
+              onClick={() => handleToggleTodo(todo.id)}
               className="flex w-full items-start gap-3 rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4 text-left"
             >
               <span
@@ -275,7 +282,7 @@ function TodoStarter() {
               <span>
                 <span className="block font-semibold text-[#15191f]">{todo.label}</span>
                 <span className="mt-1 block text-sm text-[#425466]">
-                  {todo.done ? '完了' : 'まだ固定表示です'}
+                  {todo.done ? '完了' : 'クリックすると完了に変わります'}
                 </span>
               </span>
             </button>
@@ -290,6 +297,9 @@ function TodoOrder() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
+      <p className="mt-3 leading-7 text-[#425466]">
+        完成版では、次のTODOがすべて実装済みです。スターターと見比べると、どこがstateに置き換わったか確認できます。
+      </p>
       <div className="mt-4 grid gap-3">
         {[
           'ReactからuseStateをimportする',
