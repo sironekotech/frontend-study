@@ -25,6 +25,12 @@ const lessonLinks = [
     href: '/react-basics/props-children',
     description: 'props、propsの型、childrenを画面で確認します。',
   },
+  {
+    id: '005-react-use-state-event',
+    title: '005-react-use-state-event',
+    href: '/react-basics/use-state-event',
+    description: 'useState、onClick、onChange、画面の再表示を確認します。',
+  },
 ];
 
 export default function Home() {
@@ -78,7 +84,7 @@ export default function Home() {
             </div>
             <p className="text-sm leading-6 text-[#425466]">上から順番に進めます。</p>
           </div>
-          <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {lessonLinks.map((lesson) => (
               <article key={lesson.id} className="rounded-md border border-[#d8d6c8] p-4">
                 <h2 className="break-words text-lg font-semibold text-[#15191f]">{lesson.title}</h2>
