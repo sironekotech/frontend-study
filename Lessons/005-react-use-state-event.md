@@ -108,6 +108,10 @@ useState and event lab
 
 最初は、ボタンや入力欄があっても値が固定されている状態を確認します。
 
+ページの上部には、カウントボタンの完成例を1つだけ置いています。
+
+完成例で、ボタンを押すと数字が増える流れを見てから、下のTODO付きスターターを直します。
+
 次に、固定値を `useState` に置き換えます。
 
 最後に、ボタンや入力欄のイベントでstateを更新し、画面が変わることを確認します。
@@ -136,6 +140,7 @@ App Routerでは、`page.tsx` がURLに対応するページになります。
 
 ```text
 useStateとeventの説明
+カウントボタンの完成例
 TODOの順番
 countの仮表示
 ヒント表示の仮表示
@@ -157,7 +162,26 @@ import { useState } from 'react';
 
 Hookは、Reactコンポーネントの中でReactの機能を使うための関数です。
 
-### 3. countをstateにする
+### 3. カウントボタンの完成例を見る
+
+ページの「完成例を1つだけ見る」セクションでは、すでに動くカウントボタンを確認できます。
+
+ここは読むための完成例です。
+
+受講者が編集する対象は、その下にあるTODO付きのスターターコードです。
+
+完成例では、次の流れを見ます。
+
+```text
+ボタンを押す
+setCount が呼ばれる
+count が新しい値になる
+画面の数字が変わる
+```
+
+この流れを確認してから、同じ考え方でスターターコードを直します。
+
+### 4. countをstateにする
 
 スターターコードでは、`count` が固定値になっています。
 
@@ -181,7 +205,7 @@ setCount  値を変えるための関数
 0         最初の値
 ```
 
-### 4. onClickでstateを更新する
+### 5. onClickでstateを更新する
 
 ボタンには `onClick` を書けます。
 
@@ -193,7 +217,7 @@ setCount  値を変えるための関数
 
 `handleIncrease` の中で `setCount` を呼ぶと、stateが更新されます。
 
-### 5. true / falseで表示を切り替える
+### 6. true / falseで表示を切り替える
 
 表示するかどうかもstateで持てます。
 
@@ -207,7 +231,7 @@ const [isHintOpen, setIsHintOpen] = useState(false);
 setIsHintOpen((current) => !current);
 ```
 
-### 6. onChangeで入力値を受け取る
+### 7. onChangeで入力値を受け取る
 
 入力欄には `onChange` を書けます。
 
@@ -226,7 +250,7 @@ event.target.value
   今入力されている文字
 ```
 
-### 7. 配列のstateを更新する
+### 8. 配列のstateを更新する
 
 配列やオブジェクトのstateは、直接書き換えません。
 

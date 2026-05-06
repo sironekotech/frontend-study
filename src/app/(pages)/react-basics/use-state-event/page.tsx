@@ -1,5 +1,6 @@
 'use client';
 
+import { WorkingCounterExample } from './_components/WorkingCounterExample';
 import { HomeLink } from '@/app/_components/HomeLink';
 
 // TODO 1: Reactから useState をimportします。
@@ -365,6 +366,7 @@ export default function ReactUseStateEventPage() {
 
         <ConceptOverview />
         <BeforeAfterFlow />
+        <WorkingCounterExample />
         <TodoOrder />
         <CounterStarter />
         <ToggleStarter />
