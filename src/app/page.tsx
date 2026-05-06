@@ -35,7 +35,13 @@ const lessonLinks = [
     id: '006-hooks-use-state',
     title: '006-hooks-use-state',
     href: '/hooks/use-state',
-    description: '前のstate、配列・オブジェクトstate、stateの型を確認します。',
+    description: '最新のstate、配列・オブジェクトstate、stateの型を確認します。',
+  },
+  {
+    id: '007-react-forms-controlled-component',
+    title: '007-react-forms-controlled-component',
+    href: '/react-basics/forms-controlled-component',
+    description: 'フォーム、controlled component、onSubmit、eventの型を確認します。',
   },
 ];
 

@@ -437,6 +437,7 @@ Lessons/
   004-react-props-children.md
   005-react-use-state-event.md
   006-hooks-use-state.md
+  007-react-forms-controlled-component.md
 ```
 
 個別レッスンファイルには、次の内容を書きます。
@@ -619,6 +620,7 @@ end/006-hooks-use-state
 
 学ぶこと:
 
+- フォームは入力欄をまとめるものだと理解する
 - inputの値をstateで管理する
 - controlled component
 - `onChange`
