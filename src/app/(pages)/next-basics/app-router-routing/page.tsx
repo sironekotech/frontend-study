@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { HomeLink } from '@/app/_components/HomeLink';
 
-type RouteStatus = 'ready' | 'todo';
+type RouteStatus = 'current' | 'ready' | 'todo';
 
 type RouteExample = {
   id: string;
@@ -20,7 +20,7 @@ const routeExamples: RouteExample[] = [
     filePath: 'src/app/(pages)/next-basics/app-router-routing/page.tsx',
     url: '/next-basics/app-router-routing',
     concept: 'page.tsx',
-    status: 'ready',
+    status: 'current',
     description: 'page.tsx があるフォルダが、ブラウザで開けるURLになります。',
   },
   {
@@ -157,7 +157,11 @@ function RouteMap() {
             </dl>
 
             <div className="flex items-center lg:justify-end">
-              {route.status === 'ready' ? (
+              {route.status === 'current' ? (
+                <span className="inline-flex w-full justify-center rounded-md bg-[#e3f0e8] px-4 py-2 text-sm font-semibold text-[#2f6848] sm:w-fit">
+                  表示中
+                </span>
+              ) : route.status === 'ready' ? (
                 <Link
                   href={route.url}
                   className="inline-flex w-full justify-center rounded-md bg-[#15191f] px-4 py-2 text-sm font-semibold text-white sm:w-fit"

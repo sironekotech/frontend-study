@@ -222,7 +222,7 @@ npm run build
 /next-basics/app-router-routing/profile が開ける
 /users/taro が開ける
 /users/hanako が開ける
-ルート対応表のTODOが「開ける」リンクに変わっている
+ルート対応表で、未作成だった2つのページが「開ける」リンクに変わっている
 ```
 
 ## Review
