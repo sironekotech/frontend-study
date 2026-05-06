@@ -1,6 +1,6 @@
 'use client';
 
-import type { ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { HomeLink } from '@/app/_components/HomeLink';
 import { FunctionalUpdateExample } from './_components/FunctionalUpdateExample';
 
@@ -166,7 +166,7 @@ function TodoOrder() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このstartページは、まだ固定値と空の関数が残っています。上から順番にstateへ置き換えます。
+        完成版では、固定値と空の関数がすべてstate更新に置き換わっています。
       </p>
       <div className="mt-4 grid gap-3">
         {[
@@ -191,15 +191,17 @@ function TodoOrder() {
 }
 
 function CounterStarter() {
-  // TODO: useStateをimportしたあと、固定値のcountをuseState<number>に置き換えます。
-  const count = 0;
+  const [count, setCount] = useState<number>(0);
 
   function handleIncrease() {
-    // TODO: currentCountを引数として受け取り、nextCountを返します。
+    setCount((currentCount) => {
+      const nextCount = currentCount + 1;
+      return nextCount;
+    });
   }
 
   function handleReset() {
-    // TODO: countを0に戻します。
+    setCount(0);
   }
 
   return (
@@ -210,13 +212,12 @@ function CounterStarter() {
             Reactが覚えている最新のcountで更新する
           </h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            今は <code>count</code> が固定値なので、ボタンを押しても数字は変わりません。
-            <code>useState&lt;number&gt;</code>{' '}
-            に置き換えて、Reactが今覚えているcountから次のcountを作ります。
+            <code>count</code> は <code>useState&lt;number&gt;</code>{' '}
+            で管理しています。ボタンを押すと、Reactが今覚えているcountから次のcountを作ります。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -240,7 +241,7 @@ function CounterStarter() {
           </button>
         </div>
         <p className="mt-4 rounded-md border border-dashed border-[#c8b26a] bg-white p-3 text-sm leading-6 text-[#6f5615]">
-          start状態: ボタンは押せますが、まだstateを更新していないので表示は変わりません。
+          完成状態: ボタンを押すと、Reactが覚えている最新のcountから次のcountを作ります。
         </p>
       </div>
     </section>
@@ -303,16 +304,20 @@ const goal = 'stateの更新に慣れる';`}</code>
 }
 
 function ProfileStarter() {
-  // TODO: profileをuseState<Profile>で持ちます。
-  const profile = starterProfile;
+  const [profile, setProfile] = useState<Profile>(starterProfile);
 
   function handleLevelUp() {
-    // TODO: setProfile((currentProfile) => ({ ...currentProfile, level: currentProfile.level + 1 })) を使います。
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      level: currentProfile.level + 1,
+    }));
   }
 
   function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
-    // TODO: event.target.valueを使って、nameだけを新しい値にします。
-    void event;
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      name: event.target.value,
+    }));
   }
 
   return (
@@ -326,8 +331,8 @@ function ProfileStarter() {
             元のオブジェクトを直接書き換えず、新しいオブジェクトを作ります。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -342,7 +347,7 @@ function ProfileStarter() {
             <label className="grid gap-2 text-sm font-semibold text-[#425466]">
               名前
               <input
-                defaultValue={profile.name}
+                value={profile.name}
                 onChange={handleNameChange}
                 className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
               />
@@ -372,12 +377,19 @@ function ProfileStarter() {
 }
 
 function SkillsStarter() {
-  // TODO: skillsをuseState<Skill[]>で持ちます。
-  const skills = starterSkills;
+  const [skills, setSkills] = useState<Skill[]>(starterSkills);
 
   function handleToggleSkill(targetId: string) {
-    // TODO: mapでtargetIdと一致する項目だけdoneを反対にします。
-    void targetId;
+    setSkills((currentSkills) =>
+      currentSkills.map((skill) =>
+        skill.id === targetId
+          ? {
+              ...skill,
+              done: !skill.done,
+            }
+          : skill,
+      ),
+    );
   }
 
   return (
@@ -390,8 +402,8 @@ function SkillsStarter() {
             で新しい配列を作ります。クリックした項目だけ、<code>done</code> を反対にします。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
@@ -411,7 +423,7 @@ function SkillsStarter() {
               <span>
                 <span className="block font-semibold text-[#15191f]">{skill.name}</span>
                 <span className="mt-1 block text-sm text-[#425466]">
-                  {skill.done ? '完了' : 'start状態ではクリックしてもまだ変わりません'}
+                  {skill.done ? '完了' : 'クリックすると完了に変わります'}
                 </span>
               </span>
             </button>
@@ -423,15 +435,14 @@ function SkillsStarter() {
 }
 
 function StateTypeStarter() {
-  // TODO: const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle') に置き換えます。
-  const saveStatus: SaveStatus = 'idle';
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
 
   function handleStartSaving() {
-    // TODO: saveStatusをsavingにします。
+    setSaveStatus('saving');
   }
 
   function handleDone() {
-    // TODO: saveStatusをdoneにします。
+    setSaveStatus('done');
   }
 
   return (
@@ -445,8 +456,8 @@ function StateTypeStarter() {
             <code>useState&lt;SaveStatus&gt;</code> の形で明示します。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成
         </p>
       </div>
 
