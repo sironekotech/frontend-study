@@ -29,7 +29,7 @@ const routeExamples: RouteExample[] = [
     filePath: 'src/app/(pages)/next-basics/app-router-routing/profile/page.tsx',
     url: '/next-basics/app-router-routing/profile',
     concept: 'nested routes',
-    status: 'todo',
+    status: 'ready',
     description: 'フォルダを1つ深くすると、URLも1つ深くなります。',
   },
   {
@@ -38,7 +38,7 @@ const routeExamples: RouteExample[] = [
     filePath: 'src/app/(pages)/users/[userId]/page.tsx',
     url: '/users/taro',
     concept: 'dynamic routes',
-    status: 'todo',
+    status: 'ready',
     description: '[userId] はURLの一部を変数として受け取るフォルダ名です。',
   },
 ];
@@ -121,11 +121,11 @@ function RouteMap() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">ルート対応表</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            startでは、遷移サンプルページだけが作成済みです。TODOの2つは、このレッスンで実際のページに置き換えます。
+            完成版では、遷移サンプル、ネストしたページ、動的ルーティングのページをすべて実際に開けます。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          START
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成見本
         </p>
       </div>
 
@@ -213,16 +213,17 @@ function TodoOrder() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このstartページでは、まだ2つのページが未作成です。ファイルを作って、URLで開ける状態にします。
+        完成版では、次のTODOがすべて実装済みです。スターターと見比べると、どのフォルダに
+        <code>page.tsx</code> を追加したか確認できます。
       </p>
       <div className="mt-4 grid gap-3">
         {[
-          'nested route用に profile/page.tsx を作る',
-          'profileページで、このレッスンページへ戻れるリンクを置く',
-          'dynamic route用に users/[userId]/page.tsx を作る',
-          '[userId] の値をparamsから受け取り、画面に表示する',
-          'このページのrouteExamplesでTODOの2つをreadyにする',
-          '/next-basics/app-router-routing/profile と /users/taro をブラウザで開く',
+          'nested route用に profile/page.tsx を作成済み',
+          'profileページから、このレッスンページへ戻れるリンクを配置済み',
+          'dynamic route用に users/[userId]/page.tsx を作成済み',
+          '[userId] の値をparamsから受け取り、画面に表示済み',
+          'routeExamplesでTODOだった2つをreadyに変更済み',
+          '/next-basics/app-router-routing/profile と /users/taro をブラウザで開ける',
         ].map((todo, index) => (
           <div
             key={todo}
