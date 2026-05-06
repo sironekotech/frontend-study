@@ -6,17 +6,21 @@ import { ControlledInputExample } from './_components/ControlledInputExample';
 
 type LearningLevel = 'beginner' | 'practicing' | 'ready';
 
+type ContactCategory = 'question' | 'review' | 'pairing';
+
 type FormDraft = {
   name: string;
   email: string;
-  goal: string;
+  category: ContactCategory;
+  message: string;
   level: LearningLevel;
 };
 
 const starterDraft: FormDraft = {
   name: '',
   email: '',
-  goal: '',
+  category: 'question',
+  message: '',
   level: 'beginner',
 };
 
@@ -24,6 +28,12 @@ const levelLabels: Record<LearningLevel, string> = {
   beginner: 'これから始める',
   practicing: '練習中',
   ready: '一人で作ってみたい',
+};
+
+const categoryLabels: Record<ContactCategory, string> = {
+  question: '質問したい',
+  review: 'コードレビューしてほしい',
+  pairing: '一緒に実装したい',
 };
 
 function LessonBadge() {
@@ -185,11 +195,14 @@ function TodoOrder() {
       <div className="mt-4 grid gap-3">
         {[
           'ReactからuseStateをimportする',
-          'draftをuseState<FormDraft>で持つ',
-          'input / textarea / select のvalueをdraftから表示する',
-          'onChangeでevent.target.valueを取り出し、draftを更新する',
-          'formのonSubmitでpreventDefaultを呼ぶ',
-          '送信した内容を画面に表示する',
+          'draftをuseState<FormDraft>(starterDraft)で持つ',
+          '名前inputのonChangeでdraft.nameを更新する',
+          'メールinputのonChangeでdraft.emailを更新する',
+          '相談種別selectのonChangeでdraft.categoryを更新する',
+          '今の状態selectのonChangeでdraft.levelを更新する',
+          'メッセージtextareaのonChangeでdraft.messageを更新する',
+          'formのonSubmitでevent.preventDefault()を呼ぶ',
+          '送信結果用のstateを追加し、submit時に画面へ表示する',
         ].map((todo, index) => (
           <div
             key={todo}
@@ -219,8 +232,13 @@ function FormStarter() {
     void event;
   }
 
-  function handleGoalChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    // TODO: event.target.valueを使ってdraft.goalを更新します。
+  function handleCategoryChange(event: ChangeEvent<HTMLSelectElement>) {
+    // TODO: event.target.valueをContactCategoryとして扱い、draft.categoryを更新します。
+    void event;
+  }
+
+  function handleMessageChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    // TODO: event.target.valueを使ってdraft.messageを更新します。
     void event;
   }
 
@@ -252,84 +270,154 @@ function FormStarter() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-5 grid gap-4 rounded-md bg-[#f7f7f2] p-5">
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="grid gap-2 text-sm font-semibold text-[#425466]">
-            名前
-            <input
-              value={draft.name}
-              onChange={handleNameChange}
-              placeholder="React learner"
-              className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
-            />
-          </label>
+      <div className="mt-5 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+        <form onSubmit={handleSubmit} className="grid gap-5 rounded-md bg-[#f7f7f2] p-5">
+          <div className="border-b border-[#d8d6c8] pb-4">
+            <p className="text-sm font-semibold text-[#15191f]">お問い合わせフォーム</p>
+            <p className="mt-2 text-sm leading-6 text-[#425466]">
+              名前、メール、相談種別、メッセージを入力して送信する、一般的なフォームの形で練習します。
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm font-semibold text-[#425466]">
+              <span className="flex items-center justify-between gap-3">
+                名前
+                <span className="rounded-sm bg-[#fff4c7] px-2 py-1 text-xs text-[#6f5615]">
+                  必須
+                </span>
+              </span>
+              <input
+                value={draft.name}
+                onChange={handleNameChange}
+                placeholder="山田 太郎"
+                className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
+              />
+            </label>
+
+            <label className="grid gap-2 text-sm font-semibold text-[#425466]">
+              <span className="flex items-center justify-between gap-3">
+                メールアドレス
+                <span className="rounded-sm bg-[#fff4c7] px-2 py-1 text-xs text-[#6f5615]">
+                  必須
+                </span>
+              </span>
+              <input
+                type="email"
+                value={draft.email}
+                onChange={handleEmailChange}
+                placeholder="taro@example.com"
+                className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
+              />
+              <span className="text-xs font-normal leading-5 text-[#66788a]">
+                返信先として使う想定の入力欄です。
+              </span>
+            </label>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm font-semibold text-[#425466]">
+              相談種別
+              <select
+                value={draft.category}
+                onChange={handleCategoryChange}
+                className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
+              >
+                {Object.entries(categoryLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="grid gap-2 text-sm font-semibold text-[#425466]">
+              今の状態
+              <select
+                value={draft.level}
+                onChange={handleLevelChange}
+                className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
+              >
+                {Object.entries(levelLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
 
           <label className="grid gap-2 text-sm font-semibold text-[#425466]">
-            メール
-            <input
-              value={draft.email}
-              onChange={handleEmailChange}
-              placeholder="learner@example.com"
-              className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
+            <span className="flex items-center justify-between gap-3">
+              メッセージ
+              <span className="rounded-sm bg-[#fff4c7] px-2 py-1 text-xs text-[#6f5615]">必須</span>
+            </span>
+            <textarea
+              value={draft.message}
+              onChange={handleMessageChange}
+              placeholder="フォームを自分で作れるようになりたいです。どこから直せばよいか相談したいです。"
+              className="min-h-32 rounded-md border border-[#d8d6c8] bg-white px-3 py-2 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
             />
+            <span className="text-xs font-normal leading-5 text-[#66788a]">
+              実際の問い合わせフォームでは、ここに本文や相談内容を入力します。
+            </span>
           </label>
-        </div>
 
-        <label className="grid gap-2 text-sm font-semibold text-[#425466]">
-          学習目標
-          <textarea
-            value={draft.goal}
-            onChange={handleGoalChange}
-            placeholder="フォームを自分で作れるようになりたい"
-            className="min-h-28 rounded-md border border-[#d8d6c8] bg-white px-3 py-2 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
-          />
-        </label>
+          <div className="flex flex-col gap-3 border-t border-[#d8d6c8] pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm leading-6 text-[#425466]">
+              start状態では、送信してもまだstateは更新されません。
+            </p>
+            <button
+              type="submit"
+              className="rounded-md bg-[#15191f] px-4 py-2 text-sm font-semibold text-white sm:w-fit"
+            >
+              送信する
+            </button>
+          </div>
+        </form>
 
-        <label className="grid gap-2 text-sm font-semibold text-[#425466]">
-          今の状態
-          <select
-            value={draft.level}
-            onChange={handleLevelChange}
-            className="min-h-11 rounded-md border border-[#d8d6c8] bg-white px-3 text-base text-[#15191f] outline-none focus:border-[#3f7d58]"
-          >
-            {Object.entries(levelLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <aside className="grid content-start gap-4">
+          <div className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
+            <p className="text-sm font-semibold text-[#425466]">入力内容プレビュー</p>
+            <dl className="mt-3 grid gap-3 text-sm leading-6 text-[#425466]">
+              <div className="rounded-md bg-white p-3">
+                <dt className="font-mono text-xs text-[#6f5615]">name</dt>
+                <dd className="mt-1 font-semibold text-[#15191f]">{draft.name || '未入力'}</dd>
+              </div>
+              <div className="rounded-md bg-white p-3">
+                <dt className="font-mono text-xs text-[#6f5615]">email</dt>
+                <dd className="mt-1 font-semibold text-[#15191f]">{draft.email || '未入力'}</dd>
+              </div>
+              <div className="rounded-md bg-white p-3">
+                <dt className="font-mono text-xs text-[#6f5615]">category</dt>
+                <dd className="mt-1 font-semibold text-[#15191f]">
+                  {categoryLabels[draft.category]}
+                </dd>
+              </div>
+              <div className="rounded-md bg-white p-3">
+                <dt className="font-mono text-xs text-[#6f5615]">level</dt>
+                <dd className="mt-1 font-semibold text-[#15191f]">{levelLabels[draft.level]}</dd>
+              </div>
+              <div className="rounded-md bg-white p-3">
+                <dt className="font-mono text-xs text-[#6f5615]">message</dt>
+                <dd className="mt-1 font-semibold text-[#15191f]">{draft.message || '未入力'}</dd>
+              </div>
+            </dl>
+          </div>
 
-        <button
-          type="submit"
-          className="rounded-md bg-[#15191f] px-4 py-2 text-sm font-semibold text-white sm:w-fit"
-        >
-          送信する
-        </button>
-      </form>
-
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        <div className="rounded-md bg-[#f7f7f2] p-4">
-          <p className="text-sm font-semibold text-[#425466]">今のdraft</p>
-          <dl className="mt-3 grid gap-2 text-sm leading-6 text-[#425466]">
-            <div className="flex justify-between gap-4">
-              <dt>name</dt>
-              <dd className="font-semibold text-[#15191f]">{draft.name || '未入力'}</dd>
+          <div className="rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-[#6f5615]">送信結果の見本</p>
+              <span className="rounded-sm bg-white px-2 py-1 text-xs font-semibold text-[#6f5615]">
+                未送信
+              </span>
             </div>
-            <div className="flex justify-between gap-4">
-              <dt>email</dt>
-              <dd className="font-semibold text-[#15191f]">{draft.email || '未入力'}</dd>
-            </div>
-            <div className="flex justify-between gap-4">
-              <dt>level</dt>
-              <dd className="font-semibold text-[#15191f]">{levelLabels[draft.level]}</dd>
-            </div>
-          </dl>
-        </div>
-        <div className="rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
-          <p className="text-sm font-semibold text-[#6f5615]">送信結果</p>
-          <p className="mt-3 text-sm leading-6 text-[#6f5615]">{submittedMessage}</p>
-        </div>
+            <p className="mt-3 text-sm leading-6 text-[#6f5615]">
+              送信後は、入力した内容をまとめた文章をここに表示します。
+            </p>
+            <p className="mt-3 text-sm leading-6 text-[#6f5615]">{submittedMessage}</p>
+          </div>
+        </aside>
       </div>
     </section>
   );
@@ -370,8 +458,9 @@ function CompletionCheck() {
       <div className="mt-4 grid gap-3 text-sm leading-6 text-[#6f5615] md:grid-cols-2">
         <p className="rounded-md bg-white p-3">名前を入力するとdraft.nameが変わる</p>
         <p className="rounded-md bg-white p-3">メールを入力するとdraft.emailが変わる</p>
-        <p className="rounded-md bg-white p-3">学習目標を入力するとdraft.goalが変わる</p>
-        <p className="rounded-md bg-white p-3">selectを変更するとdraft.levelが変わる</p>
+        <p className="rounded-md bg-white p-3">相談種別を変更するとdraft.categoryが変わる</p>
+        <p className="rounded-md bg-white p-3">メッセージを入力するとdraft.messageが変わる</p>
+        <p className="rounded-md bg-white p-3">今の状態を変更するとdraft.levelが変わる</p>
         <p className="rounded-md bg-white p-3">submitでページ遷移せず送信結果が表示される</p>
         <p className="rounded-md bg-white p-3">eventの型を要素ごとに書けている</p>
       </div>

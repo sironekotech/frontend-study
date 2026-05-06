@@ -102,8 +102,11 @@ controlled form lab
   email
     入力したメールをdraft.emailに保存する
 
-  goal
-    textareaの入力をdraft.goalに保存する
+  category
+    相談種別のselectをdraft.categoryに保存する
+
+  message
+    textareaの入力をdraft.messageに保存する
 
   level
     selectの選択をdraft.levelに保存する
@@ -239,11 +242,11 @@ function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
   event.target.value;
 }
 
-function handleGoalChange(event: ChangeEvent<HTMLTextAreaElement>) {
+function handleMessageChange(event: ChangeEvent<HTMLTextAreaElement>) {
   event.target.value;
 }
 
-function handleLevelChange(event: ChangeEvent<HTMLSelectElement>) {
+function handleCategoryChange(event: ChangeEvent<HTMLSelectElement>) {
   event.target.value;
 }
 ```
@@ -285,8 +288,9 @@ npm run build
 ```text
 名前を入力するとdraft.nameが変わる
 メールを入力するとdraft.emailが変わる
-学習目標を入力するとdraft.goalが変わる
-selectを変更するとdraft.levelが変わる
+相談種別を変更するとdraft.categoryが変わる
+メッセージを入力するとdraft.messageが変わる
+今の状態を変更するとdraft.levelが変わる
 submitでページ遷移せず送信結果が表示される
 ```
 
