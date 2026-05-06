@@ -172,6 +172,7 @@ function TodoOrder() {
         {[
           'ReactからuseStateをimportする',
           'countをuseState<number>で持ち、Reactが覚えている最新のcountで+1する',
+          'オブジェクトは関係する値を1つにまとめたものだと確認する',
           'profileをオブジェクトstateにして、spreadで新しいprofileを作る',
           'skillsを配列stateにして、mapでクリックした項目だけ更新する',
           '保存状態のstateもTypeScriptの型が見える形で書く',
@@ -240,6 +241,61 @@ function CounterStarter() {
         </div>
         <p className="mt-4 rounded-md border border-dashed border-[#c8b26a] bg-white p-3 text-sm leading-6 text-[#6f5615]">
           start状態: ボタンは押せますが、まだstateを更新していないので表示は変わりません。
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function ObjectGuide() {
+  return (
+    <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
+      <h2 className="text-xl font-semibold text-[#15191f]">profileの前に、オブジェクトを見る</h2>
+      <p className="mt-3 leading-7 text-[#425466]">
+        オブジェクトは、関係する値を1つのまとまりにしたものです。名前、レベル、目標は同じ人の情報なので、
+        <code>profile</code> という1つのまとまりにできます。
+      </p>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        <div className="rounded-md bg-[#15191f] p-4">
+          <p className="text-sm font-semibold text-[#82d39b]">別々の変数</p>
+          <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
+            <code>{`const name = 'React learner';
+const level = 1;
+const goal = 'stateの更新に慣れる';`}</code>
+          </pre>
+        </div>
+
+        <div className="rounded-md bg-[#15191f] p-4">
+          <p className="text-sm font-semibold text-[#82d39b]">オブジェクトにまとめる</p>
+          <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
+            <code>{`const profile = {
+  name: 'React learner',
+  level: 1,
+  goal: 'stateの更新に慣れる',
+};`}</code>
+          </pre>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        {[
+          ['profile.name', '名前を取り出す'],
+          ['profile.level', 'レベルを取り出す'],
+          ['profile.goal', '目標を取り出す'],
+        ].map(([code, description]) => (
+          <div key={code} className="rounded-md bg-[#f7f7f2] p-4">
+            <p className="font-mono text-sm font-semibold text-[#15191f]">{code}</p>
+            <p className="mt-2 text-sm leading-6 text-[#425466]">{description}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
+        <p className="text-sm leading-6 text-[#6f5615]">
+          Reactでは、このまとまり全体をstateとして持つことがあります。ただし、
+          <code>profile.level</code> だけを変えたいときも、元の <code>profile</code>{' '}
+          を直接書き換えず、新しい <code>profile</code> を作ってReactに渡します。
         </p>
       </div>
     </section>
@@ -494,6 +550,7 @@ export default function HooksUseStatePage() {
         <FunctionalUpdateExample />
         <TodoOrder />
         <CounterStarter />
+        <ObjectGuide />
         <ProfileStarter />
         <SkillsStarter />
         <StateTypeStarter />

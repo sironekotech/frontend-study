@@ -9,6 +9,7 @@ Lesson 5 では、ボタンや入力欄の操作でstateが変わり、画面が
 Lesson 6 では、次を学びます。
 
 - Reactが今覚えている最新のstateを受け取り、次のstateを返すこと
+- オブジェクトが、関係する値を1つにまとめるものだと理解すること
 - オブジェクトstateを直接書き換えず、新しいオブジェクトで更新すること
 - 配列stateを直接書き換えず、新しい配列で更新すること
 - 学習用に `useState<number>` のようなstateの型を明示すること
@@ -215,6 +216,57 @@ Reactがこの関数を呼ぶときに、Reactが今覚えている最新のcoun
 
 ### 4. オブジェクトstateを更新する
 
+`profile` をstateにする前に、まずオブジェクトを確認します。
+
+オブジェクトは、関係する値を1つのまとまりにしたものです。
+
+たとえば、名前、レベル、目標を別々の変数にするとこうです。
+
+```tsx
+const name = 'React learner';
+const level = 1;
+const goal = 'stateの更新に慣れる';
+```
+
+この3つは同じ人の情報です。
+
+そのため、1つの `profile` にまとめられます。
+
+```tsx
+const profile = {
+  name: 'React learner',
+  level: 1,
+  goal: 'stateの更新に慣れる',
+};
+```
+
+値を取り出すときは、次のように書きます。
+
+```tsx
+profile.name;
+profile.level;
+profile.goal;
+```
+
+読むときは、次のように考えます。
+
+```text
+profile.name
+  profileの中にあるname
+
+profile.level
+  profileの中にあるlevel
+
+profile.goal
+  profileの中にあるgoal
+```
+
+Reactでは、このまとまり全体をstateとして持つことがあります。
+
+ただし、`profile.level` だけを変えたいときも、元の `profile` を直接書き換えません。
+
+新しい `profile` を作ってReactに渡します。
+
 スターターコードでは、`profile` が固定値になっています。
 
 ```tsx
@@ -320,6 +372,7 @@ skillをクリックするとdoneが切り替わる
 - `currentCount` が `let` や `const` ではなく、関数の引数であること
 - `setCount(count + 1)` と `setCount((currentCount) => { ... })` の違い
 - Reactが覚えている最新のstateを使う更新が必要になる場面
+- オブジェクトが関係する値を1つにまとめるものだと説明できること
 - オブジェクトstateを直接書き換えない理由
 - 配列stateを直接書き換えない理由
 - `...currentProfile` が何をしているか
