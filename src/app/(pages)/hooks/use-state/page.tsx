@@ -27,7 +27,7 @@ const starterProfile: Profile = {
 const starterSkills: Skill[] = [
   {
     id: 'functional-update',
-    name: '前のstateを使って更新する',
+    name: 'Reactが覚えている最新のstateを使って更新する',
     done: false,
   },
   {
@@ -62,16 +62,16 @@ function ConceptOverview() {
       <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで出てくる言葉</h2>
       <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         <article className="rounded-md bg-[#f7f7f2] p-4">
-          <h3 className="text-lg font-semibold text-[#15191f]">前のstate</h3>
+          <h3 className="text-lg font-semibold text-[#15191f]">最新のstate</h3>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
-            今Reactが持っている最新の値です。次の値を作る材料にします。
+            Reactが今覚えている値です。次に画面へ表示する値を作る材料にします。
           </p>
         </article>
         <article className="rounded-md bg-[#f7f7f2] p-4">
           <h3 className="text-lg font-semibold text-[#15191f]">functional update</h3>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
             <code>setCount((current) =&gt; current + 1)</code>{' '}
-            のように、前のstateから次のstateを返す書き方です。
+            のように、Reactから受け取った最新のstateで更新する書き方です。
           </p>
         </article>
         <article className="rounded-md bg-[#f7f7f2] p-4">
@@ -84,7 +84,7 @@ function ConceptOverview() {
         <article className="rounded-md bg-[#f7f7f2] p-4">
           <h3 className="text-lg font-semibold text-[#15191f]">stateの型</h3>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
-            TypeScriptがstateの値の形を判断します。必要なときは自分で型を書きます。
+            この教材では、<code>useState&lt;number&gt;</code> のように型を見える形で書きます。
           </p>
         </article>
       </div>
@@ -104,7 +104,7 @@ function LessonFlow() {
         <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
           <p className="text-sm font-semibold text-[#6f5615]">1. 数字</p>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
-            前のcountを使って、次のcountを作ります。
+            Reactが今覚えているcountを受け取り、次に表示するcountを返します。
           </p>
         </article>
         <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
@@ -124,6 +124,43 @@ function LessonFlow() {
   );
 }
 
+function ArgumentGuide() {
+  return (
+    <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
+      <h2 className="text-xl font-semibold text-[#15191f]">currentCountの前に、引数を見る</h2>
+      <p className="mt-3 leading-7 text-[#425466]">
+        引数は、関数が外から受け取る値です。<code>let</code> や <code>const</code>{' '}
+        で自分で作る変数ではありません。
+      </p>
+      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+        <div className="rounded-md bg-[#15191f] p-4">
+          <p className="text-sm font-semibold text-[#82d39b]">普通の関数</p>
+          <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
+            <code>{`function greet(name: string) {
+  return \`こんにちは、\${name}\`;
+}
+
+greet('Taro');`}</code>
+          </pre>
+        </div>
+        <div className="rounded-md bg-[#f7f7f2] p-4">
+          <p className="text-sm font-semibold text-[#6f5615]">読む順番</p>
+          <p className="mt-3 text-sm leading-6 text-[#425466]">
+            <code>greet(&apos;Taro&apos;)</code> と呼ぶと、<code>name</code> の中に
+            <code>Taro</code> が入ります。<code>name</code> が引数です。
+          </p>
+        </div>
+      </div>
+      <div className="mt-5 rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
+        <p className="text-sm leading-6 text-[#6f5615]">
+          <code>setCount((currentCount) =&gt; ...)</code> の <code>currentCount</code>{' '}
+          も引数です。Reactがこの関数を呼ぶときに、今覚えている最新のcountを入れてくれます。
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function TodoOrder() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
@@ -134,10 +171,10 @@ function TodoOrder() {
       <div className="mt-4 grid gap-3">
         {[
           'ReactからuseStateをimportする',
-          'countをuseStateで持ち、前のstateを使って+1する',
+          'countをuseState<number>で持ち、Reactが覚えている最新のcountで+1する',
           'profileをオブジェクトstateにして、spreadで新しいprofileを作る',
           'skillsを配列stateにして、mapでクリックした項目だけ更新する',
-          '保存状態のstateにTypeScriptの型を付ける',
+          '保存状態のstateもTypeScriptの型が見える形で書く',
         ].map((todo, index) => (
           <div
             key={todo}
@@ -153,11 +190,11 @@ function TodoOrder() {
 }
 
 function CounterStarter() {
-  // TODO: useStateをimportしたあと、固定値のcountをstateに置き換えます。
+  // TODO: useStateをimportしたあと、固定値のcountをuseState<number>に置き換えます。
   const count = 0;
 
   function handleIncrease() {
-    // TODO: setCount((currentCount) => currentCount + 1) を使います。
+    // TODO: currentCountを引数として受け取り、nextCountを返します。
   }
 
   function handleReset() {
@@ -168,10 +205,13 @@ function CounterStarter() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-[#15191f]">前のstateを使ってcountを更新する</h2>
+          <h2 className="text-xl font-semibold text-[#15191f]">
+            Reactが覚えている最新のcountで更新する
+          </h2>
           <p className="mt-3 leading-7 text-[#425466]">
             今は <code>count</code> が固定値なので、ボタンを押しても数字は変わりません。
-            <code>useState</code> に置き換えて、前のcountから次のcountを作ります。
+            <code>useState&lt;number&gt;</code>{' '}
+            に置き換えて、Reactが今覚えているcountから次のcountを作ります。
           </p>
         </div>
         <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
@@ -207,7 +247,7 @@ function CounterStarter() {
 }
 
 function ProfileStarter() {
-  // TODO: profileをuseStateで持ちます。
+  // TODO: profileをuseState<Profile>で持ちます。
   const profile = starterProfile;
 
   function handleLevelUp() {
@@ -276,7 +316,7 @@ function ProfileStarter() {
 }
 
 function SkillsStarter() {
-  // TODO: skillsをuseStateで持ちます。
+  // TODO: skillsをuseState<Skill[]>で持ちます。
   const skills = starterSkills;
 
   function handleToggleSkill(targetId: string) {
@@ -342,10 +382,11 @@ function StateTypeStarter() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-[#15191f]">stateの型を見る</h2>
+          <h2 className="text-xl font-semibold text-[#15191f]">stateの型を見える形で書く</h2>
           <p className="mt-3 leading-7 text-[#425466]">
             <code>saveStatus</code> は、<code>idle</code>、<code>saving</code>、<code>done</code>{' '}
-            のどれかだけにしたい値です。こういうときは、stateの型を自分で書くと分かりやすくなります。
+            のどれかだけにしたい値です。この教材では、stateの型を追いやすいように
+            <code>useState&lt;SaveStatus&gt;</code> の形で明示します。
           </p>
         </div>
         <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
@@ -387,12 +428,21 @@ function CodeHint() {
         最初から全部を暗記しなくて大丈夫です。まずは、直接書き換えずに新しい値を返す、という考え方を見ます。
       </p>
       <pre className="mt-5 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
-        <code>{`setCount((currentCount) => currentCount + 1);
+        <code>{`const [count, setCount] = useState<number>(0);
+
+setCount((currentCount) => {
+  const nextCount = currentCount + 1;
+  return nextCount;
+});
+
+const [profile, setProfile] = useState<Profile>(starterProfile);
 
 setProfile((currentProfile) => ({
   ...currentProfile,
   level: currentProfile.level + 1,
 }));
+
+const [skills, setSkills] = useState<Skill[]>(starterSkills);
 
 setSkills((currentSkills) =>
   currentSkills.map((skill) =>
@@ -434,12 +484,13 @@ export default function HooksUseStatePage() {
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-8 text-[#425466]">
             Lesson 5で、stateを更新すると画面が変わることを確認しました。Lesson
-            6では、前のstateを使う更新、オブジェクトstate、配列state、stateの型を順番に練習します。
+            6では、Reactが覚えている最新のstateを使う更新、オブジェクトstate、配列state、stateの型を順番に練習します。
           </p>
         </header>
 
         <ConceptOverview />
         <LessonFlow />
+        <ArgumentGuide />
         <FunctionalUpdateExample />
         <TodoOrder />
         <CounterStarter />

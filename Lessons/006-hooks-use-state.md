@@ -8,10 +8,10 @@ Lesson 5 では、ボタンや入力欄の操作でstateが変わり、画面が
 
 Lesson 6 では、次を学びます。
 
-- 前のstateを使って次のstateを作ること
+- Reactが今覚えている最新のstateを受け取り、次のstateを返すこと
 - オブジェクトstateを直接書き換えず、新しいオブジェクトで更新すること
 - 配列stateを直接書き換えず、新しい配列で更新すること
-- TypeScriptでstateの型を見ること
+- 学習用に `useState<number>` のようなstateの型を明示すること
 
 ## Start
 
@@ -92,7 +92,7 @@ git switch -c taro/006-hooks-use-state start/006-hooks-use-state
 ```text
 hooks useState lab
   count
-    前のcountを使って+1する
+    Reactが今覚えている最新のcountを使って+1する
     0に戻す
 
   profile
@@ -108,9 +108,9 @@ hooks useState lab
 
 最初は、ボタンや入力欄があっても値が固定されている状態を確認します。
 
-ページの上部には、前のstateを使うカウントボタンの完成例を1つだけ置いています。
+ページの上部には、Reactが今覚えている最新のcountを受け取るカウントボタンの完成例を1つだけ置いています。
 
-完成例で、`setCount((currentCount) => currentCount + 1)` の形を見てから、下のTODO付きスターターを直します。
+完成例で、`currentCount` が関数の引数として渡される形を見てから、下のTODO付きスターターを直します。
 
 ## Steps
 
@@ -136,7 +136,7 @@ App Routerでは、`page.tsx` がURLに対応するページになります。
 
 ```text
 useState更新パターンの説明
-前のstateを使う完成例
+Reactが覚えている最新のstateを使う完成例
 TODOの順番
 countの仮表示
 profileの仮表示
@@ -162,7 +162,7 @@ Lesson 6のページは、ボタンや入力欄を使うので Client Component 
 'use client';
 ```
 
-### 3. 前のstateを使ってcountを更新する
+### 3. Reactが覚えている最新のcountで更新する
 
 スターターコードでは、`count` が固定値になっています。
 
@@ -175,16 +175,43 @@ const count = 0;
 完成版では、次の形に置き換えます。
 
 ```tsx
-const [count, setCount] = useState(0);
+const [count, setCount] = useState<number>(0);
 ```
 
-前のcountを使って次のcountを作るときは、次の形を使います。
+次に、`currentCount` を使って次のcountを作ります。
+
+まず、引数を短く確認します。
+
+引数とは、関数が外から受け取る値です。
 
 ```tsx
-setCount((currentCount) => currentCount + 1);
+function greet(name: string) {
+  return `こんにちは、${name}`;
+}
+
+greet('Taro');
 ```
 
-`currentCount` は、Reactが持っている最新のcountです。
+`greet('Taro')` と呼ぶと、`name` の中に `Taro` が入ります。
+
+`name` は、`let` や `const` で自分で作る変数ではありません。
+
+関数が呼ばれるときに、外から入ってくる値です。
+
+`setCount` でも同じ考え方を使います。
+
+```tsx
+setCount((currentCount) => {
+  const nextCount = currentCount + 1;
+  return nextCount;
+});
+```
+
+`currentCount` は、`let` や `const` で自分で作る変数ではありません。
+
+この関数の引数です。
+
+Reactがこの関数を呼ぶときに、Reactが今覚えている最新のcountを `currentCount` に入れてくれます。
 
 ### 4. オブジェクトstateを更新する
 
@@ -197,7 +224,7 @@ const profile = starterProfile;
 完成版では、`profile` をstateにします。
 
 ```tsx
-const [profile, setProfile] = useState(starterProfile);
+const [profile, setProfile] = useState<Profile>(starterProfile);
 ```
 
 オブジェクトの一部だけを変えるときも、元のオブジェクトを直接書き換えません。
@@ -224,7 +251,7 @@ const skills = starterSkills;
 完成版では、`skills` をstateにします。
 
 ```tsx
-const [skills, setSkills] = useState(starterSkills);
+const [skills, setSkills] = useState<Skill[]>(starterSkills);
 ```
 
 配列の中の1件だけ変えるときは、`map` で新しい配列を作ります。
@@ -237,9 +264,9 @@ setSkills((currentSkills) =>
 
 ここでも、元の配列や元のオブジェクトを直接書き換えません。
 
-### 6. stateの型を見る
+### 6. stateの型を見える形で書く
 
-単純なstateでは、TypeScriptが型を推測してくれます。
+TypeScriptは、単純なstateなら型を推測できます。
 
 ```tsx
 const [count, setCount] = useState(0);
@@ -247,7 +274,15 @@ const [count, setCount] = useState(0);
 
 この場合、`count` は number として扱われます。
 
-一方で、決まった文字だけを入れたいstateでは、型を自分で書くと分かりやすくなります。
+ただし、この教材では初学者がstateの型を追いやすいように、Lesson 6では型を明示します。
+
+```tsx
+const [count, setCount] = useState<number>(0);
+const [profile, setProfile] = useState<Profile>(starterProfile);
+const [skills, setSkills] = useState<Skill[]>(starterSkills);
+```
+
+決まった文字だけを入れたいstateでも、同じように型を書きます。
 
 ```tsx
 type SaveStatus = 'idle' | 'saving' | 'done';
@@ -282,8 +317,9 @@ skillをクリックするとdoneが切り替わる
 
 このレッスンの復習では、次を説明できるか確認します。
 
-- `setCount(count + 1)` と `setCount((currentCount) => currentCount + 1)` の違い
-- 前のstateを使う更新が必要になる場面
+- `currentCount` が `let` や `const` ではなく、関数の引数であること
+- `setCount(count + 1)` と `setCount((currentCount) => { ... })` の違い
+- Reactが覚えている最新のstateを使う更新が必要になる場面
 - オブジェクトstateを直接書き換えない理由
 - 配列stateを直接書き換えない理由
 - `...currentProfile` が何をしているか

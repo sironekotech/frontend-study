@@ -3,10 +3,13 @@
 import { useState } from 'react';
 
 export function FunctionalUpdateExample() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>(0);
 
   function handleIncrease() {
-    setCount((currentCount) => currentCount + 1);
+    setCount((currentCount) => {
+      const nextCount = currentCount + 1;
+      return nextCount;
+    });
   }
 
   function handleReset() {
@@ -19,8 +22,7 @@ export function FunctionalUpdateExample() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">完成例を1つだけ見る</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            ここだけは完成形です。前のstateを使って次のstateを作るときは、
-            <code>setCount((currentCount) =&gt; currentCount + 1)</code> の形を使います。
+            ここだけは完成形です。Reactが今覚えている最新のcountを受け取り、次に表示するcountを返しています。
           </p>
         </div>
         <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
@@ -53,10 +55,13 @@ export function FunctionalUpdateExample() {
         <div className="rounded-md bg-[#15191f] p-4">
           <p className="text-sm font-semibold text-[#82d39b]">対応するコード</p>
           <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
-            <code>{`const [count, setCount] = useState(0);
+            <code>{`const [count, setCount] = useState<number>(0);
 
 function handleIncrease() {
-  setCount((currentCount) => currentCount + 1);
+  setCount((currentCount) => {
+    const nextCount = currentCount + 1;
+    return nextCount;
+  });
 }`}</code>
           </pre>
         </div>
