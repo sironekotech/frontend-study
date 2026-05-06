@@ -1,3 +1,5 @@
+import { HomeLink } from '@/app/_components/HomeLink';
+
 type LessonStatus = 'done' | 'learning' | 'next';
 
 type LessonCardProps = {
@@ -256,9 +258,10 @@ function ReviewExample() {
 
 export default function ReactPropsChildrenPage() {
   return (
-    <main className="min-h-screen bg-[#f7f7f2] px-6 py-10 text-[#1f2933] sm:px-10">
+    <main className="min-h-screen bg-[#f7f7f2] px-4 py-8 text-[#1f2933] sm:px-6 sm:py-10 lg:px-10">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <header className="border-b border-[#d8d6c8] pb-8">
+          <HomeLink />
           <LessonBadge />
           <h1 className="mt-5 text-4xl font-bold leading-tight text-[#15191f] sm:text-5xl">
             propsとchildrenを使ってUIを分ける
