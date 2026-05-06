@@ -436,6 +436,7 @@ Lessons/
   003-react-list-key.md
   004-react-props-children.md
   005-react-use-state-event.md
+  006-hooks-use-state.md
 ```
 
 個別レッスンファイルには、次の内容を書きます。
@@ -597,9 +598,13 @@ Lesson 5で触れた `useState` を、さらに詳しく学ぶページを作り
 
 学ぶこと:
 
-- 前のstateを使った更新
-- 配列やオブジェクトのstate更新
-- stateの型推論
+- `setState((current) => next)` の形
+- Reactが覚えている最新のstateを使った更新
+- 引数として渡される `current` の読み方
+- オブジェクトは関係する値を1つにまとめるものだと理解する
+- オブジェクトstateを直接書き換えず、新しいオブジェクトで更新する
+- 配列stateを直接書き換えず、新しい配列で更新する
+- 学習用にstateの型を明示する書き方
 
 タグ:
 
