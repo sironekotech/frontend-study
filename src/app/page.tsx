@@ -31,6 +31,12 @@ const lessonLinks = [
     href: '/react-basics/use-state-event',
     description: 'useState、onClick、onChange、画面の再表示を確認します。',
   },
+  {
+    id: '006-hooks-use-state',
+    title: '006-hooks-use-state',
+    href: '/hooks/use-state',
+    description: '前のstate、配列・オブジェクトstate、stateの型を確認します。',
+  },
 ];
 
 export default function Home() {
