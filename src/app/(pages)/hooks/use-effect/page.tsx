@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { HomeLink } from '@/app/_components/HomeLink';
 import { EffectTitleExample } from './_components/EffectTitleExample';
 
@@ -152,16 +152,16 @@ function TodoOrder() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このstartページは、selectで値を変えるところだけ先に用意しています。TODOでは
-        <code>useEffect</code> を追加して、画面を出したあとにやることをつなぎます。
+        完成版では、次のTODOがすべて実装済みです。スターターと見比べると、
+        <code>useEffect</code> をどこに追加したか確認できます。
       </p>
       <div className="mt-4 grid gap-3">
         {[
-          'ReactからuseEffectをimportする',
-          'selectedTopicに合わせてdocument.titleを更新する',
-          '最初に画面を出したあと、window.innerWidthをwindowWidthLabelに保存する',
-          '画面幅が変わったらwindowWidthLabelを更新し、片付けで監視を止める',
-          '最初に画面を出したあと、lessonItemsを読み込んだ想定でloadedLessonsに保存する',
+          'ReactからuseEffectをimport済み',
+          'selectedTopicに合わせてdocument.titleを更新済み',
+          '最初に画面を出したあと、window.innerWidthをwindowWidthLabelに保存済み',
+          '画面幅が変わったらwindowWidthLabelを更新し、片付けで監視を止める実装済み',
+          '最初に画面を出したあと、lessonItemsを読み込んだ想定でloadedLessonsに保存済み',
         ].map((todo, index) => (
           <div
             key={todo}
@@ -176,12 +176,47 @@ function TodoOrder() {
   );
 }
 
-function EffectStarter() {
+function EffectExample() {
   const [selectedTopic, setSelectedTopic] = useState<TopicKey>('title');
-  const [windowWidthLabel] = useState('まだ画面幅を計測していません');
-  const [fetchStatus] = useState<FetchStatus>('idle');
-  const [loadedLessons] = useState<LessonItem[]>([]);
+  const [windowWidthLabel, setWindowWidthLabel] = useState('まだ画面幅を計測していません');
+  const [fetchStatus, setFetchStatus] = useState<FetchStatus>('idle');
+  const [loadedLessons, setLoadedLessons] = useState<LessonItem[]>([]);
   const nextDocumentTitle = `Lesson 9 - ${topicLabels[selectedTopic]}`;
+
+  useEffect(() => {
+    document.title = nextDocumentTitle;
+  }, [nextDocumentTitle]);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidthLabel(`現在の横幅: ${window.innerWidth}px`);
+    }
+
+    const frameId = requestAnimationFrame(handleResize);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const loadingTimerId = window.setTimeout(() => {
+      setFetchStatus('loading');
+    }, 150);
+
+    const successTimerId = window.setTimeout(() => {
+      setLoadedLessons(lessonItems);
+      setFetchStatus('success');
+    }, 600);
+
+    return () => {
+      window.clearTimeout(loadingTimerId);
+      window.clearTimeout(successTimerId);
+    };
+  }, []);
 
   function handleTopicChange(event: ChangeEvent<HTMLSelectElement>) {
     setSelectedTopic(event.target.value as TopicKey);
@@ -195,12 +230,12 @@ function EffectStarter() {
             画面を出したあとにやることをつなぐ
           </h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            selectのstate更新はすでに動きます。ここに <code>useEffect</code>{' '}
-            を追加して、タブ名の変更、画面幅の監視、表示後の読み込みを実装します。
+            <code>useEffect</code>{' '}
+            で、タブ名の変更、画面幅の監視、表示後の読み込みを実装しています。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成見本
         </p>
       </div>
 
@@ -347,7 +382,7 @@ export default function HooksUseEffectPage() {
         <TimingListGuide />
         <EffectTitleExample />
         <TodoOrder />
-        <EffectStarter />
+        <EffectExample />
         <CodeHint />
         <CompletionCheck />
       </div>
