@@ -49,6 +49,12 @@ const lessonLinks = [
     href: '/next-basics/app-router-routing',
     description: 'App Routerのpage.tsx、Route Group、nested route、dynamic routeを確認します。',
   },
+  {
+    id: '009-hooks-use-effect',
+    title: '009-hooks-use-effect',
+    href: '/hooks/use-effect',
+    description: 'useEffectで、画面を出したあとにやること、いつやるか、片付けを確認します。',
+  },
 ];
 
 export default function Home() {
