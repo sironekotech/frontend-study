@@ -55,6 +55,12 @@ const lessonLinks = [
     href: '/hooks/use-effect',
     description: 'useEffectで、画面を出したあとにやること、いつやるか、片付けを確認します。',
   },
+  {
+    id: '010-hooks-use-ref',
+    title: '010-hooks-use-ref',
+    href: '/hooks/use-ref',
+    description: 'useRefで、DOM参照、inputへのfocus、再レンダーされない値を確認します。',
+  },
 ];
 
 export default function Home() {
