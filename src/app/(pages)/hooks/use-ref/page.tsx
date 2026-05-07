@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useRef, useState, type ChangeEvent } from 'react';
 import { HomeLink } from '@/app/_components/HomeLink';
 import { FocusMiniExample } from './_components/FocusMiniExample';
 
@@ -139,17 +139,17 @@ function TodoOrder() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このstartページは、入力文字をstateで持つところだけ先に用意しています。TODOでは
-        <code>useRef</code> を追加して、DOM参照と再レンダーされない値を確認します。
+        完成版では、次のTODOがすべて実装済みです。スターターと見比べると、
+        <code>useRef</code> をどこに追加したか確認できます。
       </p>
       <div className="mt-4 grid gap-3">
         {[
-          'ReactからuseRefをimportする',
-          'nameInputRefをuseRef<HTMLInputElement>(null)で作る',
-          'inputにref={nameInputRef}を渡す',
-          'ボタンでnameInputRef.current?.focus()を呼ぶ',
-          'saveCountRefをuseRef<number>(0)で作り、保存回数をcurrentへ入れる',
-          'ref.currentを書き換えても画面は自動で変わらないことを確認する',
+          'ReactからuseRefをimport済み',
+          'nameInputRefをuseRef<HTMLInputElement>(null)で作成済み',
+          'inputにref={nameInputRef}を渡してDOM参照を接続済み',
+          'ボタンでnameInputRef.current?.focus()を呼ぶ実装済み',
+          'saveCountRefをuseRef<number>(0)で作り、保存回数をcurrentへ入れる実装済み',
+          'ref.currentを書き換えても、画面用stateを更新しない限り表示は変わらないことを確認済み',
         ].map((todo, index) => (
           <div
             key={todo}
@@ -164,22 +164,37 @@ function TodoOrder() {
   );
 }
 
-function RefStarter() {
+function RefExample() {
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const savedNameRef = useRef('まだ保存されていません');
+  const saveCountRef = useRef<number>(0);
   const [learnerName, setLearnerName] = useState('');
   const [statusMessage, setStatusMessage] = useState('まだボタンを押していません');
-  const savedNameLabel = 'TODO: ref.currentに保存した名前をここで確認します';
-  const saveCountLabel = 'TODO: ref.currentに保存した回数をここで確認します';
+  const [visibleSavedName, setVisibleSavedName] = useState('まだ保存されていません');
+  const [visibleSaveCount, setVisibleSaveCount] = useState(0);
 
   function handleLearnerNameChange(event: ChangeEvent<HTMLInputElement>) {
     setLearnerName(event.target.value);
   }
 
   function handleFocusNameInput() {
-    setStatusMessage('TODO: nameInputRef.current?.focus() をここで呼びます');
+    nameInputRef.current?.focus();
+    setStatusMessage('nameInputRef.current?.focus() で名前入力欄にfocusしました');
   }
 
   function handleSaveToRef() {
-    setStatusMessage('TODO: saveCountRef.current を増やし、名前もrefへ保存します');
+    savedNameRef.current = learnerName || '名前なし';
+    saveCountRef.current += 1;
+    setVisibleSavedName(savedNameRef.current);
+    setVisibleSaveCount(saveCountRef.current);
+    setStatusMessage('ref.currentへ保存し、画面に見せるためのstateも更新しました');
+  }
+
+  function handleIncreaseRefOnly() {
+    saveCountRef.current += 1;
+    setStatusMessage(
+      `ref.currentだけを${saveCountRef.current}へ増やしました。右側の表示用stateはまだ${visibleSaveCount}のままです。`,
+    );
   }
 
   return (
@@ -190,12 +205,12 @@ function RefStarter() {
             inputをrefで覚えて、ボタンからfocusする
           </h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            入力文字は画面に表示したいのでstateで持っています。TODOでは、inputそのものと保存回数を
-            <code>useRef</code> で覚えるようにします。
+            入力文字は画面に表示したいのでstateで持っています。inputそのものと保存回数は
+            <code>useRef</code> で覚えています。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成見本
         </p>
       </div>
 
@@ -204,6 +219,7 @@ function RefStarter() {
           <label className="grid gap-2 text-sm font-semibold text-[#425466]">
             名前
             <input
+              ref={nameInputRef}
               value={learnerName}
               onChange={handleLearnerNameChange}
               placeholder="React learner"
@@ -224,7 +240,14 @@ function RefStarter() {
               onClick={handleSaveToRef}
               className="rounded-md border border-[#d8d6c8] bg-white px-4 py-2 text-sm font-semibold text-[#15191f]"
             >
-              refに保存する
+              refに保存して表示する
+            </button>
+            <button
+              type="button"
+              onClick={handleIncreaseRefOnly}
+              className="rounded-md border border-[#d8d6c8] bg-white px-4 py-2 text-sm font-semibold text-[#15191f] sm:col-span-2"
+            >
+              ref.currentだけ+1する
             </button>
           </div>
 
@@ -247,7 +270,8 @@ function RefStarter() {
           <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
             <h3 className="text-sm font-semibold text-[#15191f]">2. refでDOMを覚える</h3>
             <p className="mt-3 rounded-md bg-white p-3 text-sm leading-6 text-[#425466]">
-              TODO: inputに <code>{`ref={nameInputRef}`}</code> を渡します。
+              inputに <code>{`ref={nameInputRef}`}</code>{' '}
+              を渡しているので、ボタンから入力欄へfocusできます。
             </p>
           </article>
 
@@ -255,10 +279,16 @@ function RefStarter() {
             <h3 className="text-sm font-semibold text-[#15191f]">3. refで内部の値を覚える</h3>
             <div className="mt-3 grid gap-2">
               <p className="rounded-md bg-white p-3 text-sm leading-6 text-[#425466]">
-                {savedNameLabel}
+                ref.currentに保存した名前:{' '}
+                <span className="font-semibold text-[#15191f]">{visibleSavedName}</span>
               </p>
               <p className="rounded-md bg-white p-3 text-sm leading-6 text-[#425466]">
-                {saveCountLabel}
+                画面に表示している保存回数:{' '}
+                <span className="font-semibold text-[#15191f]">{visibleSaveCount}</span>
+              </p>
+              <p className="rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-3 text-sm leading-6 text-[#6f5615]">
+                <code>ref.currentだけ+1する</code>{' '}
+                を押すと、refの中身は増えます。ただし画面に出しているstateは更新していないため、この保存回数はその場では増えません。
               </p>
             </div>
           </article>
@@ -294,6 +324,7 @@ function CodeHint() {
       </p>
       <pre className="mt-5 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
         <code>{`const nameInputRef = useRef<HTMLInputElement>(null);
+const savedNameRef = useRef('まだ保存されていません');
 const saveCountRef = useRef<number>(0);
 
 function handleFocusNameInput() {
@@ -301,7 +332,10 @@ function handleFocusNameInput() {
 }
 
 function handleSaveToRef() {
+  savedNameRef.current = learnerName || '名前なし';
   saveCountRef.current += 1;
+  setVisibleSavedName(savedNameRef.current);
+  setVisibleSaveCount(saveCountRef.current);
 }`}</code>
       </pre>
     </section>
@@ -345,7 +379,7 @@ export default function HooksUseRefPage() {
         <CurrentGuide />
         <FocusMiniExample />
         <TodoOrder />
-        <RefStarter />
+        <RefExample />
         <UseCaseList />
         <CodeHint />
         <CompletionCheck />
