@@ -65,22 +65,42 @@ const callPlaces = [
   {
     name: 'Reactコンポーネント',
     answer: 'OK',
-    description: '画面を返す関数です。Hooksをトップレベルで呼べます。',
+    description:
+      '画面に出すJSXを返す関数です。関数名は大文字で始めます。Hooksはこの関数のトップレベルで呼びます。',
+    code: `function Counter() {
+  const [count, setCount] = useState(0);
+
+  return <button>{count}</button>;
+}`,
   },
   {
     name: 'custom hook',
     answer: 'OK',
-    description: 'useで始まる、Hookを使うための共通処理です。',
+    description:
+      'Hookを使う処理をまとめる関数です。名前をuseで始めると、React用のHookだと分かります。',
+    code: `function useCounter() {
+  const [count, setCount] = useState(0);
+
+  return { count, setCount };
+}`,
   },
   {
     name: '普通の関数',
     answer: 'NG',
-    description: 'ReactがHookの順番を追えないため、Hookを呼びません。',
+    description:
+      '文字を整える、数値を計算するなど、Reactの画面とは関係なく使う関数です。Hookは呼びません。',
+    code: `function formatCount(count: number) {
+  return \`\${count}回クリックしました\`;
+}`,
   },
   {
     name: 'イベントハンドラ',
     answer: 'NG',
-    description: 'クリック後に動く関数です。HookではなくsetStateなどを呼びます。',
+    description:
+      'クリック、入力、送信など、ユーザー操作のあとに動く関数です。HookではなくsetStateなどを呼びます。',
+    code: `function handleClick() {
+  setCount((currentCount) => currentCount + 1);
+}`,
   },
 ];
 
@@ -158,10 +178,58 @@ function RuleFlowGuide() {
   );
 }
 
+function EventHandlerGuide() {
+  return (
+    <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
+      <h2 className="text-xl font-semibold text-[#15191f]">
+        イベントハンドラは「操作後に動く関数」
+      </h2>
+      <p className="mt-3 leading-7 text-[#425466]">
+        イベントは、クリック、入力、送信のようなユーザー操作です。イベントハンドラは、その操作が起きたあとに動く関数です。
+      </p>
+      <div className="mt-5 grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-md bg-[#f7f7f2] p-4">
+          <p className="text-sm font-semibold text-[#6f5615]">読む順番</p>
+          <div className="mt-3 grid gap-3 text-sm leading-6 text-[#425466]">
+            <p className="rounded-md bg-white p-3">1. 先にuseStateをトップレベルで呼ぶ</p>
+            <p className="rounded-md bg-white p-3">2. クリック後に動くhandleClickを作る</p>
+            <p className="rounded-md bg-white p-3">3. handleClickの中ではsetCountを呼ぶ</p>
+          </div>
+        </div>
+
+        <div className="rounded-md bg-[#15191f] p-4">
+          <p className="text-sm font-semibold text-[#82d39b]">イベントハンドラの例</p>
+          <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
+            <code>{`function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount((currentCount) => currentCount + 1);
+  }
+
+  return <button onClick={handleClick}>+1</button>;
+}`}</code>
+          </pre>
+        </div>
+      </div>
+      <div className="mt-5 rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
+        <p className="text-sm leading-6 text-[#6f5615]">
+          <code>handleClick</code> の中で <code>useState</code>{' '}
+          は呼びません。Hookは先に呼んでおき、イベントハンドラでは <code>setCount</code>{' '}
+          のような更新関数を使います。
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function CallPlaceMatrix() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">Hookを呼んでよい場所</h2>
+      <p className="mt-3 leading-7 text-[#425466]">
+        まずは、Hookを呼ぶ場所と呼ばない場所を、短いコードで見ます。OKはHookを呼んでよい場所、NGはHookを呼ばない場所です。
+      </p>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         {callPlaces.map((place) => (
           <article key={place.name} className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
@@ -178,6 +246,9 @@ function CallPlaceMatrix() {
               </p>
             </div>
             <p className="mt-3 text-sm leading-6 text-[#425466]">{place.description}</p>
+            <pre className="mt-4 overflow-x-auto rounded-md bg-[#15191f] p-3 text-sm leading-6 text-[#f7f7f2]">
+              <code>{place.code}</code>
+            </pre>
           </article>
         ))}
       </div>
@@ -342,6 +413,7 @@ export default function HooksRulesPage() {
 
         <ConceptOverview />
         <RuleFlowGuide />
+        <EventHandlerGuide />
         <CallPlaceMatrix />
         <TopLevelHookExample />
         <TodoOrder />

@@ -157,7 +157,76 @@ function Counter() {
 
 そのあとで、表示内容を条件分岐しています。
 
-### 3. 条件分岐の中でHookを呼ばない
+### 3. Hookを呼んでよい場所を見る
+
+Hookを呼んでよい場所は、まず2つだけ覚えます。
+
+```text
+Reactコンポーネント
+custom hook
+```
+
+Reactコンポーネントは、画面に出すJSXを返す関数です。
+
+関数名は大文字で始めます。
+
+```tsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return <button>{count}</button>;
+}
+```
+
+custom hookは、Hookを使う処理をまとめる関数です。
+
+名前は `use` で始めます。
+
+```tsx
+function useCounter() {
+  const [count, setCount] = useState(0);
+
+  return { count, setCount };
+}
+```
+
+普通の関数では、Hookを呼びません。
+
+普通の関数は、文字を整える、数値を計算する、配列を並べ替える、というような処理に使います。
+
+```tsx
+function formatCount(count: number) {
+  return `${count}回クリックしました`;
+}
+```
+
+### 4. イベントハンドラを見る
+
+イベントは、クリック、入力、送信のようなユーザー操作です。
+
+イベントハンドラは、その操作が起きたあとに動く関数です。
+
+```tsx
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount((currentCount) => currentCount + 1);
+  }
+
+  return <button onClick={handleClick}>+1</button>;
+}
+```
+
+この例では、`handleClick` がイベントハンドラです。
+
+ボタンをクリックしたあとに動きます。
+
+`handleClick` の中で `useState` は呼びません。
+
+`useState` は先にトップレベルで呼んでおき、イベントハンドラの中では `setCount` を呼びます。
+
+### 5. 条件分岐の中でHookを呼ばない
 
 次のような書き方は避けます。
 
@@ -175,7 +244,7 @@ function Counter({ isReady }: { isReady: boolean }) {
 
 Hookは毎回同じ順番で呼ばれる必要があります。
 
-### 4. イベントハンドラの中でHookを呼ばない
+### 6. イベントハンドラの中でHookを呼ばない
 
 クリックしたときにHookを呼ぶ、という書き方も避けます。
 
@@ -195,7 +264,7 @@ function Form() {
 
 stateを変えたいなら、`setState` 関数を呼びます。
 
-### 5. custom hookはuseで始める
+### 7. custom hookはuseで始める
 
 Hookを使う共通処理を切り出す場合は、custom hookにします。
 
@@ -210,7 +279,7 @@ function useWindowWidth() {
 
 `use` で始めることで、ReactやESLintが「これはHookのルールで見る関数」だと判断できます。
 
-### 6. ESLintを味方にする
+### 8. ESLintを味方にする
 
 この教材では、Hookのルール違反をESLintで検出します。
 
