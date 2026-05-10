@@ -73,6 +73,12 @@ const lessonLinks = [
     href: '/hooks/custom-hooks',
     description: 'custom hookで処理をまとめる方法、返す値、置き場所を確認します。',
   },
+  {
+    id: '013-hooks-reducer-context',
+    title: '013-hooks-reducer-context',
+    href: '/hooks/reducer-context',
+    description: 'useReducer、action、dispatch、Context、props drillingを確認します。',
+  },
 ];
 
 export default function Home() {
