@@ -182,11 +182,13 @@ custom hookは、Hookを使う処理をまとめる関数です。
 
 名前は `use` で始めます。
 
-```tsx
-function useCounter() {
-  const [count, setCount] = useState(0);
+詳しくはLesson 12で扱うため、ここでは「`use` で始まる関数ではHookを呼べる」とだけ覚えます。
 
-  return { count, setCount };
+```tsx
+function useReadyMessage() {
+  const [message] = useState('準備OK');
+
+  return message;
 }
 ```
 

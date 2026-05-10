@@ -64,7 +64,7 @@ const ruleCases: RuleCase[] = [
 const callPlaces = [
   {
     name: 'Reactコンポーネント',
-    answer: 'OK',
+    answer: 'Hookを呼んでOK',
     description:
       '画面に出すJSXを返す関数です。関数名は大文字で始めます。Hooksはこの関数のトップレベルで呼びます。',
     code: `function Counter() {
@@ -74,19 +74,19 @@ const callPlaces = [
 }`,
   },
   {
-    name: 'custom hook',
-    answer: 'OK',
+    name: 'custom hook（Lesson 12で詳しく）',
+    answer: 'Hookを呼んでOK',
     description:
-      'Hookを使う処理をまとめる関数です。名前をuseで始めると、React用のHookだと分かります。',
-    code: `function useCounter() {
-  const [count, setCount] = useState(0);
+      'Hookを使う処理をまとめる関数です。ここでは、名前がuseで始まる関数ではHookを呼べる、とだけ覚えます。',
+    code: `function useReadyMessage() {
+  const [message] = useState('準備OK');
 
-  return { count, setCount };
+  return message;
 }`,
   },
   {
     name: '普通の関数',
-    answer: 'NG',
+    answer: 'Hookを呼ばない',
     description:
       '文字を整える、数値を計算するなど、Reactの画面とは関係なく使う関数です。Hookは呼びません。',
     code: `function formatCount(count: number) {
@@ -95,11 +95,17 @@ const callPlaces = [
   },
   {
     name: 'イベントハンドラ',
-    answer: 'NG',
+    answer: 'Hookを呼ばない',
     description:
       'クリック、入力、送信など、ユーザー操作のあとに動く関数です。HookではなくsetStateなどを呼びます。',
-    code: `function handleClick() {
-  setCount((currentCount) => currentCount + 1);
+    code: `function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount((currentCount) => currentCount + 1);
+  }
+
+  return <button onClick={handleClick}>+1</button>;
 }`,
   },
 ];
@@ -228,7 +234,7 @@ function CallPlaceMatrix() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">Hookを呼んでよい場所</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        まずは、Hookを呼ぶ場所と呼ばない場所を、短いコードで見ます。OKはHookを呼んでよい場所、NGはHookを呼ばない場所です。
+        まずは、Hookを呼ぶ場所と呼ばない場所を、短いコードで見ます。カードのラベルは、その場所でHookを呼んでよいかを表しています。
       </p>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         {callPlaces.map((place) => (
@@ -237,7 +243,7 @@ function CallPlaceMatrix() {
               <h3 className="font-semibold text-[#15191f]">{place.name}</h3>
               <p
                 className={`w-fit rounded-md px-3 py-1 text-sm font-semibold ${
-                  place.answer === 'OK'
+                  place.answer.includes('OK')
                     ? 'bg-[#e3f0e8] text-[#2f6848]'
                     : 'bg-[#fff4c7] text-[#6f5615]'
                 }`}
@@ -267,9 +273,9 @@ function TodoOrder() {
       <div className="mt-4 grid gap-3">
         {[
           '3つのコード例を読み、Hookを呼んでいる場所を確認する',
-          'resultLabelのTODOをOK / NGの判定に置き換える',
-          'reasonのTODOを初学者向けの理由に置き換える',
-          'fixedCodeのTODOを安全なコード例に置き換える',
+          '判定の文章を「NG」などの分かりやすい表示に置き換える',
+          '理由の文章を初学者向けの説明に置き換える',
+          '直したコード例を安全なコードに置き換える',
           '条件分岐の中でHookを呼ばず、JSX側を条件分岐する考え方を確認する',
           'custom hookはuseで始めることを確認する',
         ].map((todo, index) => (
