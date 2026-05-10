@@ -67,6 +67,12 @@ const lessonLinks = [
     href: '/hooks/rules',
     description: 'Hooksを呼んでよい場所、NG例、custom hookの命名、ESLintの理由を確認します。',
   },
+  {
+    id: '012-custom-hooks',
+    title: '012-custom-hooks',
+    href: '/hooks/custom-hooks',
+    description: 'custom hookで処理をまとめる方法、返す値、置き場所を確認します。',
+  },
 ];
 
 export default function Home() {
