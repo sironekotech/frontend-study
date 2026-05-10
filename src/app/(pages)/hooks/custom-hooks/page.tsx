@@ -109,26 +109,27 @@ function FilePlacementGuide() {
 function TodoOrder() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-      <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
+      <h2 className="text-xl font-semibold text-[#15191f]">完成版で確認する順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        startページでは、custom hookのファイルと画面だけ先に用意しています。TODOでは、固定値を
-        <code>useState</code> に置き換え、画面から使えるcustom hookにしていきます。
+        startページで固定値だった部分を、<code>useState</code> を使うcustom
+        hookへ置き換えています。ページ側は、custom
+        hookから返された値と関数を使って画面を動かしています。
       </p>
       <div className="mt-4 grid gap-3">
         {[
-          'hookファイルで、ReactからuseStateをimportする',
-          'useLessonTimerで、固定のelapsedMinutesをuseState<number>(0)へ置き換える',
-          'handleAddMinuteで、学習時間を1分増やす',
-          'handleResetTimerで、学習時間を0分へ戻す',
-          'useLearningChecklistで、固定配列をuseState<LearningChecklistItem[]>へ置き換える',
-          'handleToggleItemで、クリックした項目のisDoneを切り替える',
-          'page.tsxで、custom hookから返された値と関数が画面に反映されることを確認する',
+          'hookファイルでReactからuseStateをimport済み',
+          'useLessonTimerで、elapsedMinutesをuseState<number>(0)で管理済み',
+          'handleAddMinuteで、学習時間を1分増やす実装済み',
+          'handleResetTimerで、学習時間を0分へ戻す実装済み',
+          'useLearningChecklistで、itemsをuseState<LearningChecklistItem[]>で管理済み',
+          'handleToggleItemで、クリックした項目のisDoneを切り替える実装済み',
+          'page.tsxで、custom hookから返された値と関数が画面に反映されることを確認済み',
         ].map((todo, index) => (
           <div
             key={todo}
             className="grid gap-3 rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4 text-sm leading-6 text-[#425466] sm:grid-cols-[80px_1fr]"
           >
-            <p className="font-mono font-semibold text-[#6f5615]">TODO {index + 1}</p>
+            <p className="font-mono font-semibold text-[#6f5615]">STEP {index + 1}</p>
             <p>{todo}</p>
           </div>
         ))}
@@ -137,7 +138,7 @@ function TodoOrder() {
   );
 }
 
-function CustomHooksStarter() {
+function CustomHooksExample() {
   const { elapsedMinutes, handleAddMinute, handleResetTimer } = useLessonTimer();
   const { items, completedCount, handleToggleItem } = useLearningChecklist();
 
@@ -147,12 +148,13 @@ function CustomHooksStarter() {
         <div>
           <h2 className="text-xl font-semibold text-[#15191f]">custom hookをページから使う</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            このstartページでは、ボタンを押してもまだ値が変わりません。TODOを直すと、custom
-            hookの中のstateが画面へ反映されます。
+            <code>useLessonTimer</code> と <code>useLearningChecklist</code>{' '}
+            から返された値と関数を使っています。処理はcustom
+            hookにあり、ページは画面表示を担当します。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成見本
         </p>
       </div>
 
@@ -162,7 +164,7 @@ function CustomHooksStarter() {
             <p className="text-sm font-semibold text-[#6f5615]">useLessonTimer</p>
             <p className="mt-2 text-4xl font-bold text-[#15191f]">{elapsedMinutes}分</p>
             <p className="mt-2 text-sm leading-6 text-[#425466]">
-              今は固定値です。TODOを直すと、ボタンで時間を増やせます。
+              学習時間はuseLessonTimerのstateです。ボタンを押すと、hookの中の更新関数が動きます。
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <button
@@ -240,10 +242,10 @@ const {
 function CodeHint() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-      <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで目指すコードの形</h2>
+      <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで完成したコードの形</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        完成版では、custom
-        hookの中でstateを持ち、更新関数も一緒に返します。コンポーネントは、その返り値を使って画面を表示します。
+        custom
+        hookの中でstateを持ち、更新関数も一緒に返しています。コンポーネントは、その返り値を使って画面を表示します。
       </p>
       <pre className="mt-5 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
         <code>{`function useLessonTimer() {
@@ -299,7 +301,7 @@ export default function CustomHooksPage() {
         <ToggleMiniExample />
         <FilePlacementGuide />
         <TodoOrder />
-        <CustomHooksStarter />
+        <CustomHooksExample />
         <CodeHint />
         <CompletionCheck />
       </div>

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 export type LearningChecklistItem = {
   id: string;
   label: string;
@@ -23,13 +25,19 @@ const starterItems: LearningChecklistItem[] = [
 ];
 
 export function useLearningChecklist() {
-  // TODO 5: ReactからuseStateをimportする
-  // TODO 6: 固定配列ではなく useState<LearningChecklistItem[]>(starterItems) に置き換える
-  const items = starterItems;
+  const [items, setItems] = useState<LearningChecklistItem[]>(starterItems);
 
-  // TODO 7: idが一致した項目のisDoneを切り替える
   function handleToggleItem(itemId: string) {
-    return itemId;
+    setItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              isDone: !item.isDone,
+            }
+          : item,
+      ),
+    );
   }
 
   const completedCount = items.filter((item) => item.isDone).length;
