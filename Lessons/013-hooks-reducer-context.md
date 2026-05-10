@@ -14,6 +14,7 @@ Lesson 13 では、stateの更新ルールをreducerにまとめ、複数のコ�
 - reducerは、今のstateとactionから次のstateを作る関数であること
 - actionは、何をしたいかを表す命令であること
 - `createContext` と `useContext` で値を共有できること
+- Providerは、値を配る範囲を作る部品であること
 - props drillingは、途中のコンポーネントへpropsを渡し続ける状態であること
 
 ## Start
@@ -161,24 +162,71 @@ dispatch({ type: 'reset' });
 
 `dispatch` は、actionをreducerへ送る関数です。
 
-### 4. Contextは「値を配る仕組み」
+### 4. Context、Provider、useContextを分けて見る
 
-Contextを使うと、深い場所にあるコンポーネントでも同じ値を読めます。
+Contextまわりは、言葉が似ていて混乱しやすいです。
+
+まず、次の3つに分けます。
+
+```text
+Context
+  共有する値の置き場所を作る
+
+Provider
+  値を配る範囲を作る
+
+useContext
+  Providerから配られた値を読む
+```
+
+Contextを作るコードは次です。
+
+この時点では、まだ画面に値を配っていません。
 
 ```tsx
 const LearningSessionContext = createContext<ContextValue | null>(null);
 ```
 
-Providerで値を配ります。
+Providerは、値を配る範囲を作る部品です。
+
+`value` に配りたい値を入れます。
+
+`children` は、Providerで囲まれた中身です。
+
+```text
+LearningSessionContext.Provider
+  value
+    配りたい値
+
+  children
+    Providerで囲まれた中身
+```
+
+このページでは、次のように2つのコンポーネントをProviderで囲みます。
 
 ```tsx
-<LearningSessionContext.Provider value={value}>{children}</LearningSessionContext.Provider>
+<LearningSessionProvider>
+  <SessionDashboard />
+  <SessionActions />
+</LearningSessionProvider>
 ```
+
+この内側にある `SessionDashboard` と `SessionActions` は、同じ値を読めます。
+
+`LearningSessionProvider` は、この教材で作ったコンポーネント名です。
+
+中では `LearningSessionContext.Provider` を使い、`value` に入れた値を内側のコンポーネントへ配ります。
 
 受け取る側は `useContext` を使います。
 
 ```tsx
 const session = useContext(LearningSessionContext);
+```
+
+この教材では、直接 `useContext` を呼ぶ代わりに、`useLearningSession` という関数にまとめています。
+
+```tsx
+const { state, handleAddMinute } = useLearningSession();
 ```
 
 ### 5. props drillingを避ける
@@ -205,7 +253,7 @@ props drillingは、途中のコンポーネントが使わない値までprops�
 3. learningSessionReducerを作る
 4. fixedStateをuseReducerへ置き換える
 5. handlerからdispatchを呼ぶ
-6. Providerでstate、score、handlerを配る
+6. Providerのvalueでstate、score、handlerを配る
 7. useLearningSessionで子コンポーネントから同じ値を読む
 ```
 
@@ -227,6 +275,7 @@ reducerが何を返す関数か説明できる
 actionが何を表すか説明できる
 dispatchでstateを更新できる
 Providerで値を配れる
+Providerのvalueとchildrenの意味を説明できる
 useContextで同じ値を読める
 props drillingとの違いを説明できる
 ```
@@ -240,5 +289,6 @@ props drillingとの違いを説明できる
 - actionの役割
 - `dispatch({ type: '...' })` の意味
 - Context Providerの役割
+- Providerの `value` と `children` の意味
 - `useContext` の役割
 - props drillingが起きる状況

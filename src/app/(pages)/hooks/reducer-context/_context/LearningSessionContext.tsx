@@ -47,6 +47,8 @@ export function LearningSessionProvider({ children }: { children: ReactNode }) {
     return state;
   }
 
+  // Providerは、この内側のchildrenへvalueを配るための部品です。
+  // childrenは<LearningSessionProvider>...</LearningSessionProvider>で囲まれた中身です。
   return (
     <LearningSessionContext.Provider
       value={{

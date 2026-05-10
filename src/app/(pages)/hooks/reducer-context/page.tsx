@@ -16,7 +16,7 @@ function ConceptOverview() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで出てくる言葉</h2>
-      <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         <article className="rounded-md bg-[#f7f7f2] p-4">
           <h3 className="text-lg font-semibold text-[#15191f]">useReducer</h3>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
@@ -38,7 +38,19 @@ function ConceptOverview() {
         <article className="rounded-md bg-[#f7f7f2] p-4">
           <h3 className="text-lg font-semibold text-[#15191f]">Context</h3>
           <p className="mt-2 text-sm leading-6 text-[#425466]">
-            Providerの内側にあるコンポーネントへ、同じ値を配る仕組みです。
+            複数のコンポーネントで同じ値を使うための仕組みです。
+          </p>
+        </article>
+        <article className="rounded-md bg-[#f7f7f2] p-4">
+          <h3 className="text-lg font-semibold text-[#15191f]">Provider</h3>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            値を配る範囲を作る部品です。Providerで囲んだ内側だけが値を読めます。
+          </p>
+        </article>
+        <article className="rounded-md bg-[#f7f7f2] p-4">
+          <h3 className="text-lg font-semibold text-[#15191f]">useContext</h3>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            Providerから配られた値を、内側のコンポーネントで読むHookです。
           </p>
         </article>
       </div>
@@ -81,29 +93,76 @@ function ReducerRoleGuide() {
 function ContextRoleGuide() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-      <h2 className="text-xl font-semibold text-[#15191f]">Contextは値を配る仕組み</h2>
+      <h2 className="text-xl font-semibold text-[#15191f]">Providerは値を配る範囲</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        Contextを使うと、Providerの内側にあるコンポーネントが同じ値を読めます。途中のコンポーネントへpropsを渡し続ける必要が減ります。
+        Providerは、画面に何かを表示するための部品ではありません。「この内側のコンポーネントは、同じ値を読めます」と範囲を作るための部品です。
       </p>
+      <div className="mt-5 grid gap-4 lg:grid-cols-3">
+        <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
+          <p className="text-sm font-semibold text-[#6f5615]">1. Contextを作る</p>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            まず、共有する値の置き場所を作ります。この時点では、まだ値は配っていません。
+          </p>
+          <pre className="mt-3 overflow-x-auto rounded-md bg-[#15191f] p-3 text-sm leading-6 text-[#f7f7f2]">
+            <code>{`const Context = createContext(null);`}</code>
+          </pre>
+        </article>
+        <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
+          <p className="text-sm font-semibold text-[#6f5615]">2. Providerで配る</p>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            <code>value</code> に配りたい値を入れます。<code>children</code>{' '}
+            はProviderで囲まれた中身です。
+          </p>
+          <pre className="mt-3 overflow-x-auto rounded-md bg-[#15191f] p-3 text-sm leading-6 text-[#f7f7f2]">
+            <code>{`<Context.Provider value={value}>
+  {children}
+</Context.Provider>`}</code>
+          </pre>
+        </article>
+        <article className="rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4">
+          <p className="text-sm font-semibold text-[#6f5615]">3. useContextで読む</p>
+          <p className="mt-2 text-sm leading-6 text-[#425466]">
+            Providerの内側にいるコンポーネントだけが、配られた値を読めます。
+          </p>
+          <pre className="mt-3 overflow-x-auto rounded-md bg-[#15191f] p-3 text-sm leading-6 text-[#f7f7f2]">
+            <code>{`const value = useContext(Context);`}</code>
+          </pre>
+        </article>
+      </div>
+
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         <article className="rounded-md bg-[#15191f] p-4">
-          <p className="text-sm font-semibold text-[#82d39b]">Providerで配る</p>
+          <p className="text-sm font-semibold text-[#82d39b]">このページで囲んでいる範囲</p>
           <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
             <code>{`<LearningSessionProvider>
   <SessionDashboard />
   <SessionActions />
 </LearningSessionProvider>`}</code>
           </pre>
+          <p className="mt-3 text-sm leading-6 text-[#cbd5df]">
+            この2つのコンポーネントは、同じ学習セッションの値を読めます。
+          </p>
         </article>
         <article className="rounded-md bg-[#15191f] p-4">
-          <p className="text-sm font-semibold text-[#82d39b]">useContextで読む</p>
+          <p className="text-sm font-semibold text-[#82d39b]">Providerの内側で読む</p>
           <pre className="mt-3 overflow-x-auto text-sm leading-6 text-[#f7f7f2]">
             <code>{`const {
   state,
   handleAddMinute,
 } = useLearningSession();`}</code>
           </pre>
+          <p className="mt-3 text-sm leading-6 text-[#cbd5df]">
+            <code>useLearningSession</code> の中で <code>useContext</code> を使っています。
+          </p>
         </article>
+      </div>
+
+      <div className="mt-5 rounded-md border border-dashed border-[#c8b26a] bg-[#fff8df] p-4">
+        <p className="text-sm leading-6 text-[#6f5615]">
+          <code>LearningSessionProvider</code> は、この教材で作ったコンポーネント名です。中では
+          <code>LearningSessionContext.Provider</code> を使い、<code>value</code>{' '}
+          に入れた値を内側のコンポーネントへ配っています。
+        </p>
       </div>
     </section>
   );
@@ -146,7 +205,7 @@ function TodoOrder() {
           'learningSessionReducerを作り、actionごとに次のstateを返す',
           'fixedStateをuseReducer(learningSessionReducer, fixedState)へ置き換える',
           'handleAddMinute、handleCompleteTask、handleResetSessionからdispatchを呼ぶ',
-          'Providerでstate、totalScore、handlerを配る',
+          'Providerのvalueで、state、totalScore、handlerを配る',
           'page.tsxで、useLearningSessionから同じ値を読めることを確認する',
         ].map((todo, index) => (
           <div
