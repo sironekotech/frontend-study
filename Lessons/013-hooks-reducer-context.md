@@ -14,7 +14,7 @@ Lesson 13 では、stateの更新ルールをreducerにまとめ、複数のコ�
 - reducerは、今のstateとactionから次のstateを作る関数であること
 - actionは、何をしたいかを表す命令であること
 - `createContext` と `useContext` で値を共有できること
-- Providerは、値を配る範囲を作る部品であること
+- 値を配る範囲を作る考え方
 - props drillingは、途中のコンポーネントへpropsを渡し続ける状態であること
 
 ## Start
@@ -162,7 +162,7 @@ dispatch({ type: 'reset' });
 
 `dispatch` は、actionをreducerへ送る関数です。
 
-### 4. Context、Provider、useContextを分けて見る
+### 4. 値を置く、範囲を作る、読む
 
 Contextまわりは、言葉が似ていて混乱しやすいです。
 
@@ -172,11 +172,11 @@ Contextまわりは、言葉が似ていて混乱しやすいです。
 Context
   共有する値の置き場所を作る
 
-Provider
-  値を配る範囲を作る
+値を配る範囲
+  囲んだ内側だけが同じ値を読める
 
 useContext
-  Providerから配られた値を読む
+  配られた値を読む
 ```
 
 Contextを作るコードは次です。
@@ -187,11 +187,11 @@ Contextを作るコードは次です。
 const LearningSessionContext = createContext<ContextValue | null>(null);
 ```
 
-Providerは、値を配る範囲を作る部品です。
+次に、値を読める範囲を作ります。
 
 `value` に配りたい値を入れます。
 
-`children` は、Providerで囲まれた中身です。
+`children` は、囲まれた中身です。
 
 ```text
 LearningSessionContext.Provider
@@ -199,10 +199,10 @@ LearningSessionContext.Provider
     配りたい値
 
   children
-    Providerで囲まれた中身
+    囲まれた中身
 ```
 
-このページでは、次のように2つのコンポーネントをProviderで囲みます。
+このページでは、次のように2つのコンポーネントを囲みます。
 
 ```tsx
 <LearningSessionProvider>
@@ -212,6 +212,10 @@ LearningSessionContext.Provider
 ```
 
 この内側にある `SessionDashboard` と `SessionActions` は、同じ値を読めます。
+
+Reactのコードでは、この「値を配る範囲を作る部品」に `Provider` という名前が出てきます。
+
+まずは名前よりも、「囲んだ内側だけが同じ値を読める」と考えます。
 
 `LearningSessionProvider` は、この教材で作ったコンポーネント名です。
 
@@ -253,7 +257,7 @@ props drillingは、途中のコンポーネントが使わない値までprops�
 3. learningSessionReducerを作る
 4. fixedStateをuseReducerへ置き換える
 5. handlerからdispatchを呼ぶ
-6. Providerのvalueでstate、score、handlerを配る
+6. valueでstate、score、handlerを内側へ配る
 7. useLearningSessionで子コンポーネントから同じ値を読む
 ```
 
@@ -274,8 +278,8 @@ useReducerが何をするHookか説明できる
 reducerが何を返す関数か説明できる
 actionが何を表すか説明できる
 dispatchでstateを更新できる
-Providerで値を配れる
-Providerのvalueとchildrenの意味を説明できる
+値を配る範囲を作れる
+valueとchildrenの意味を説明できる
 useContextで同じ値を読める
 props drillingとの違いを説明できる
 ```
@@ -288,7 +292,7 @@ props drillingとの違いを説明できる
 - reducerの引数と戻り値
 - actionの役割
 - `dispatch({ type: '...' })` の意味
-- Context Providerの役割
-- Providerの `value` と `children` の意味
+- 値を配る範囲の役割
+- `value` と `children` の意味
 - `useContext` の役割
 - props drillingが起きる状況
