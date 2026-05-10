@@ -61,6 +61,12 @@ const lessonLinks = [
     href: '/hooks/use-ref',
     description: 'useRefで、DOM参照、inputへのfocus、再レンダーされない値を確認します。',
   },
+  {
+    id: '011-hooks-rules',
+    title: '011-hooks-rules',
+    href: '/hooks/rules',
+    description: 'Hooksを呼んでよい場所、NG例、custom hookの命名、ESLintの理由を確認します。',
+  },
 ];
 
 export default function Home() {
