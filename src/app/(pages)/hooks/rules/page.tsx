@@ -26,9 +26,22 @@ const ruleCases: RuleCase[] = [
 
   return <button>+1</button>;
 }`,
-    resultLabel: 'TODO: OKかNGかを表示します',
-    reason: 'TODO: なぜその判定になるかを表示します',
-    fixedCode: `TODO: Hookを条件分岐の外へ出したコードを表示します`,
+    resultLabel: 'NG: 条件分岐の中でHookを呼んでいます',
+    reason:
+      'isReadyがtrueのときだけuseStateが呼ばれます。ReactはHookを呼んだ順番で管理するため、表示のたびに呼ぶ順番が変わる書き方は避けます。',
+    fixedCode: `function Counter({ isReady }: { isReady: boolean }) {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount((currentCount) => currentCount + 1);
+  }
+
+  if (!isReady) {
+    return <p>準備中です</p>;
+  }
+
+  return <button onClick={handleClick}>{count}</button>;
+}`,
   },
   {
     id: 'event-handler-hook',
@@ -43,21 +56,35 @@ const ruleCases: RuleCase[] = [
 
   return <button onClick={handleSubmit}>送信</button>;
 }`,
-    resultLabel: 'TODO: OKかNGかを表示します',
-    reason: 'TODO: なぜその判定になるかを表示します',
-    fixedCode: `TODO: イベントハンドラではHookではなく普通の処理を呼ぶ例を表示します`,
+    resultLabel: 'NG: イベントハンドラの中でHookを呼んでいます',
+    reason:
+      'handleSubmitはクリックしたあとに動く関数です。Hookは操作後に呼ぶのではなく、コンポーネントを表示するときにトップレベルで呼びます。',
+    fixedCode: `function Form() {
+  const [message, setMessage] = useState('未送信');
+
+  function handleSubmit() {
+    setMessage('送信しました');
+  }
+
+  return <button onClick={handleSubmit}>{message}</button>;
+}`,
   },
   {
     id: 'custom-hook-name',
     title: 'useで始まらない関数からHookを呼ぶ',
     summary: '普通の関数名に見える関数の中でuseStateを呼んでいます。',
     badCode: `function readWindowWidth() {
-  const [width, setWidth] = useState(0);
+  const [width] = useState(0);
   return width;
 }`,
-    resultLabel: 'TODO: OKかNGかを表示します',
-    reason: 'TODO: なぜその判定になるかを表示します',
-    fixedCode: `TODO: useWindowWidthのようにuseで始める例を表示します`,
+    resultLabel: 'NG: Hookを使う関数名がuseで始まっていません',
+    reason:
+      'readWindowWidthは普通の関数名に見えます。Hookを使う共通処理は、ReactとESLintが見つけられるようにuseで始めます。',
+    fixedCode: `function useWindowWidth() {
+  const [width] = useState(0);
+
+  return width;
+}`,
   },
 ];
 
@@ -265,25 +292,24 @@ function CallPlaceMatrix() {
 function TodoOrder() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-      <h2 className="text-xl font-semibold text-[#15191f]">TODOの順番</h2>
+      <h2 className="text-xl font-semibold text-[#15191f]">完成版で確認する順番</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        このstartページは、違反例のコード表示と選択状態だけ先に用意しています。TODOでは、選んだコードが
-        OKかNGか、なぜそうなるか、どう直すかを表示します。
+        startページで空だった判定、理由、直し方を入れています。まず悪い例を読み、どこでHookを呼んでいるかを探してから、直したコードを確認します。
       </p>
       <div className="mt-4 grid gap-3">
         {[
-          '3つのコード例を読み、Hookを呼んでいる場所を確認する',
-          '判定の文章を「NG」などの分かりやすい表示に置き換える',
-          '理由の文章を初学者向けの説明に置き換える',
-          '直したコード例を安全なコードに置き換える',
-          '条件分岐の中でHookを呼ばず、JSX側を条件分岐する考え方を確認する',
-          'custom hookはuseで始めることを確認する',
+          '悪い例のコードを読み、Hookを呼んでいる場所を探す',
+          '判定を見て、なぜNGなのかを先に押さえる',
+          '理由の文章で、Reactが何に困るのかを確認する',
+          '直したコードで、Hookをトップレベルへ移した形を見る',
+          'イベントハンドラではHookではなくsetStateなどを呼ぶことを確認する',
+          'Hookを使う共通処理はuseで始めることを確認する',
         ].map((todo, index) => (
           <div
             key={todo}
             className="grid gap-3 rounded-md border border-[#d8d6c8] bg-[#f7f7f2] p-4 text-sm leading-6 text-[#425466] sm:grid-cols-[80px_1fr]"
           >
-            <p className="font-mono font-semibold text-[#6f5615]">TODO {index + 1}</p>
+            <p className="font-mono font-semibold text-[#6f5615]">STEP {index + 1}</p>
             <p>{todo}</p>
           </div>
         ))}
@@ -292,7 +318,7 @@ function TodoOrder() {
   );
 }
 
-function RulesStarter() {
+function RulesExample() {
   const [selectedCaseId, setSelectedCaseId] = useState(ruleCases[0].id);
   const selectedCase = ruleCases.find((ruleCase) => ruleCase.id === selectedCaseId) ?? ruleCases[0];
 
@@ -300,13 +326,13 @@ function RulesStarter() {
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-[#15191f]">コードを見てOK / NGを判定する</h2>
+          <h2 className="text-xl font-semibold text-[#15191f]">NGコードの理由と直し方を確認する</h2>
           <p className="mt-3 leading-7 text-[#425466]">
-            違反するコードは実行せず、文字として表示しています。TODOでは、選んだコードの判定、理由、直し方を表示します。
+            違反するコードは実行せず、文字として表示しています。選んだコードの判定、理由、直し方を順番に確認します。
           </p>
         </div>
-        <p className="w-fit rounded-md bg-[#fff4c7] px-3 py-2 text-sm font-semibold text-[#6f5615]">
-          TODO
+        <p className="w-fit rounded-md bg-[#e3f0e8] px-3 py-2 text-sm font-semibold text-[#2f6848]">
+          完成見本
         </p>
       </div>
 
@@ -364,15 +390,14 @@ function RulesStarter() {
 function CodeHint() {
   return (
     <section className="rounded-md border border-[#d8d6c8] bg-white p-5">
-      <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで目指すコードの形</h2>
+      <h2 className="text-xl font-semibold text-[#15191f]">このレッスンで完成したコードの形</h2>
       <p className="mt-3 leading-7 text-[#425466]">
-        完成版では、各コード例にOK /
-        NG、理由、直し方を入れます。違反例は文字として表示し、実際のコンポーネントではHookのルールを破らないようにします。
+        各コード例にNG判定、理由、直し方を入れています。違反例は文字として表示し、実際に動くコンポーネントではHookのルールを破らないようにします。
       </p>
       <pre className="mt-5 overflow-x-auto rounded-md bg-[#15191f] p-4 text-sm leading-6 text-[#f7f7f2]">
         <code>{`{
-  resultLabel: 'NG',
-  reason: '条件によってHookを呼ぶ回数が変わるためです。',
+  resultLabel: 'NG: 条件分岐の中でHookを呼んでいます',
+  reason: '表示のたびにHookを呼ぶ順番が変わるためです。',
   fixedCode: \`const [count, setCount] = useState(0);
 
 if (!isReady) {
@@ -423,7 +448,7 @@ export default function HooksRulesPage() {
         <CallPlaceMatrix />
         <TopLevelHookExample />
         <TodoOrder />
-        <RulesStarter />
+        <RulesExample />
         <CodeHint />
         <CompletionCheck />
       </div>
