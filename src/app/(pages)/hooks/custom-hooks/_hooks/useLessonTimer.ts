@@ -1,16 +1,14 @@
-export function useLessonTimer() {
-  // TODO 1: ReactからuseStateをimportする
-  // TODO 2: 固定値ではなく useState<number>(0) で学習時間を持つ
-  const elapsedMinutes = 0;
+import { useState } from 'react';
 
-  // TODO 3: elapsedMinutesを1増やす処理に置き換える
+export function useLessonTimer() {
+  const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
+
   function handleAddMinute() {
-    return elapsedMinutes;
+    setElapsedMinutes((currentMinutes) => currentMinutes + 1);
   }
 
-  // TODO 4: elapsedMinutesを0へ戻す処理に置き換える
   function handleResetTimer() {
-    return elapsedMinutes;
+    setElapsedMinutes(0);
   }
 
   return {
